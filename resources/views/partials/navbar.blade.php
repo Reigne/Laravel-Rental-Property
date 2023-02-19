@@ -24,7 +24,7 @@
                 @if (Auth::check() and Auth::user()->role == 'tenant')
                     <li class="nav-item d-flex align-items-center pe-md-3 d-flex align-items-center">
                         <a href="{{ route('user.logout') }}" class="nav-link text-body font-weight-bold px-0">
-                            <i class="fa-solid fa-right-from-bracket"></i>
+                          <i class="fa-solid fa-person-running"></i>
                             <span class="d-sm-inline d-none">Logout</span>
                         </a>
                     </li>
