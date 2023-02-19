@@ -1,80 +1,100 @@
-<!-- Modal Signup Customer -->
-<div id="mySModal" class="modal fade">
-    <div class="modal-dialog modal-login">
-      <div class="modal-content">
-        <div class="modal-header">				
-          <h4 class="modal-title">Register as tenant</h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+<!-- Button trigger modal -->
+{{-- <button type="button" class="btn bg-gradient-info btn-block" data-bs-toggle="modal" data-bs-target="#exampleModalSignUp">
+      SignUp Modal
+    </button> --}}
 
+<!-- Modal -->
+<div class="modal fade" id="myTModal" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="font-weight-bolder text-primary text-gradient">Register as Tenant</h3>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="card card-plain">
+                    <div class="card-header pb-0 text-left">
+                        <p class="mb-0">Enter your email and password to register</p>
+                    </div>
+                    <div class="card-body pb-3">
+                        <form role="form text-left" method="POST" action="{{ url('/register-tenant') }}"
+                            enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <div class="row">
+                                <div class="col">
+                                    <label>First Name</label>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="first_name" name="first_name"
+                                            placeholder="First Name" aria-label="First Name"
+                                            aria-describedby="name-addon">
+                                        @if ($errors->has('first_name'))
+                                            <div class="alert alert-danger">{{ $errors->first('first_name') }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label>Last Name</label>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="last_name" name="last_name"
+                                            placeholder="Last name" aria-label="Last name"
+                                            aria-describedby="name-addon">
+                                    </div>
+                                </div>
+                            </div>
+                            <label>Phone</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="phone" name="phone"
+                                    placeholder="63+ 9219201772" aria-label="phone">
+                            </div>
+                            <label>Address</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="address" name="address"
+                                    placeholder="#1-B New Lower Example..." aria-label="address">
+                            </div>
+                            <label>Email</label>
+                            <div class="input-group mb-3">
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="Email" aria-label="Email">
+                            </div>
+                            <label>Password</label>
+                            <div class="input-group mb-3">
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Password" aria-label="Password">
+                            </div>
+
+
+                            <label>Image</label>
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control" id="imagePath" name="imagePath">
+                                @error('image')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- <div class="form-check form-check-info text-left">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                    checked="">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    I agree the <a href="javascrpt:;" class="text-dark font-weight-bolder">Terms and
+                                        Conditions</a>
+                                </label>
+                            </div> --}}
+                            <div class="text-center">
+                                <button type="submit"
+                                    class="btn bg-gradient-primary btn-lg btn-rounded w-100 mt-4 mb-0">{{ __('Register') }}</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center pt-0 px-sm-4 px-1">
+                        <p class="mb-4 mx-auto">
+                            Already have an account?
+                            <a href="javascrpt:;" class="text-primary text-gradient font-weight-bold" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle='modal' data-bs-target='#signinModal'>Sign in</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          
-        <form id="regform" method="POST" action="{{ url('/register-tenant') }}" enctype="multipart/form-data">
-            {{ csrf_field() }}
-            {{-- <div class="form-group">
-              <i class="fa-solid fa-file-signature"></i>
-                
-                <input type="text" name="title" id="title" class="form-control" placeholder="title" >
-            </div> --}}
-            <div class="form-group">
-              <i class="fa fa-user" aria-hidden="true"></i>
-
-                <input type="text" name="first_name" id="first_name" class="form-control" placeholder="firstname">
-            </div>
-            <div class="form-group">
-              <i class="fa fa-user" aria-hidden="true"></i>
-                
-                <input type="text" name="last_name" id="last_name" class="form-control"  placeholder="lastname" >
-            </div>
-            <div class="form-group">
-              <i class="fa-solid fa-envelope"></i>
-                
-                <input type="text" name="email" id="email" class="form-control"  placeholder="email" >
-            </div>
-            <div class="form-group">
-              <i class="fa-solid fa-address-card"></i>
-                
-                <input type="text" name="address" id="address" class="form-control"  placeholder="address" >
-            </div>
-            {{-- <div class="form-group">
-              <i class="fa-solid fa-house"></i>
-
-                <input type="text" name="town" id="town" class="form-control"  placeholder="town" >
-            </div> --}}
-            {{-- <div class="form-group">
-              <i class="fa-solid fa-hashtag"></i>
-
-                <input type="text" name="zipcode" id="zipcode" class="form-control"  placeholder="zipcode" >
-            </div> --}}
-            <div class="form-group">
-              <i class="fa-sharp fa-solid fa-phone"></i>
-                
-                <input type="text" name="phone" id="phone" class="form-control"  placeholder="phone" >
-            </div>
-            <div class="form-group">
-              <i class="fa-solid fa-lock"></i>
-                
-                <input type="password" name="password" id="password" class="form-control"  placeholder="password" >
-            </div>
-
-            <div class="form-group">
-              <i class="fa-solid fa-hashtag"></i>
-              <input type="file" class="form-control" id="imagePath" name="imagePath">
-            </div>
-                        
-                        <div class="p-t-15">
-                            {{-- <button id ="btnregister" class="btn btn--radius-2 btn--blue">Submit</button> --}}
-
-
-                              <button id ="btnregister" type="submit" class="w-100 btn btn-lg btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                        </div>
-                    </form>
-        </div>
-        <div class="modal-footer">
-          <p>welcome to my website!</p>
-        </div>
-      </div>
     </div>
-  </div>
+</div>

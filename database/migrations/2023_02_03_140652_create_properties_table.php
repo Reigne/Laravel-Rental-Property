@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('properties', function (Blueprint $table) {
             $table->increments('id');
             // $table->string('advisor_id_fk');
-            // $table->integer('landlord_id')->unsigned();
-            // $table->foreign('landlord_id')->references('id')->on('landlords')->onDelete('cascade');
+            $table->integer('landlord_id')->unsigned();
+            $table->foreign('landlord_id')->references('id')->on('landlords')->onDelete('cascade');
             $table->string('area');
             $table->string('garage');
             $table->string('bathroom');
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('image')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

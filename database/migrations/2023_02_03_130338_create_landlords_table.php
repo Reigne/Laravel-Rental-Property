@@ -20,9 +20,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('ntn');
-            $table->string('cnic');
-            $table->string('brand');
+            // $table->string('ntn');
+            // $table->string('cnic');
+            // $table->string('brand');
             $table->string('phone');
             $table->string('address');
             $table->text('imagePath')->nullable();

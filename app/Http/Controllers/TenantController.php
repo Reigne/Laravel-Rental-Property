@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Tenant;
 use App\Models\User;
-use Illuminate\Http\Request;
-
+use App\DataTables\TenantsDataTable;
 use View;
 use Validator;
 use Redirect;
@@ -33,7 +33,7 @@ class TenantController extends Controller
             $request->merge(["imagePath"=>$request->file('imagePath')->getClientOriginalName()]);
 
             $user = new User([
-                'name' => $request->input('fname').' '. $request->lname,
+                'name' => $request->input('first_name').' '. $request->last_name,
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
             ]);
@@ -58,7 +58,7 @@ class TenantController extends Controller
 
                 // return Redirect::to('/profie')->with('success','New Customer has been Added!');
                 // return redirect()->route('tenant.profile');
-                return redirect()->back();
+                return redirect()->back()->with('success','New Tenant has been registered successfully!');
             } 
 
         }     
@@ -66,7 +66,7 @@ class TenantController extends Controller
 
     public function index()
     {
-        //
+        return View::make('tenant.index');
     }
 
     /**
@@ -107,9 +107,12 @@ class TenantController extends Controller
      * @param  \App\Models\Tenant  $tenant
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tenant $tenant)
+    public function edit($id)
     {
-        //
+        $tenant = Tenant::find($id);
+        $users = User::with('tenants')->where('id', $tenant->user_id)->get();
+        // dd($users);
+        return view('tenant.edit', compact('tenant', 'users'));
     }
 
     /**
@@ -123,16 +126,42 @@ class TenantController extends Controller
     {
         //
     }
+    
+    public function getTenants(TenantsDataTable $dataTable) {
+        // $tenants =  Tenant::with(['users'])->get();
 
+        return $dataTable->render('tenant.index');
+    }
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Tenant  $tenant
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tenant $tenant)
+    public function destroy($id)
     {
-        //
+        $tenant = Tenant::findOrFail($id);
+        User::where('id',$tenant->user_id)->forceDelete();
+        $tenant->forceDelete();
+
+        return Redirect::route('getTenants')->with('danger','Tenant has been Deleted!');
+    }
+
+    public function deactivate($id){
+        $tenant = Tenant::findOrFail($id);
+        User::where('id',$tenant->user_id)->delete();
+        $tenant->delete();
+        // dd($customer);
+        
+        return Redirect::route('getTenants')->with('warning','Tenant has been Deactivated!');
+    }
+
+    public function restore($id) {
+        $tenant = Tenant::withTrashed()->find($id);
+        User::where('id',$tenant->user_id)->restore();
+        $tenant->restore(); 
+
+        return Redirect::route('getTenants')->with('success','Customer has been Restored!');
     }
 
 }

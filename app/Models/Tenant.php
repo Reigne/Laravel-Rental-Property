@@ -33,4 +33,8 @@ class Tenant extends Model
         'email' =>'required|email',
         'password' => 'required|min:8'
     ];
+
+    public function users() {
+        return $this->belongsTo('App\Models\User');
+   }
 }
