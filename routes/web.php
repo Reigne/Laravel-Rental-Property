@@ -25,7 +25,7 @@ Route::get('/base', function () {
     return view('layouts.base');
 });
 
-// tenant routes
+// Tenant ====================================================================
 // Route::post('/register-tenant', 'TenantController@register');
 Route::resource('tenant', 'TenantController');
 
@@ -60,10 +60,47 @@ Route::get('/tenant/restore/{id}', [
 //     return view('tenant.edit');
 // });
 
-// end of tenant route
+// Landlord ====================================================================
+Route::resource('landlord', 'LandlordController');
+Route::post('/register-landlord', [
+    'uses' => 'LandlordController@register',
+    'as' => 'reglandlord'
+]);
+
+Route::get('/landlord', [
+    'uses' => 'LandlordController@getLandlords',
+    'as' => 'getLandlords'
+]);
+
+Route::delete('/landlord/deactivate/{id}', [
+    'uses' => 'LandlordController@deactivate',
+    'as' => 'landlord.deactivate'
+]);
+
+Route::get('/landlord/restore/{id}', [
+    'uses' => 'LandlordController@restore',
+    'as' => 'landlord.restore'
+]);
+
+// Property ====================================================================
+Route::resource('property', 'PropertyController');
+Route::get('/property', [
+    'uses' => 'PropertyController@getProperties',
+    'as' => 'getProperties'
+]);
+
+Route::delete('/property/deactivate/{id}', [
+    'uses' => 'PropertyController@deactivate',
+    'as' => 'property.deactivate'
+]);
+
+Route::get('/property/restore/{id}', [
+    'uses' => 'PropertyController@restore',
+    'as' => 'property.restore'
+]);
 
 
-// signin routes
+// Signin/logout ====================================================================
 Route::post('signin', [
     'uses' => 'LoginController@postSignin',
     'as' => 'user.signin',

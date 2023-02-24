@@ -4,25 +4,19 @@
         @include('partials.navbar')
         <hr class="horizontal dark mt-0">
 
-        <div class="container-fluid">
-            @if (count($errors) > 0)
-                @include('layouts.flash-messages')
-            @else
-                @include('layouts.modal-notification')
-            @endif
-
-            @if(Auth::check() and Auth::user()->role == 'tenant')
-            asdasldmnaskdjasbdhj
-            @else
-            @endif
-        </div>
-
+            <div class="container-fluid">
+                    @if (count($errors) > 0)
+                        @include('layouts.flash-messages')
+                    @else
+                        @include('layouts.flash-messages')
+                    @endif
+            </div>
         
         <div class="container-fluid py-4">
             <div class="card h-100">
                 <div class="card-body p-3">
                     <div class="card-header pb-0">
-                        <h6>Tenant CRUD</h6>
+                        <h6>Property CRUD</h6>
                         <hr class="horizontal dark mt-0">
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -34,7 +28,6 @@
             </div>
         </div>
     </main>
-
     @push('scripts')
         {{ $dataTable->scripts() }}
     @endpush

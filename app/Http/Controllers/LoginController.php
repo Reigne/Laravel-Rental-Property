@@ -17,17 +17,18 @@ class LoginController extends Controller
         ]);
 
         if (auth()->attempt(array('email' => $request->email, 'password' => $request->password))) {
+            $name = auth()->user()->name;
             if (auth()->user()->role === 'tenant') {
-                return redirect()->route('getTenants');
+                return redirect()->route('getTenants')->with('success', 'Welcome, ' . $name. '');
             } else if (auth()->user()->role === 'landlord') {
                 // return redirect()->route('getEmployees');
-                dd($request->email);
+                return redirect()->route('getLandlords')->with('success', 'Welcome, ' . $name. '');
             } else {
                 dd($request->password);
                 // return redirect()->route('shop.index');
             }
         } else {
-            return redirect()->route('user.signin')->with('error', 'Email-Address And Password Are Wrong.');
+            return redirect()->back()->with('error', 'Email-Address or Password Are Wrong.');
         }
     }
     public function logout()

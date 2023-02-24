@@ -21,43 +21,50 @@
                 {{-- <li class="nav-item d-flex align-items-center">
             <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard">Online Builder</a>
           </li> --}}
-                @if (Auth::check() and Auth::user()->role == 'tenant')
-                    <li class="nav-item d-flex align-items-center pe-md-3 d-flex align-items-center">
-                        <a href="{{ route('user.logout') }}" class="nav-link text-body font-weight-bold px-0">
-                          <i class="fa-solid fa-person-running"></i>
-                            <span class="d-sm-inline d-none">Logout</span>
-                        </a>
-                    </li>
+                @if (Auth::check())
+                    @if (Auth::user()->role == 'tenant' or Auth::user()->role == 'landlord')
+                        <li class="nav-item d-flex align-items-center pe-md-3 d-flex align-items-center">
+                            {{-- <a href="{{ route('user.logout') }}" class="nav-link text-body font-weight-bold px-0">
+                                <i class="fa-solid fa-person-running"></i>
+                                <span class="d-sm-inline d-none">Logout</span>
+                            </a> --}}
+                        </li>
 
-                    <li class="nav-item dropdown pe-2 d-flex align-items-center">
-                        <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="d-sm-inline d-none">
-                                @if (Auth::user()->role === 'tenant')
-                                    <img src="{{ asset(Auth::user()->tenants->imagePath) }}"
-                                        alt="avatar" class="rounded-circle img-fluid" style="width: 25px;">
-                                @elseif (Auth::user()->role === 'landlord')
-                                    <img src="{{ asset('/storage/' . Auth::user()->landlords->imagePath) }}"
-                                        alt="avatar" class="rounded-circle img-fluid" style="width: 20px;">
-                                @else
-                                @endif
-                              </span>
-                              {{ Auth::user()->name }}
-                        </a>
-                        <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
-                            aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle='modal'
-                                    data-bs-target='#myTModal'>Tenant</a></li>
-                            <li><a class="dropdown-item" href="javascript:;">Landlord</a></li>
-                            {{-- <li><a class="dropdown-item" href="javascript:;">Something else here</a></li> --}}
-                        </ul>
-                    </li>
+                        <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="d-sm-inline d-none">
+                                    @if (Auth::user()->role === 'tenant')
+                                        <img src="{{ asset(Auth::user()->tenants->imagePath) }}" alt="avatar"
+                                            class="rounded-circle img-fluid" style="width: 25px;">
+                                    @elseif (Auth::user()->role === 'landlord')
+                                        <img src="{{ asset(Auth::user()->landlords->imagePath) }}" alt="avatar"
+                                            class="rounded-circle img-fluid" style="width: 25px;">
+                                    @else
+                                    @endif
+                                </span> {{ Auth::user()->name }}
+                            </a>
+                            <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                {{-- <li><a class="dropdown-item" href="javascript:;">Landlord</a></li> --}}
+                                <li><a href="#" class="dropdown-item">
+                                    <i class="fa-solid fa-circle-user"></i>
+                                        <span class="d-sm-inline d-none"> &nbsp; Profile</span></a>
+                                </li>
+                                <li><a href="{{ route('user.logout') }}" class="dropdown-item">
+                                        <i class="fa-solid fa-person-running"></i>
+                                        <span class="d-sm-inline d-none"> &nbsp; Logout</span></a>
+                                </li>
+                                {{-- <li><a class="dropdown-item" href="javascript:;">Something else here</a></li> --}}
+                            </ul>
+                        </li>
+                    @endif
                 @else
                     <li class="nav-item d-flex align-items-center pe-md-3 d-flex align-items-center">
-                        <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                            <i class="fa fa-user me-sm-1"></i>
-                            <span class="d-sm-inline d-none" data-bs-toggle='modal' data-bs-target='#signinModal'>Sign
-                                In</span>
+                        <a href="javascript:;" class="nav-link text-body font-weight-bold px-0" data-bs-toggle='modal'
+                            data-bs-target='#signinModal'>
+                            <span class="d-sm-inline d-none">
+                                <i class="fa-solid fa-right-to-bracket"></i> Sign In
+                            </span>
                         </a>
                     </li>
 
@@ -79,14 +86,14 @@
                     <li class="nav-item dropdown pe-2 d-flex align-items-center">
                         <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-user me-sm-1 cursor-pointer"></i>
+                            <i class="fa-solid fa-user-plus"></i>
                             <span class="d-sm-inline d-none">Register As</span>
                         </a>
-                        <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
-                            aria-labelledby="dropdownMenuButton">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="#" data-bs-toggle='modal'
-                                    data-bs-target='#myTModal'>Tenant</a></li>
-                            <li><a class="dropdown-item" href="javascript:;">Landlord</a></li>
+                                    data-bs-target='#myTModal'><i class="fa-solid fa-user"></i> &nbsp; Tenant</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle='modal'
+                                    data-bs-target='#myLModal'><i class="fa-solid fa-people-roof"></i> &nbsp; Landlord</a></li>
                             {{-- <li><a class="dropdown-item" href="javascript:;">Something else here</a></li> --}}
                         </ul>
                     </li>

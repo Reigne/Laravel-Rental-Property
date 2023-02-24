@@ -34,11 +34,11 @@
 @endif
 
 @if ($errors->any())
-    <div class="alert alert-danger">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        @foreach ($errors->all() as $message)
-            {{ $message }}
-        @endforeach
-    </div>
+    @foreach ($errors->all() as $message)
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <a class="text-light">{{ $message }}</a>
+        </div>
+    @endforeach
 @endif
 {{-- {{dd($errors)}} --}}

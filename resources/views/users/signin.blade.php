@@ -12,7 +12,7 @@
                 {{ csrf_field() }}
                 <label>Email</label>
                 <div class="input-group mb-3">
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" aria-label="Email" aria-describedby="email-addon" value="{{old('email')}}">
                 </div>
                 <label>Password</label>
                 <div class="input-group mb-3">

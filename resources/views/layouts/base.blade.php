@@ -14,6 +14,7 @@
 
 <body class="g-sidenav-show  bg-gray-100">
     @include('tenant.register')
+    @include('landlord.register')
     @include('users.signin')
     {{-- <body class="g-sidenav-show  bg-gray-100"> --}}
     @include('partials.sidebar')
