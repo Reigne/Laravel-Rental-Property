@@ -8,16 +8,11 @@
             @if (count($errors) > 0)
                 @include('layouts.flash-messages')
             @else
-                @include('layouts.modal-notification')
-            @endif
-
-            @if(Auth::check() and Auth::user()->role == 'tenant')
-            asdasldmnaskdjasbdhj
-            @else
+                @include('layouts.flash-messages')
             @endif
         </div>
 
-        
+
         <div class="container-fluid py-4">
             <div class="card h-100">
                 <div class="card-body p-3">

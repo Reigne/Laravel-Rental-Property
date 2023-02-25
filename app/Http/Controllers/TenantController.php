@@ -11,7 +11,8 @@ use Validator;
 use Redirect;
 use Storage;
 use File;
-
+use Auth;
+use Hash;
 class TenantController extends Controller
 {
     /**
@@ -122,9 +123,72 @@ class TenantController extends Controller
      * @param  \App\Models\Tenant  $tenant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tenant $tenant)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $this->validate($request, [
+            'old_password' => 'required',
+        ]);
+
+        if (Hash::check($request->old_password, Auth::user()->password)) {
+            $tenant = Tenant::find($id);
+            $tenant->first_name = $request->first_name;
+            $tenant->last_name = $request->last_name;
+            $tenant->address = $request->address;
+            $tenant->phone = $request->phone;
+
+            if($request->hasFile('imagePath')) {
+                $file = $request->file('imagePath') ;
+                $fileName = $file->getClientOriginalName();
+                $destinationPath = public_path().'/images' ;
+                $tenant->imagePath = 'images/'.$fileName;            
+                $file->move($destinationPath,$fileName);
+            } else {
+                
+            }   
+
+            $user = User::find($tenant->user_id);
+            $user->name = $request->first_name . ' ' . $request->last_name;
+
+            //password
+            if($request->filled(['new_password'])){
+                $this->validate($request, [
+                    'new_password' => 'required|min:8',
+                    'confirm_password' => 'required|same:new_password'
+                ]);
+                $user->password = bcrypt($request->input('confirm_password'));
+            } 
+
+            //email
+            if($request->filled('email')){
+                $user->email = $request->email;
+            }
+
+            $tenant->update();
+            $user->update();
+
+            // if($request->filled(['password', 'email'])){
+            //     $user->email = $request->email;
+            //     $user->password = bcrypt($request->input('password'));
+            //     $user->update();
+            // } elseif($request->filled('email')){
+            //     $user->email = $request->email;
+            //     $user->update();
+            // } elseif($request->filled('password')){
+            //     $user->password = bcrypt($request->input('password'));
+            //     $user->update();
+            // } else{
+            //     $user->update();  
+            // }
+
+            // $request->whenFilled('name', function (string $input) {
+            //     // ...
+            // });
+
+            
+            return redirect()->back()->with('success','Successfully updated your personal information!');
+        } else {
+            return redirect()->back()->with('warning','Please enter the correct old password to update.');
+        }
     }
     
     public function getTenants(TenantsDataTable $dataTable) {
@@ -162,6 +226,16 @@ class TenantController extends Controller
         $tenant->restore(); 
 
         return Redirect::route('getTenants')->with('success','Customer has been Restored!');
+    }
+
+    public function profile()
+    {   
+        $id = Auth::user()->tenants->id;
+        $tenant = Tenant::find($id);
+        $users = User::with('tenants')->where('id', $tenant->user_id)->get();
+        // dd($tenant);
+        return view('tenant.profile', compact('tenant', 'users'));
+        // return View::make('tenant.profile');
     }
 
 }

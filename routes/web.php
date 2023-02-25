@@ -60,6 +60,11 @@ Route::get('/tenant/restore/{id}', [
 //     return view('tenant.edit');
 // });
 
+Route::get('/tenant-profile', [
+    'uses' => 'TenantController@profile',
+    'as' => 'tenant.profile',
+]);
+
 // Landlord ====================================================================
 Route::resource('landlord', 'LandlordController');
 Route::post('/register-landlord', [
@@ -81,6 +86,12 @@ Route::get('/landlord/restore/{id}', [
     'uses' => 'LandlordController@restore',
     'as' => 'landlord.restore'
 ]);
+
+Route::get('/landlord-profile', [
+    'uses' => 'LandlordController@profile',
+    'as' => 'landlord.profile',
+]);
+
 
 // Property ====================================================================
 Route::resource('property', 'PropertyController');

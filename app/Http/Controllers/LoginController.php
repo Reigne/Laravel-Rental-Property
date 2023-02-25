@@ -19,7 +19,7 @@ class LoginController extends Controller
         if (auth()->attempt(array('email' => $request->email, 'password' => $request->password))) {
             $name = auth()->user()->name;
             if (auth()->user()->role === 'tenant') {
-                return redirect()->route('getTenants')->with('success', 'Welcome, ' . $name. '');
+                return redirect()->route('tenant.profile')->with('success', 'Welcome, ' . $name. '');
             } else if (auth()->user()->role === 'landlord') {
                 // return redirect()->route('getEmployees');
                 return redirect()->route('getLandlords')->with('success', 'Welcome, ' . $name. '');

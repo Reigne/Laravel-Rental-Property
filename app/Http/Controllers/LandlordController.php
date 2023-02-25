@@ -12,6 +12,8 @@ use Validator;
 use Redirect;
 use Storage;
 use File;
+use Auth;
+use Hash;
 
 class LandlordController extends Controller
 {
@@ -124,9 +126,54 @@ class LandlordController extends Controller
      * @param  \App\Models\Landlord  $landlord
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Landlord $landlord)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $this->validate($request, [
+            'old_password' => 'required',
+        ]);
+
+        if (Hash::check($request->old_password, Auth::user()->password)) {
+            $landlord = Landlord::find($id);
+            $landlord->first_name = $request->first_name;
+            $landlord->last_name = $request->last_name;
+            $landlord->address = $request->address;
+            $landlord->phone = $request->phone;
+
+            if($request->hasFile('imagePath')) {
+                $file = $request->file('imagePath') ;
+                $fileName = $file->getClientOriginalName();
+                $destinationPath = public_path().'/images' ;
+                $landlord->imagePath = 'images/'.$fileName;            
+                $file->move($destinationPath,$fileName);
+            } else {
+                
+            }   
+
+            $user = User::find($landlord->user_id);
+            $user->name = $request->first_name . ' ' . $request->last_name;
+
+            //password
+            if($request->filled(['new_password'])){
+                $this->validate($request, [
+                    'new_password' => 'required|min:8',
+                    'confirm_password' => 'required|same:new_password'
+                ]);
+                $user->password = bcrypt($request->input('confirm_password'));
+            } 
+
+            //email
+            if($request->filled('email')){
+                $user->email = $request->email;
+            }
+
+            //update
+            $landlord->update();
+            $user->update();
+
+            return redirect()->back()->with('success','Successfully updated your personal information!');
+        } else {
+            return redirect()->back()->with('warning','Please enter the correct old password to update.');
+        }
     }
 
     /**
@@ -161,5 +208,14 @@ class LandlordController extends Controller
         Property::where('landlord_id',$landlord->id)->restore();
         $landlord->restore(); 
         return Redirect::route('getLandlords')->with('success','Landlord has been Restored!');
+    }
+
+    public function profile()
+    {   
+        $id = Auth::user()->landlords->id;
+        $landlord = Landlord::find($id);
+        $users = User::with('tenants')->where('id', $landlord->user_id)->get();
+
+        return view('landlord.profile', compact('landlord', 'users'));
     }
 }

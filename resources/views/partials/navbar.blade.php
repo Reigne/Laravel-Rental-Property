@@ -42,11 +42,19 @@
                                             class="rounded-circle img-fluid" style="width: 25px;">
                                     @else
                                     @endif
-                                </span> {{ Auth::user()->name }}
+                                </span> &nbsp; {{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                 {{-- <li><a class="dropdown-item" href="javascript:;">Landlord</a></li> --}}
-                                <li><a href="#" class="dropdown-item">
+                                <li>
+                                    @if (Auth::user()->role === 'tenant')
+                                    <a href="{{ route('tenant.profile') }}" 
+                                    class="dropdown-item">
+                                    @elseif (Auth::user()->role === 'landlord')
+                                    <a href="{{ route('landlord.profile') }}" 
+                                    class="dropdown-item">
+                                    @else
+                                    @endif
                                     <i class="fa-solid fa-circle-user"></i>
                                         <span class="d-sm-inline d-none"> &nbsp; Profile</span></a>
                                 </li>
