@@ -271,7 +271,8 @@
                         <div class="card card-blog card-plain">
                           <div class="position-relative">
                             <a class="d-block shadow-xl border-radius-xl">
-                              <img src="{{ asset($landlords->imagePath) }}" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
+                              {{-- <img src="{{ asset($landlords->imagePath) }}" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl"> --}}
+                              <img src="../assets/img/home-decor-2.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                             </a>
                           </div>
                           <div class="card-body px-1 pb-0">
@@ -283,12 +284,14 @@
                             </p>
                             <a href="javascript:;">
                               <h5>
-                                {{ $landlords->area }}
+                                {{ $landlords->city }}, {{ $landlords->state }}
                               </h5>
                             </a>
-                            <p class="mb-4 text-sm">
-                              {{ $landlords->description }}
-                            </p>
+                            <a class="mb-4 text-sm">
+                              {{ $landlords->address }}
+                            </a>
+                            <h6>₱{{ number_format($landlords->rent, 2, '.', ',') }} </h6>
+                            
                             <div class="d-flex align-items-center justify-content-between">
                               <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
                               <div class="avatar-group mt-2">
