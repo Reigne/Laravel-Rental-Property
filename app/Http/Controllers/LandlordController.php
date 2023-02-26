@@ -213,9 +213,9 @@ class LandlordController extends Controller
     public function profile()
     {   
         $id = Auth::user()->landlords->id;
-        $landlord = Landlord::find($id);
+        $landlord = Landlord::with('properties')->find($id);
         $users = User::with('tenants')->where('id', $landlord->user_id)->get();
-
+        // dd($landlord);
         return view('landlord.profile', compact('landlord', 'users'));
     }
 }

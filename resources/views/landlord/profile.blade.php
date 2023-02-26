@@ -261,27 +261,33 @@
               <div class="col-12 mt-4">
                 <div class="card mb-4">
                   <div class="card-header pb-0 p-3">
-                    <h6 class="mb-1">Projects</h6>
-                    <p class="text-sm">Architects design houses</p>
+                    <h6 class="mb-1">Property</h6>
+                    <p class="text-sm">Your list of properties</p>
                   </div>
                   <div class="card-body p-3">
                     <div class="row">
-                      <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                      @foreach($landlord->properties as $landlords)
+                      <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 py-2">
                         <div class="card card-blog card-plain">
                           <div class="position-relative">
                             <a class="d-block shadow-xl border-radius-xl">
-                              <img src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
+                              <img src="{{ asset($landlords->imagePath) }}" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                             </a>
                           </div>
                           <div class="card-body px-1 pb-0">
-                            <p class="text-gradient text-dark mb-2 text-sm">Project #2</p>
+                            <p class="text-gradient text-dark mb-2 text-sm">
+                              {{ $landlords->garage }}, 
+                              {{ $landlords->bedroom }}, 
+                              {{ $landlords->bathroom }}
+                              {{-- {{ $landlords->bedroom }}, --}}
+                            </p>
                             <a href="javascript:;">
                               <h5>
-                                Modern
+                                {{ $landlords->area }}
                               </h5>
                             </a>
                             <p class="mb-4 text-sm">
-                              As Uber works through a huge amount of internal management turmoil.
+                              {{ $landlords->description }}
                             </p>
                             <div class="d-flex align-items-center justify-content-between">
                               <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
@@ -303,7 +309,8 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                      @endforeach
+                      {{-- <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                         <div class="card card-blog card-plain">
                           <div class="position-relative">
                             <a class="d-block shadow-xl border-radius-xl">
@@ -376,13 +383,13 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> --}}
                       <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                         <div class="card h-100 card-plain border">
                           <div class="card-body d-flex flex-column justify-content-center text-center">
                             <a href="javascript:;">
                               <i class="fa fa-plus text-secondary mb-3"></i>
-                              <h5 class=" text-secondary"> New project </h5>
+                              <h5 class=" text-secondary"> New property </h5>
                             </a>
                           </div>
                         </div>
