@@ -22,7 +22,7 @@
             <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard">Online Builder</a>
           </li> --}}
                 @if (Auth::check())
-                    @if (Auth::user()->role == 'tenant' or Auth::user()->role == 'landlord')
+                     @if (Auth::user()->role == 'tenant' or Auth::user()->role == 'landlord' or Auth::user()->role == 'admin')
                         <li class="nav-item d-flex align-items-center pe-md-3 d-flex align-items-center">
                             {{-- <a href="{{ route('user.logout') }}" class="nav-link text-body font-weight-bold px-0">
                                 <i class="fa-solid fa-person-running"></i>
@@ -40,6 +40,9 @@
                                     @elseif (Auth::user()->role === 'landlord')
                                         <img src="{{ asset(Auth::user()->landlords->imagePath) }}" alt="avatar"
                                             class="rounded-circle img-fluid" style="width: 25px;">
+                                    @elseif (Auth::user()->role === 'admin')
+                                        <img src="{{ asset(Auth::user()->admins->imagePath) }}" alt="avatar"
+                                            class="rounded-circle img-fluid" style="width: 25px;">
                                     @else
                                     @endif
                                 </span> &nbsp; {{ Auth::user()->name }}
@@ -48,15 +51,14 @@
                                 {{-- <li><a class="dropdown-item" href="javascript:;">Landlord</a></li> --}}
                                 <li>
                                     @if (Auth::user()->role === 'tenant')
-                                    <a href="{{ route('tenant.profile') }}" 
-                                    class="dropdown-item">
-                                    @elseif (Auth::user()->role === 'landlord')
-                                    <a href="{{ route('landlord.profile') }}" 
-                                    class="dropdown-item">
-                                    @else
+                                        <a href="{{ route('tenant.profile') }}" class="dropdown-item">
+                                        @elseif (Auth::user()->role === 'landlord')
+                                            <a href="{{ route('landlord.profile') }}" class="dropdown-item">
+                                            @else
+                                            <a href="" class="dropdown-item">
                                     @endif
                                     <i class="fa-solid fa-circle-user"></i>
-                                        <span class="d-sm-inline d-none"> &nbsp; Profile</span></a>
+                                    <span class="d-sm-inline d-none"> &nbsp; Profile</span></a>
                                 </li>
                                 <li><a href="{{ route('user.logout') }}" class="dropdown-item">
                                         <i class="fa-solid fa-person-running"></i>
@@ -101,7 +103,8 @@
                             <li><a class="dropdown-item" href="#" data-bs-toggle='modal'
                                     data-bs-target='#myTModal'><i class="fa-solid fa-user"></i> &nbsp; Tenant</a></li>
                             <li><a class="dropdown-item" href="#" data-bs-toggle='modal'
-                                    data-bs-target='#myLModal'><i class="fa-solid fa-people-roof"></i> &nbsp; Landlord</a></li>
+                                    data-bs-target='#myLModal'><i class="fa-solid fa-people-roof"></i> &nbsp;
+                                    Landlord</a></li>
                             {{-- <li><a class="dropdown-item" href="javascript:;">Something else here</a></li> --}}
                         </ul>
                     </li>

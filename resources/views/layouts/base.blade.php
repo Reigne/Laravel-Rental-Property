@@ -15,6 +15,7 @@
 <body class="g-sidenav-show  bg-gray-100">
     @include('tenant.register')
     @include('landlord.register')
+    @include('property.create-modal')
     @include('users.signin')
     {{-- <body class="g-sidenav-show  bg-gray-100"> --}}
     @include('partials.sidebar')

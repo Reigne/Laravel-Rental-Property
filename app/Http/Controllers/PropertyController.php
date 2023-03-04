@@ -12,6 +12,7 @@ use Validator;
 use Redirect;
 use Storage;
 use File;
+use Auth;
 
 class PropertyController extends Controller
 {
@@ -22,9 +23,11 @@ class PropertyController extends Controller
      */
 
 
-    public function getProperties(PropertiesDataTable $dataTable) {
+    public function getProperties(PropertiesDataTable $dataTable)
+    {
         return $dataTable->render('property.index');
     }
+
     public function index()
     {
         //
@@ -48,7 +51,48 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user()->landlords->is_upgraded;
+        // dd($user);
+        if ($user == 1) {
+
+            $validator = Validator::make($request->all(), Property::$rules);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->withErrors($validator);
+            }
+
+            if ($validator->passes()) {
+                $path = Storage::putFileAs('images/property', $request->file('imagePath'), $request->file('imagePath')->getClientOriginalName());
+
+                $request->merge(["imagePath" => $request->file('imagePath')->getClientOriginalName()]);
+
+                if ($file = $request->hasFile('imagePath')) {
+                    $props = new Property;
+                    $props->landlord_id = Auth::user()->landlords->id;
+                    $props->area = $request->area;
+                    $props->garage = $request->garage;
+                    $props->bathroom = $request->garage;
+                    $props->bedroom = $request->bedroom;
+                    $props->rent = $request->rent;
+                    $props->city = $request->city;
+                    $props->state = $request->state;
+                    $props->address = $request->address;
+                    $props->description = $request->description;
+
+                    $file = $request->file('imagePath');
+                    $fileName = $file->getClientOriginalName();
+                    $destinationPath = public_path() . '/images';
+                    $props->imagePath = 'images/' . $fileName;
+                    $props->save();
+                    $file->move($destinationPath, $fileName);
+
+                    return redirect()->back();
+                }
+
+            }
+        } else {
+            return redirect()->back()->with('warning', 'Need to upgrade');
+        }
     }
 
     /**
@@ -96,20 +140,63 @@ class PropertyController extends Controller
         $property = Property::findOrFail($id);
         $property->forceDelete();
 
-        return Redirect::route('getProperties')->with('danger','Property has been Deleted!');
+        return Redirect::route('getProperties')->with('danger', 'Property has been Deleted!');
     }
 
-    public function deactivate($id){
+    public function deactivate($id)
+    {
         $property = Property::findOrFail($id);
         $property->delete();
         // dd($customer);
-        
-        return Redirect::route('getProperties')->with('warning','Property has been Deactivated!');
+
+        return Redirect::route('getProperties')->with('warning', 'Property has been Deactivated!');
     }
 
-    public function restore($id) {
+    public function restore($id)
+    {
         $property = Property::withTrashed()->find($id);
-        $property->restore(); 
-        return Redirect::route('getProperties')->with('success','Property has been Restored!');
+        $property->restore();
+        return Redirect::route('getProperties')->with('success', 'Property has been Restored!');
+    }
+
+
+    //// Dashboard
+    public function getDashboard()
+    {
+        $properties = Property::withTrashed()
+        ->where([
+            ['is_taken', '=', 0],
+            ['is_approved', '=', 1],
+        ])
+        ->get();
+
+        return view('homepage', compact('properties'));
+    }
+
+    public function approval(Request $request, $id)
+    {
+       $property = Property::withTrashed()->find($id);
+       $property->is_approved = 1;
+       $property->update();
+
+       return redirect()->back()->with('success', 'Request post has been approved');
+    }
+
+    public function taken(Request $request, $id)
+    {
+       $property = Property::withTrashed()->find($id);
+       $property->is_taken = 1;
+       $property->update();
+
+       return redirect()->back()->with('success', 'Your property is already taken');
+    }
+
+    public function available(Request $request, $id)
+    {
+       $property = Property::withTrashed()->find($id);
+       $property->is_taken = 0;
+       $property->update();
+
+       return redirect()->back()->with('success', 'Your property is now available');
     }
 }

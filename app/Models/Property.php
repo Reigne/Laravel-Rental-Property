@@ -18,25 +18,32 @@ class Property extends Model
         return $this->belongsTo('App\Models\Landlord', 'landlord_id');
         }
 
-        // protected $fillable = [
-        //     'first_name',
-        //     'last_name',
-        //     'phone',
-        //     'address',
-        //     'imagePath',
-        //     'email',
-        //     'password' 
-        // ];
+        protected $fillable = [
+            'landlord_id',
+            'area',
+            'garage',
+            'bathroom',
+            'bedroom',
+            'rent',
+            'city',
+            'state',
+            'address',
+            'description',
+            'imagePath'
+        ];
     
-        // public static $rules = [
-        //     'first_name' =>'required',
-        //     'last_name' =>'required',
-        //     'phone' =>'required|numeric',
-        //     'address' =>'required',
-        //     'imagePath' =>'required|image|mimes:jpeg,png,jpg,gif,svg',
-        //     'email' =>'required|email',
-        //     'password' => 'required|min:8'
-        // ];
+        public static $rules = [
+            'landlord_id',
+            'area' =>'required',
+            'garage' =>'required|numeric',
+            'bathroom' =>'required|numeric',
+            'rent' =>'required|numeric',
+            'city' =>'required',
+            'state' =>'required',
+            'address' =>'required',
+            'description' =>'required',
+            'imagePath' =>'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ];
 }
 
     

@@ -11,6 +11,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Auth;
 
 class PropertiesDataTable extends DataTable
 {
@@ -23,29 +24,84 @@ class PropertiesDataTable extends DataTable
     public function dataTable($query): EloquentDataTable
     {
         $properties = Property::withTrashed()->with(['landlords']);
-        
+
         return datatables()
             ->eloquent($properties)
             ->addColumn('status', function ($properties) {
-                if ($properties->deleted_at)
-                    return '<span class="badge rounded-pill bg-secondary" style="color:white"> Deactivated </span>';
-                else
-                    return '<span class="badge rounded-pill bg-info" style="color:white"> Available </span>';
+                if (Auth::user()->role == 'admin') {
+                    if ($properties->is_approved == 1)
+                        return '<span class="badge rounded-pill bg-info" style="color:white"> Approved </span>';
+                    elseif ($properties->is_approved == 0)
+                        return '<span class="badge rounded-pill bg-secondary" style="color:white"> Not Approve </span>';
+                } elseif (Auth::user()->role == 'landlord') {
+                    if ($properties->deleted_at)
+                        return '<span class="badge rounded-pill bg-secondary" style="color:white"> Deactivated </span>';
+                    elseif ($properties->is_approved == 0)
+                        return '<span class="badge rounded-pill bg-secondary" style="color:white"> Not Approve </span>';
+                    elseif ($properties->is_taken == 1)
+                        return '<span class="badge rounded-pill bg-secondary" style="color:white"> Taken </span>';
+                    else
+                        return '<span class="badge rounded-pill bg-info" style="color:white"> Available </span>';
+                }
             })
-            ->addColumn('Action', function ($row) {
-                if ($row->deleted_at)
-                    return '<a href="' . route('property.restore', $row->id) . '" class="btn bg-gradient-info">Restore</a>';
-                else
-                    return
-                    '<form action="' . route('property.destroy', $row->id) . '" method="POST">' . csrf_field() . '
-                    <input name="_method" type="hidden" value="DELETE">
-                    <button class="btn btn-outline-danger float-end" type="submit">Delete</button>
-                    </form>
-                    <form action="' . route('property.deactivate', $row->id) . '" method="POST">' . csrf_field() . '
-                    <input name="_method" type="hidden" value="DELETE">
-                    <button class="btn bg-gradient-danger" type="submit">Deactivate</button>
+            ->addColumn('Approval', function ($row) {
+                if (Auth::user()->role == 'admin') {
+                    if ($row->is_approved == 1)
+                        return '<button href="" class="btn bg-gradient-secondary" disabled>Approved</button>';
+                    else
+                        return
+                            '<form action="' . route('property.approved', $row->id) . '" method="POST">' . csrf_field() . '
+                    <input name="_method" type="hidden" >
+                    <button class="btn bg-gradient-success float-end" type="submit">Approve</button>
                     </form>';
+                } 
             })
+            ->addColumn('Deactivate', function ($row) {
+                if (Auth::user()->role == 'landlord') {
+                    if ($row->deleted_at)
+                        return '<a href="' . route('property.restore', $row->id) . '" class="btn bg-gradient-info">Restore</a>';
+                    else
+                        return
+                            '<form action="' . route('property.deactivate', $row->id) . '" method="POST">' . csrf_field() . '
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button class="btn bg-gradient-danger" type="submit">Deactivate</button>
+                            </form>';
+                }
+            })
+            ->addColumn('Delete', function ($row) {
+                if (Auth::user()->role == 'landlord') {
+                    if ($row->deleted_at)
+                        return '<button href="" class="btn bg-gradient-secondary" disabled>Delete</button>';
+                    else
+                        return
+                            '<form action="' . route('property.destroy', $row->id) . '" method="POST">' . csrf_field() . '
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button class="btn btn-outline-danger" type="submit">Delete</button>
+                            </form>';
+                }
+            })
+            ->addColumn('Trigger', function ($row) {
+                if (Auth::user()->role == 'landlord') {
+                    if ($row->deleted_at){
+                        return '<button href="" class="btn bg-gradient-secondary" disabled>Available</button>';
+                    }
+                    elseif($row->is_approved == 1){
+                    if ($row->is_taken == 1)
+                        return
+                            '<form action="' . route('property.available', $row->id) . '" method="POST">' . csrf_field() . '
+                            <input name="_method" type="hidden" >
+                            <button class="btn bg-gradient-success float-end" type="submit">Available</button>
+                            </form>';
+                    else
+                        return
+                            '<form action="' . route('property.taken', $row->id) . '" method="POST">' . csrf_field() . '
+                            <input name="_method" type="hidden" >
+                            <button class="btn bg-gradient-info float-end" type="submit">Taken</button>
+                            </form>';
+                    }
+                }
+            })
+
             ->addColumn('image', function ($properties) {
                 return '<img src="' . asset($properties->imagePath) . '" width="80"height="80" class="rounded" >';
             })
@@ -74,19 +130,19 @@ class PropertiesDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('properties-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(0)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ]);
+            ->setTableId('properties-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(0)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ]);
     }
 
     /**
@@ -107,10 +163,26 @@ class PropertiesDataTable extends DataTable
             Column::make('state')->title('State'),
             Column::make('address')->title('Address'),
             Column::make('description')->title('Description'),
+            // Column::make('status'),
             Column::make('status'),
             Column::make('image'),
             Column::make('created_at'),
-            Column::computed('Action')
+            Column::computed('Approval')
+                ->exportable(false)
+                ->printable(false)
+                ->width(250)
+                ->addClass('text-center'),
+            Column::computed('Trigger')
+                ->exportable(false)
+                ->printable(false)
+                ->width(250)
+                ->addClass('text-center'),
+            Column::computed('Deactivate')
+                ->exportable(false)
+                ->printable(false)
+                ->width(250)
+                ->addClass('text-center'),
+            Column::computed('Delete')
                 ->exportable(false)
                 ->printable(false)
                 ->width(250)

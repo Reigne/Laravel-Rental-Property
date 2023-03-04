@@ -24,7 +24,8 @@ class LoginController extends Controller
                 // return redirect()->route('getEmployees');
                 return redirect()->route('getLandlords')->with('success', 'Welcome, ' . $name. '');
             } else {
-                dd($request->password);
+                return redirect()->route('getDashboard');
+                // dd($request->password);
                 // return redirect()->route('shop.index');
             }
         } else {

@@ -17,13 +17,19 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::get('/home', function () {
-    return view('homepage');
-});
+// Route::get('/home', function () {
+//     return view('homepage');
+// });
 
 Route::get('/base', function () {
     return view('layouts.base');
 });
+
+// Dashboard ====================================================================
+Route::get('/dashboard', [
+    'uses' => 'PropertyController@getDashboard',
+    'as' => 'getDashboard'
+]);
 
 // Tenant ====================================================================
 // Route::post('/register-tenant', 'TenantController@register');
@@ -100,6 +106,11 @@ Route::get('/property', [
     'as' => 'getProperties'
 ]);
 
+Route::post('/create-property', [
+    'uses' => 'PropertyController@store',
+    'as' => 'getProps'
+]);
+
 Route::delete('/property/deactivate/{id}', [
     'uses' => 'PropertyController@deactivate',
     'as' => 'property.deactivate'
@@ -108,6 +119,21 @@ Route::delete('/property/deactivate/{id}', [
 Route::get('/property/restore/{id}', [
     'uses' => 'PropertyController@restore',
     'as' => 'property.restore'
+]);
+
+Route::post('/property/approved/{id}', [
+    'uses' => 'PropertyController@approval',
+    'as' => 'property.approved'
+]);
+
+Route::post('/property/available/{id}', [
+    'uses' => 'PropertyController@available',
+    'as' => 'property.available'
+]);
+
+Route::post('/property/taken/{id}', [
+    'uses' => 'PropertyController@taken',
+    'as' => 'property.taken'
 ]);
 
 
