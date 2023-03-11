@@ -112,9 +112,14 @@ class PropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function edit(Property $property)
+    public function edit($id)
     {
-        //
+        // dd($id);
+        $property = Property::find($id);
+
+        $landlord = Landlord::with('properties')->where('id', $property->landlord_id)->get();
+
+        return view('property.edit', compact('property', 'landlord'));
     }
 
     /**
@@ -124,9 +129,45 @@ class PropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Property $property)
+    public function update(Request $request, $id)
     {
-        //
+        $props = Property::find($id);
+        
+        if ($file = $request->hasFile('imagePath')) {
+            $path = Storage::putFileAs('images/property', $request->file('imagePath'), $request->file('imagePath')->getClientOriginalName());
+            $request->merge(["imagePath" => $request->file('imagePath')->getClientOriginalName()]);
+            
+            $props->area = $request->area;
+            $props->garage = $request->garage;
+            $props->bathroom = $request->garage;
+            $props->bedroom = $request->bedroom;
+            $props->rent = $request->rent;
+            $props->city = $request->city;
+            $props->state = $request->state;
+            $props->address = $request->address;
+            $props->description = $request->description;
+
+            $file = $request->file('imagePath');
+            $fileName = $file->getClientOriginalName();
+            $destinationPath = public_path() . '/images';
+            $props->imagePath = 'images/' . $fileName;
+            $props->update();
+            $file->move($destinationPath, $fileName);
+
+            return redirect()->back()->with('success', 'Property is successfully updated!');
+        } else {
+            $props->area = $request->area;
+            $props->garage = $request->garage;
+            $props->bathroom = $request->garage;
+            $props->bedroom = $request->bedroom;
+            $props->rent = $request->rent;
+            $props->city = $request->city;
+            $props->state = $request->state;
+            $props->address = $request->address;
+            $props->description = $request->description;
+            $props->update();
+            return redirect()->back()->with('success', 'Property is successfully updated!');
+        }
     }
 
     /**

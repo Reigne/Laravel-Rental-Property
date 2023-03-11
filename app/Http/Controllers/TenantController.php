@@ -110,10 +110,10 @@ class TenantController extends Controller
      */
     public function edit($id)
     {
-        $tenant = Tenant::find($id);
-        $users = User::with('tenants')->where('id', $tenant->user_id)->get();
-        // dd($users);
-        return view('tenant.edit', compact('tenant', 'users'));
+        // $tenant = Tenant::find($id);
+        // $users = User::with('tenants')->where('id', $tenant->user_id)->get();
+        // // dd($users);
+        // return view('tenant.edit', compact('tenant', 'users'));
     }
 
     /**

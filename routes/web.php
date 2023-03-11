@@ -99,8 +99,14 @@ Route::get('/landlord-profile', [
 ]);
 
 
+Route::get('/my-properties', [
+    'uses' => 'LandlordController@myProperties',
+    'as' => 'landlord.properties'
+]);
+
 // Property ====================================================================
 Route::resource('property', 'PropertyController');
+
 Route::get('/property', [
     'uses' => 'PropertyController@getProperties',
     'as' => 'getProperties'
@@ -136,6 +142,10 @@ Route::post('/property/taken/{id}', [
     'as' => 'property.taken'
 ]);
 
+Route::get('/property/edit/{id}', [
+    'uses' => 'PropertyController@edit',
+    'as' => 'editProperty'
+]);
 
 // Signin/logout ====================================================================
 Route::post('signin', [

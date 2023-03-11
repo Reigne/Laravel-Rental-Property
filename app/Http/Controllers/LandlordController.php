@@ -114,9 +114,10 @@ class LandlordController extends Controller
      * @param  \App\Models\Landlord  $landlord
      * @return \Illuminate\Http\Response
      */
-    public function edit(Landlord $landlord)
+    public function edit($id)
     {
-        //
+        // dd($id);
+        
     }
 
     /**
@@ -217,5 +218,13 @@ class LandlordController extends Controller
         $users = User::with('tenants')->where('id', $landlord->user_id)->get();
         // dd($landlord);
         return view('landlord.profile', compact('landlord', 'users'));
+    }
+
+    public function myProperties(){
+        $id = Auth::user()->landlords->id;
+        $landlord = Landlord::with('properties')->find($id);
+        $users = User::with('tenants')->where('id', $landlord->user_id)->get();
+        // dd($landlord);
+        return view('property.show', compact('landlord', 'users'));
     }
 }

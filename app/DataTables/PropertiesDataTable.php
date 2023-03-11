@@ -22,8 +22,13 @@ class PropertiesDataTable extends DataTable
      * @return \Yajra\DataTables\EloquentDataTable
      */
     public function dataTable($query): EloquentDataTable
-    {
-        $properties = Property::withTrashed()->with(['landlords']);
+    {   
+        if(auth::user()->role == 'landlord'){
+            $id = auth::user()->landlords->id;
+            $properties = Property::withTrashed()->with(['landlords'])->where('landlord_id', $id);
+        } elseif(auth::user()->role == 'admin') {
+            $properties = Property::withTrashed()->with(['landlords']);
+        }
 
         return datatables()
             ->eloquent($properties)
