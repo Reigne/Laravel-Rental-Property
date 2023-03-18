@@ -6,29 +6,63 @@
         <div class="container-fluid py-4">
             <div class="row">
                 @foreach ($properties as $property)
-                    <div class="col-md-4">
-                        <div class="card card-blog card-plain">
-                            <div class="position-relative">
-                                <a class="d-block blur-shadow-image">
-                                    <img src="{{ asset($property->imagePath) }}" class="img-fluid shadow border-radius-lg">
-                                </a>
-                            </div>
-                            <div class="card-body px-1 pt-3">
-                                <p class="text-gradient text-primary mb-2 text-sm">{{ $property->area }} • {{ $property->bedroom }} Bedroom • {{ $property->bathroom }} Bathroom • {{ $property->garage }} Garage</p>
-                                <a href="javascript:;">
-                                    <h5>
-                                        {{ $property->city }}, {{ $property->state }}
-                                    </h5>
-                                </a>
-                                <p>
-                                  {{ $property->description }}
-                                </p>
-                                <button type="button" class="btn btn-outline-primary btn-sm">Price: ₱{{ number_format($property->rent, 2, '.', ',') }}</button>
+                    <div class="col-md-4 mt-4">
+                        <div class="card">
+                            <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                                <div class="position-relative">
+                                    <a class="d-block blur-shadow-image">
+                                        <img src="{{ asset($property->imagePath) }}"
+                                            class="img-fluid shadow border-radius-lg">
+                                    </a>
+                                </div>
+                                <div class="card-body px-1 pt-3">
+                                    <p class="text-gradient text-primary mb-2 text-sm">{{ $property->area }} sqr •
+                                        {{ $property->bedroom }} Bedroom • {{ $property->bathroom }} Bathroom •
+                                        {{ $property->garage }} Garage</p>
+                                    <a href="javascript:;">
+                                        <h5>
+                                            {{ $property->city }}, {{ $property->state }}
+                                        </h5>
+                                    </a>
+                                    <p>
+                                        {{ Str::limit($property->description, 150, '...') }}
+                                    </p>
+                                    <a href="{{ route('showProperty',$property->id) }}" class="btn bg-gradient-primary">Price:
+                                        ₱{{ number_format($property->rent, 2, '.', ',') }}</a>
+                                    {{-- <button type="button" class="btn btn-outline-primary btn-sm">Chat</button> --}}
+                                </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
 
+                {{-- @foreach ($properties as $property)
+                <div class="col-md-4">
+                    <div class="card">
+                      <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                        <a href="javascript:;" class="d-block blur-shadow-image">
+                          <img src="./assets/img/kit/pro/anastasia.jpg" class="img-fluid border-radius-lg">
+                        </a>
+                      </div>
+                
+                      <div class="card-body">
+                        <div class="w-50 mx-auto">
+                          <img src="./assets/img/kit/pro/anastasia.jpg" alt="" class="img-fluid">
+                        </div>
+                        <p class="card-description mb-5 mt-3">
+                          "Use border utilities to quickly style the border and border-radius of an element. Great for images, buttons."
+                        </p>
+                        <div class="pull-left">
+                          <span>―</span>
+                          Collin Marcus
+                        </div>
+                        <a href="javascript:;" class="text-success icon-move-right pull-right">Read More
+                          <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                @endforeach --}}
                 {{-- <div class="col-md-4">
                           <div class="card card-blog card-plain">
                             <div class="position-relative">
@@ -103,5 +137,7 @@
 
             </div>
         </div>
+
+        @include('partials.footer')
     </main>
 @endsection

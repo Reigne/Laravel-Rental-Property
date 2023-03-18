@@ -129,8 +129,50 @@ class LandlordController extends Controller
      */
     public function update(Request $request, $id)
     {   
-        $this->validate($request, [
+
+        // $this->validate($request, ['old_password' => 'required']);
+
+        // if (!Hash::check($request->old_password, Auth::user()->password)) {
+        //     return redirect()->back()->with('warning', 'Please enter the correct old password to update.');
+        // }
+    
+        // $landlord = Landlord::findOrFail($id);
+        // $landlord->fill($request->only(['first_name', 'last_name', 'address', 'phone']));
+    
+        // if ($request->hasFile('imagePath')) {
+        //     $file = $request->file('imagePath');
+        //     $fileName = $file->getClientOriginalName();
+        //     $destinationPath = public_path().'/images';
+        //     $landlord->imagePath = 'images/'.$fileName;
+        //     $file->move($destinationPath, $fileName);
+        // }
+    
+        // $user = User::findOrFail($landlord->user_id);
+        // $user->name = $request->first_name . ' ' . $request->last_name;
+    
+        // if ($request->filled(['new_password'])) {
+        //     $this->validate($request, [
+        //         'new_password' => 'required|min:8',
+        //         'confirm_password' => 'required|same:new_password'
+        //     ]);
+    
+        //     $user->password = bcrypt($request->input('confirm_password'));
+        // }
+    
+        // if ($request->filled('email')) {
+        //     $user->email = $request->email;
+        // }
+    
+        // $landlord->save();
+        // $user->save();
+    
+        // return redirect()->back()->with('success', 'Successfully updated your personal information!');
+
+        $request->validate([
             'old_password' => 'required',
+            'new_password' => 'nullable|min:8|confirmed',
+            'email' => 'nullable|email',
+            'imagePath' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if (Hash::check($request->old_password, Auth::user()->password)) {
@@ -175,6 +217,7 @@ class LandlordController extends Controller
         } else {
             return redirect()->back()->with('warning','Please enter the correct old password to update.');
         }
+        
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Landlord;
 use App\Models\Property;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use App\DataTables\PropertiesDataTable;
@@ -101,9 +102,13 @@ class PropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function show(Property $property)
-    {
-        //
+    public function show($id)
+    {   
+        // dd($id);
+        $property = Property::with('landlords')->where('id', $id)->get();
+
+        // dd($user);  
+        return view('property.show', compact('property'));
     }
 
     /**

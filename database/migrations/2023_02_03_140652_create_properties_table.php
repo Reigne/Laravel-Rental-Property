@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('city');
             $table->string('state');
             $table->string('address');
-            $table->string('description');
+            $table->text('description');
             $table->string('imagePath')->nullable();
             $table->boolean('is_approved')->default('0');
             $table->boolean('is_taken')->default('0');

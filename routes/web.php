@@ -147,6 +147,18 @@ Route::get('/property/edit/{id}', [
     'as' => 'editProperty'
 ]);
 
+Route::get('/property/{id}', [
+    'uses' => 'PropertyController@show',
+    'as' => 'showProperty'
+]);
+
+// transaction ====================================================================
+
+Route::get('/transaction/property-{id}', [
+    'uses' => 'TransactionController@show',
+    'as' => 'showTransaction'
+]);
+
 // Signin/logout ====================================================================
 Route::post('signin', [
     'uses' => 'LoginController@postSignin',

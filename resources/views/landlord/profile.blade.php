@@ -399,7 +399,7 @@
                           <div class="card-body d-flex flex-column justify-content-center text-center">
                             <a href="javascript:;" data-bs-toggle='modal' data-bs-target='#myPModal'>
                               <i class="fa fa-plus text-secondary mb-3"></i>
-                            <h5 class=" text-secondary"> New property </h5>
+                              <h5 class=" text-secondary"> New property </h5>
                             </a>
                           </div>
                         </div>

@@ -16,34 +16,28 @@
             <div class="container-fluid pt-3">
                 <div class="row mt-4 removable">
                     <div class="col-lg-8 col-md-6">
-                        <div class="card card-blog card-plain">
+                        <div class="card shadow-sm ">
+                        <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
                             <div class="position-relative">
-                                <a class="d-block shadow-xl border-radius-xl">
+                                <a class="d-block border-radius-xl">
                                     <img src="{{ asset($property->imagePath) }}" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                                 </a>
                             </div>
                             <div class="card-body px-1 pb-0">
-                                <p class="text-gradient text-dark mb-2 text-sm">
-                                    {{ $property->area }} sqr,
-                                   
-                                    {{ $property->garage }} Garage,
-                                   
-                                    {{ $property->bedroom }} Bedroom,
-                                  
-                                   
-                                    {{ $property->bathroom }} Bathroom
-                                 
-                                  </p>
+                                {{-- <p class="text-gradient text-dark mb-2 text-sm">
+                                  </p> --}}
                                 <a href="javascript:;">
-                                    <h5>
+                                    <h3>
                                         {{ $property->state }}, {{ $property->city }}
-                                    </h5>
+                                    </h3>
                                 </a>
-                                <p class="mb-4 text-sm">
-                                    <strong>Price:</strong> ₱{{ number_format($property->rent, 2, '.', ',') }} 
-                                    <br>
-                                    <strong>Description:</strong> {{ $property->description }}
-                                </p>
+                                <p><small>Property Information</small></p>
+                                    <p ><strong class="text-gradient text-primary">Price:</strong> ₱{{ number_format($property->rent, 2, '.', ',') }} </p>
+                                    <p><strong class="text-gradient text-primary">Description:</strong> {{ $property->description }} </p>
+                                    <p><strong class="text-gradient text-primary" >Area:</strong> {{ $property->area }} sqr</p>
+                                    <p><strong class="text-gradient text-primary">Garage:</strong> {{ $property->garage }} Garage</p>
+                                    <p><strong class="text-gradient text-primary">Bedroom:</strong> {{ $property->bedroom }} Bedroom</p>
+                                    <p><strong class="text-gradient text-primary">Bathroom:</strong> {{ $property->bathroom }} Bathroom</p>
                                 {{-- <div class="d-flex align-items-center justify-content-between">
                                     <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
                                     <div class="avatar-group mt-2">
@@ -61,7 +55,13 @@
                                         </a>
                                     </div>
                                 </div> --}}
+                                  {{-- <div class="row">
+                                    <div class="col-sm"><strong>Garage:</strong> {{ $property->garage }} Garage</div>
+                                    <div class="col-sm"><p><strong>Bedroom:</strong> {{ $property->bedroom }} Bedroom</p></div>
+                                    <div class="col-sm"><p><strong>Bathroom:</strong> {{ $property->bathroom }} Bathroom</p></div>
+                                  </div> --}}
                             </div>
+                        </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
@@ -169,6 +169,7 @@
                     </div>
                 </div>
             </div>
+            
             @include('partials.footer')
     </main>
 @endsection
