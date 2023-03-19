@@ -152,7 +152,14 @@ Route::get('/property/{id}', [
     'as' => 'showProperty'
 ]);
 
-// transaction ====================================================================
+// Transaction ====================================================================
+
+Route::post('/review', [
+    'uses' => 'ReviewController@store',
+    'as' => 'review.store'
+]);
+
+// Review ====================================================================
 
 Route::get('/transaction/property-{id}', [
     'uses' => 'TransactionController@show',

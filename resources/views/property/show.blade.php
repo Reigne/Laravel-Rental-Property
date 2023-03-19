@@ -84,29 +84,33 @@
                                     <hr class="horizontal dark my-3">
                                 </div>
 
-                                <div class="mb-1">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0">
-                                            <img alt="Image placeholder" class="avatar rounded-circle"
-                                                src="../../../assets/img/bruce-mars.jpg">
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h6 class="h5 mt-0">Michael Lewis</h6>
-                                            <p class="text-sm">I always felt like I could do anything. That’s the main thing
-                                                people are controlled by! Thoughts- their perception of themselves!</p>
-                                            <div class="d-flex">
-                                                <div>
+                                <div class="mb-1 max-height-vh-50 overflow-auto overflow-x-hidden">
+                                    @foreach ($reviews as $review)
+                                        <div class="d-flex mt-3 mr-4">
+                                            <div class="flex-shrink-0">
+                                                <img alt="Image placeholder" class="avatar rounded-circle"
+                                                    src="{{ asset($review->imagePath) }}">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6 class="h5 mt-0">{{ $review->name }}</h6>
+                                                <p class="text-sm">{{ $review->comment }}</p>
+                                                <div class="d-flex">
+                                                    {{-- <div>
                                                     <i class="ni ni-like-2 me-1 cursor-pointer"></i>
                                                 </div>
                                                 <span class="text-sm me-2">3 likes</span>
                                                 <div>
                                                     <i class="ni ni-curved-next me-1 cursor-pointer"></i>
+                                                </div> --}}
+                                                    {{-- <span class="text-sm me-2">2 shares</span> --}}
+                                                    <span
+                                                        class="text-sm me-2">{{ $review->created_at->diffForHumans() }}</span>
                                                 </div>
-                                                <span class="text-sm me-2">2 shares</span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex mt-3">
+                                    @endforeach
+
+                                    {{-- <div class="d-flex mt-3">
                                         <div class="flex-shrink-0">
                                             <img alt="Image placeholder" class="avatar rounded-circle"
                                                 src="../../../assets/img/team-5.jpg">
@@ -128,25 +132,45 @@
                                                 <span class="text-sm me-2">1 share</span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex mt-4">
-                                        <div class="flex-shrink-0">
-                                            <img alt="Image placeholder" class="avatar rounded-circle me-3"
-                                                src="../../../assets/img/team-4.jpg">
-                                        </div>
-                                        <div class="flex-grow-1 my-auto">
-                                            <form>
-                                                <textarea class="form-control" placeholder="Write your comment" rows="1"></textarea>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    </div> --}}
+                                </div>
+                                @auth
+                                        @if (Auth::user()->role == 'tenant')
+                                            <div class="d-flex mt-4 mr-4">
+                                                <div class="flex-shrink-0">
+                                                    <img alt="Image placeholder" class="avatar rounded-circle me-3"
+                                                        src="{{ asset(Auth::user()->tenants->imagePath) }}">
+                                                </div>
+                                                <div class="flex-grow-1 my-auto">
+                                                    <form method="POST" action="{{ route('review.store') }}">
+                                                        @csrf
+                                                        {{-- <input type="hidden" name="property_id" value="{{ $property->id }}">
+                                                        <input name="comment" class="form-control" placeholder="Write your comment" rows="1"></input> --}}
+                                                        {{-- <div class="input-group-append">
+                                                          <button class="btn bg-gradient-primary btn-sm" type="button">Submit</button>
+                                                        </div> --}}
+
+                                                        <div class="d-flex">
+                                                            <input type="hidden" name="property_id" value="{{ $property->id }}">
+                                                            <textarea name="comment" class="form-control" placeholder="Write your comment" rows="1"></textarea>
+                                                            <button class="btn bg-gradient-primary mb-0 ms-2">
+                                                                <i class="ni ni-send"></i>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        @else
+
+                                        @endif
+                                    @endauth
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    
 
                     <div class="col-lg-4 col-md-6">
-
                         <div class="card mb-4">
                             <div class="card-header">
                                 <div class="row align-items-center">
@@ -254,13 +278,15 @@
                                         </li>
                                         <li class="d-flex">
                                             {{-- <p class="mb-0">Price:</p> --}}
-                                            <p class="ms-auto"> <strong> Total</strong>: ₱ {{ number_format($property->rent, 2, '.', ',') }}</p>
+                                            <p class="ms-auto"> <strong> Total</strong>: ₱
+                                                {{ number_format($property->rent, 2, '.', ',') }}</p>
                                         </li>
                                     </div>
 
                                     <hr class="horizontal dark">
                                     <div class="text-center">
-                                        <a type="submit" href="{{ route('showTransaction',$property->id) }}" class="btn bg-gradient-primary btn-lg btn-rounded w-100 mt-4 mb-0">Rent now</a>
+                                        <a type="submit" href="{{ route('showTransaction', $property->id) }}"
+                                            class="btn bg-gradient-primary btn-lg btn-rounded w-100 mt-4 mb-0">Rent now</a>
                                     </div>
                                 </form>
                             </div>

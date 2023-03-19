@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Landlord;
 use App\Models\Property;
 use App\Models\User;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 use App\DataTables\PropertiesDataTable;
@@ -106,9 +107,18 @@ class PropertyController extends Controller
     {   
         // dd($id);
         $property = Property::with('landlords')->where('id', $id)->get();
+        // $reviews = Review::with('users', 'properties', 'tenants')->where('property_id', $id)->get();
+        
+        $reviews = Review::join('users', 'users.id', '=', 'reviews.user_id')
+        ->join('properties','properties.id','=','reviews.property_id')
+        ->join('tenants','tenants.user_id','=','users.id')
+        ->select('tenants.imagePath', 'users.name', 'reviews.created_at', 'reviews.comment')
+        ->where('reviews.property_id', '=',$id)
+        ->get();
 
-        // dd($user);  
-        return view('property.show', compact('property'));
+        // dd($reviews);  
+
+        return view('property.show', compact('property', 'reviews'));
     }
 
     /**

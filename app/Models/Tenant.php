@@ -36,5 +36,5 @@ class Tenant extends Model
     
     public function users() {
         return $this->belongsTo('App\Models\User');
-   }
+    }
 }

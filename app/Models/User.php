@@ -47,12 +47,15 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\tenant', 'user_id');
     }
 
-
     public function landlords() {
         return $this->hasOne('App\Models\landlord', 'user_id');
     }
 
     public function admins() {
         return $this->hasOne('App\Models\admin', 'user_id');
+    }
+
+    public function reviews() {
+        return $this->hasOne('App\Models\Review', 'user_id');
     }
 }
