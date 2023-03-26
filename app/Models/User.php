@@ -58,4 +58,14 @@ class User extends Authenticatable
     public function reviews() {
         return $this->hasOne('App\Models\Review', 'user_id');
     }
+
+    public function user_1_conversation()
+    {
+        return $this->hasMany(Conversation::class,'user_1');
+    }
+
+    public function user_2_conversation()
+    {
+        return $this->hasMany(Conversation::class,'user_2');
+    }
 }

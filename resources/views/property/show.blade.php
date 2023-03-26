@@ -1,5 +1,6 @@
 @extends('layouts.base')
 @section('body')
+
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         @include('partials.navbar')
         <hr class="horizontal dark mt-0">
@@ -85,6 +86,7 @@
                                 </div>
 
                                 <div class="mb-1 max-height-vh-50 overflow-auto overflow-x-hidden">
+                                    <h6 class="h5 mt-0">Reviews</h6>
                                     @foreach ($reviews as $review)
                                         <div class="d-flex mt-3 mr-4">
                                             <div class="flex-shrink-0">
@@ -171,7 +173,7 @@
                     
 
                     <div class="col-lg-4 col-md-6">
-                        <div class="card mb-4">
+                        <div class="card mb-4 position-sticky top-2">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col-8">
@@ -299,4 +301,6 @@
 
         @include('partials.footer')
     </main>
+
+    
 @endsection

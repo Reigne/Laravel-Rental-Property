@@ -15,6 +15,7 @@ use Redirect;
 use Storage;
 use File;
 use Auth;
+use DB;
 
 class PropertyController extends Controller
 {
@@ -23,8 +24,103 @@ class PropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function search(Request $request)
+    // {
 
+    //     $search = $request->get('search');
+    //     //Select pets table
+    //     $propertyy = DB::table('properties')
+    //         ->leftJoin('landlords','landlords.id','=','properties.landlord_id')
+    //         ->select('properties.id','properties.area','properties.garage','properties.bathroom','properties.bedroom','properties.rent','properties.city','properties.state','properties.description','properties.imagePath')
+    //         ->whereBetween('rent', [$request->amount-3000, $request->rent+3000])
+    //         ->orWhere('city','LIKE', '%' . $request->city . '%')
+    //         ->orWhere('state','LIKE', '%' . $search . '%')
+    //         ->get();
+    //         dd($propertyy);
+    //     // return View::make('history.index',compact('transacts'));
+    //     return view('homepage', ['properties' => $propertyy]);
+    // }
+    
+    public function search_property(Request $req)
+    {
+       // $post = \App\AdvisorPost::Where('state','=',$req->state)->Where('city','=',$req->c_name)->whereBetween('rent', [$req->rent-3000, $req->rent+3000])->get();
 
+        if($req->rent != null && $req->city != null && $req->state !=null)
+        {   
+            $properties = Property::Where('rent','<=',$req->rent)
+            ->where([
+                ['is_taken', '=', 0],
+                ['is_approved', '=', 1],
+            ])
+            ->Where('city','=',$req->city)
+            ->whereBetween('rent', [$req->rent-3000, $req->rent+3000])
+            ->get();
+            // dd($post);
+        }
+            elseif($req->rent != null && $req->city==null && $req->state==null)
+            {
+                $properties = Property::where([
+                    ['is_taken', '=', 0],
+                    ['is_approved', '=', 1],
+                ])
+                ->whereBetween('rent', [$req->rent-3000, $req->rent+3000])->get();
+            }
+
+            elseif($req->rent == null && $req->city!=null && $req->state==null)
+            {
+                $properties = Property::where([
+                    ['is_taken', '=', 0],
+                    ['is_approved', '=', 1],
+                ])
+                ->where('city', '=' , $req->city)->get();
+            
+            }
+
+            elseif($req->rent == null && $req->city==null && $req->state!=null)
+            {
+                $properties = Property::where([
+                    ['is_taken', '=', 0],
+                    ['is_approved', '=', 1],
+                ])
+                ->where('state', '=' , $req->state)->get();
+            }
+
+            elseif($req->rent != null && $req->city!=null && $req->state==null)
+            {
+                $properties = Property::where([
+                    ['is_taken', '=', 0],
+                    ['is_approved', '=', 1],
+                ])
+                ->Where('city','=',$req->city)->whereBetween('rent', [$req->rent-3000, $req->rent+3000])->get();
+            }
+
+            elseif($req->rent != null && $req->city==null && $req->state!=null)
+            {
+                $properties = Property::where([
+                    ['is_taken', '=', 0],
+                    ['is_approved', '=', 1],
+                ])
+                ->Where('state','=',$req->state)->whereBetween('rent', [$req->rent-3000, $req->rent+3000])->get();
+            }
+
+            elseif($req->rent == null && $req->city!=null && $req->state!=null)
+            {
+                $properties = Property::where([
+                    ['is_taken', '=', 0],
+                    ['is_approved', '=', 1],
+                ])
+                ->Where('city','=',$req->city)->Where('state','=',$req->state)->get();
+            }
+
+            $states = DB::table('properties')
+            ->select('properties.state')
+            ->groupBy('properties.state')
+            ->get();
+            
+            return view('homepage', compact('properties', 'states'));
+
+        }
+        
     public function getProperties(PropertiesDataTable $dataTable)
     {
         return $dataTable->render('property.index');
@@ -225,8 +321,17 @@ class PropertyController extends Controller
             ['is_approved', '=', 1],
         ])
         ->get();
+        
+        // $dropdowns = Property::withTrashed()
+        // ->groupBy('state')
+        // ->get();
+        
+        $states = DB::table('properties')
+        ->select('properties.state')
+        ->groupBy('properties.state')
+        ->get();
 
-        return view('homepage', compact('properties'));
+        return view('homepage', compact('properties', 'states'));
     }
 
     public function approval(Request $request, $id)

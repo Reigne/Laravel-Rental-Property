@@ -25,8 +25,8 @@ Route::get('/base', function () {
     return view('layouts.base');
 });
 
-// Dashboard ====================================================================
-Route::get('/dashboard', [
+// home ====================================================================
+Route::get('/', [
     'uses' => 'PropertyController@getDashboard',
     'as' => 'getDashboard'
 ]);
@@ -177,3 +177,22 @@ Route::get('logout', [
     'as' => 'user.logout',
     'middleware' => 'auth'
 ]);
+
+//Conversation
+Route::get('conversation','MessageController@tenet_conversation')->name('tenet_conversation');
+Route::get('inbox/{id}','MessageController@inbox')->name('con');
+Route::get('message/{id}','MessageController@messagebox')->name('inbox');
+Route::post('messageinsert','MessageController@insert')->name('sendmessage');
+Route::get('applicant/message/{id}','MessageController@messagebox')->name('showmessagebox'); // Change route for adivsor conversation to this.
+Route::post('usertyping','MessageController@typing')->name('usertyping');
+Route::post('usernottyping','MessageController@nottyping')->name('usernottyping');
+Route::post('readuserstatus','MessageController@readuserstatus')->name('readuserstauts');
+Route::post('readusermessage','MessageController@readusermessage')->name('readusermessage');
+Route::post('readunseenmessage','MessageController@readunseenmessage')->name('readunseenmessage');
+
+//Working In Progress
+Route::get('/search', [
+    'uses' => 'PropertyController@search',
+    'as' => 'getDataProperties']);
+
+    Route::get('/search','PropertyController@search_property')->name('search_property');

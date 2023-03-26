@@ -4,6 +4,33 @@
         @include('partials.navbar')
         <hr class="horizontal dark mt-0">
         <div class="container-fluid py-4">
+            <form method="GET" action="{{ route('search_property') }}">
+                <div class="card">
+                    <div class="m-3 mt-4">
+                        <div class="d-flex">
+                            {{-- <input type="hidden" name="property_id" value=""> --}}
+                                <div class="col">
+                                    <input name="rent" class="form-control" type="search" placeholder="Amount">
+                                </div>
+                                <div class="col">
+                                    <input name="city" class="form-control" type="search" placeholder="City">
+                                </div>
+                                <div class="col">
+                                    <select select class="form-control" name="state" id="state">
+                                        <option value="">Choose state...</option>
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->state }}">{{ $state->state }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            <button class="btn bg-gradient-primary mb-0 ms-2">
+                                {{-- <i class="ni ni-send"></i> --}}
+                                 Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div class="row">
                 @foreach ($properties as $property)
                     <div class="col-md-4 mt-4">
@@ -27,7 +54,8 @@
                                     <p>
                                         {{ Str::limit($property->description, 150, '...') }}
                                     </p>
-                                    <a href="{{ route('showProperty',$property->id) }}" class="btn bg-gradient-primary">Price:
+                                    <a href="{{ route('showProperty', $property->id) }}"
+                                        class="btn bg-gradient-primary">Price:
                                         ₱{{ number_format($property->rent, 2, '.', ',') }}</a>
                                     {{-- <button type="button" class="btn btn-outline-primary btn-sm">Chat</button> --}}
                                 </div>

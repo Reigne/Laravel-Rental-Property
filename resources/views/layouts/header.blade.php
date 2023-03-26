@@ -1,3 +1,4 @@
+
 {{-- FONTS only --}}
 {{-- https://cdnjs.com/libraries/font-awesome --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
@@ -19,6 +20,10 @@ crossorigin="anonymous"
 {{-- https://cdn.datatables.net/ --}}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.css"/>
 {{-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"> --}}
+
+<script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
 
 
@@ -89,3 +94,4 @@ crossorigin="anonymous" referrerpolicy="no-referrer">
 
 <!-- Theme JS -->
 <script src="../assets/js/soft-ui-dashboard.min.js"></script>
+
