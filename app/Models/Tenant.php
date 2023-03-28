@@ -37,4 +37,8 @@ class Tenant extends Model
     public function users() {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function orders() {
+        return $this->hasMany('App\Models\Order', 'id');
+    }
 }

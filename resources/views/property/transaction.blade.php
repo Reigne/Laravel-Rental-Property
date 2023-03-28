@@ -13,165 +13,201 @@
         </div>
 
         <div class="container-fluid py-4">
-            @foreach($property as $property)
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <div class="card mb-4">
-                        <div class="card-header p-3 pb-0">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6>Order Details</h6>
-                                    <p class="text-sm mb-0">
-                                        Order no. <b>241342</b> from <b>23.02.2021</b>
-                                    </p>
-                                    <hr class="horizontal dark mt-0 mb-4">
-                                    <p class="text-sm" >
-                                        <b class="text-danger">Notes:</b> This process may take a few days, so it is important to be patient and follow up with the landlord if necessary. If your application is accepted, you may be able to sign a lease agreement and make rent payments directly through the online rental platform, making the rental process more convenient and accessible for both tenants and landlords alike.</p>
-                                    </p>
+            @foreach ($property as $property)
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="card mb-4">
+                            <div class="card-header p-3 pb-0">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6>Order Details</h6>
+                                        {{-- <p class="text-sm mb-0">
+                                            Order no. <b>241342</b> from <b>23.02.2021</b>
+                                        </p> --}}
+                                        <hr class="horizontal dark mt-0 mb-4">
+                                        <p class="text-sm">
+                                            <b class="text-danger">Notes:</b> This process may take a few days, so it is
+                                            important to be patient and follow up with the landlord if necessary. If your
+                                            application is accepted, you may be able to sign a lease agreement and make rent
+                                            payments directly through the online rental platform, making the rental process
+                                            more convenient and accessible for both tenants and landlords alike.
+                                        </p>
+                                        </p>
+                                    </div>
+                                    {{-- <a href="javascript:;" class="btn bg-gradient-secondary ms-auto mb-0">Invoice</a> --}}
                                 </div>
-                                {{-- <a href="javascript:;" class="btn bg-gradient-secondary ms-auto mb-0">Invoice</a> --}}
                             </div>
-                        </div>
-                        <div class="card-body p-3 pt-0">
-                            <hr class="horizontal dark mt-0 mb-4">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="d-flex">
-                                        <div>
-                                            <img src="{{ asset($property->imagePath) }}"
-                                                class="avatar avatar-xxl me-3" alt="product image">
-                                        </div>
-                                        <div>
-                                            <h6 class="text-lg mb-0 mt-2">{{ $property->state }}, {{ $property->city }}</h6>
-                                            <p class="text-sm mb-3">Area {{ $property->area }}, Garage {{ $property->garage }}, Bedroom {{ $property->bedroom }}, Property {{ $property->bathroom }}</p>
-                                            <span class="badge badge-sm bg-gradient-success">Available</span>
+                            <div class="card-body p-3 pt-0">
+                                <hr class="horizontal dark mt-0 mb-4">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="d-flex">
+                                            <div>
+                                                <img src="{{ asset($property->imagePath) }}" class="avatar avatar-xxl me-3"
+                                                    alt="product image">
+                                            </div>
+                                            <div>
+                                                <h6 class="text-lg mb-0 mt-2">{{ $property->state }}, {{ $property->city }}
+                                                </h6>
+                                                <p class="text-sm mb-3">Area {{ $property->area }}, Garage
+                                                    {{ $property->garage }}, Bedroom {{ $property->bedroom }}, Property
+                                                    {{ $property->bathroom }}</p>
+                                                <span class="badge badge-sm bg-gradient-success">Available</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                {{-- <div class="col-lg-6 col-md-6 col-12 my-auto text-end">
+                                    {{-- <div class="col-lg-6 col-md-6 col-12 my-auto text-end">
                                     <a href="javascript:;" class="btn bg-gradient-info mb-0">Contact Us</a>
                                     <p class="text-sm mt-2 mb-0">Do you like the product? Leave us a review <a
                                             href="javascript:;">here</a>.</p>
                                 </div> --}}
-                            </div>
-                            <hr class="horizontal dark mt-4 mb-4">
-                            <div class="row">
-                                {{-- <div class="col-lg-3 col-md-6 col-12">
-                                    <h6 class="mb-3">Track order</h6>
-                                    <div class="timeline timeline-one-side">
-                                        <div class="timeline-block mb-3">
-                                            <span class="timeline-step">
-                                                <i class="ni ni-bell-55 text-secondary"></i>
-                                            </span>
-                                            <div class="timeline-content">
-                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Order received</h6>
-                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">22 DEC 7:20 AM
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-block mb-3">
-                                            <span class="timeline-step">
-                                                <i class="ni ni-html5 text-secondary"></i>
-                                            </span>
-                                            <div class="timeline-content">
-                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Generate order id
-                                                    #1832412</h6>
-                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">22 DEC 7:21 AM
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-block mb-3">
-                                            <span class="timeline-step">
-                                                <i class="ni ni-cart text-secondary"></i>
-                                            </span>
-                                            <div class="timeline-content">
-                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Order transmited to
-                                                    courier</h6>
-                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">22 DEC 8:10 AM
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-block mb-3">
-                                            <span class="timeline-step">
-                                                <i class="ni ni-check-bold text-success text-gradient"></i>
-                                            </span>
-                                            <div class="timeline-content">
-                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Order delivered</h6>
-                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">22 DEC 4:54 PM
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div class="col-lg-5 col-md-6 col-12">
-                                    <h6 class="mb-3">Payment details</h6>
-                                    <div
-                                        class="card card-body border card-plain border-radius-lg d-flex align-items-center flex-row">
-                                        <img class="w-10 me-3 mb-0" src="../../../assets/img/logos/mastercard.png"
-                                            alt="logo">
-                                        <h6 class="mb-0">
-                                            ****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;7852</h6>
-                                        <button type="button"
-                                            class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center ms-auto"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title=""
-                                            data-bs-original-title="We do not store card details">
-                                            <i class="fas fa-info" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                    <h6 class="mb-3 mt-4">Billing Information</h6>
-                                    <ul class="list-group">
-                                        <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
-                                            <div class="d-flex flex-column">
-                                                <h6 class="mb-3 text-sm">Oliver Liam</h6>
-                                                <span class="mb-2 text-xs">Company Name: <span
-                                                        class="text-dark font-weight-bold ms-2">Viking Burrito</span></span>
-                                                <span class="mb-2 text-xs">Email Address: <span
-                                                        class="text-dark ms-2 font-weight-bold">oliver@burrito.com</span></span>
-                                                <span class="text-xs">VAT Number: <span
-                                                        class="text-dark ms-2 font-weight-bold">FRB1235476</span></span>
+                                <form role="form text-left" method="POST"
+                                    action="{{ route('transaction.requestProperty') }}">
+                                    @csrf
+                                    <hr class="horizontal dark mt-4 mb-4">
+                                    <input type="hidden" name="property_id" value="{{ $property->id }}">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-6 col-12">
+                                            <h6 class="mb-3">Payment</h6>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="paymentRadio"
+                                                    id="paymentRadioId" value="Gcash" required> 
+                                                <label for="customRadio1">Gcash</label>
                                             </div>
-                                        </li>
-                                    </ul>
-                                </div> --}}
-                                <div class="">
-                                    <h6 class="mb-3">Price Summary</h6>
-                                    <div class="d-flex justify-content-between">
-                                        <span class="mb-2 text-sm">
-                                            Property Price:
-                                        </span>
-                                        <span class="text-dark font-weight-bold ms-2">₱ {{ number_format($property->rent, 2, '.', ',') }}</span>
-                                    </div>
-                                    {{-- <div class="d-flex justify-content-between">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="paymentRadio"
+                                                    id="paymentRadioId" value="Paymaya" required>
+                                                <label for="customRadio2">Paymaya</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="paymentRadio"
+                                                    id="paymentRadioId" value="Credit Card" required>
+                                                <label for="customRadio2">Credit Card</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="paymentRadio"
+                                                    id="paymentRadioId" value="In-Person" required>
+                                                <label for="customRadio2">In-Person</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-md-6 col-12">
+                                            <h6 class="mb-3">Days in property</h6>
+                                            <div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="rent-days" class="form-control-label">Number of
+                                                                days</label>
+                                                            <input class="form-control" type="number" value="5"
+                                                                id="days-counter" step="5" min="5"
+                                                                max="30" name="total_days">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <hr class="horizontal dark mt-0 mb-4">
+                                        <h6 class="mb-3">Price Summary</h6>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="mb-2 text-sm">
+                                                Property Price:
+                                            </span>
+                                            <span class="text-dark font-weight-bold ms-2">₱
+                                                {{ number_format($property->rent, 2, '.', ',') }} x&nbsp;<a
+                                                    id="days"></a></span>
+                                        </div>
+                                        {{-- <div class="d-flex justify-content-between">
                                         <span class="mb-2 text-sm">
                                             Delivery:
                                         </span>
                                         <span class="text-dark ms-2 font-weight-bold">$14</span>
                                     </div> --}}
-                                    <div class="d-flex justify-content-between">
-                                        <span class="text-sm">
-                                            Taxes:
-                                        </span>
-                                        <span class="text-dark ms-2 font-weight-bold">₱ 0.00</span>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-sm">
+                                                Taxes:
+                                            </span>
+                                            <span class="text-dark ms-2 font-weight-bold">₱ 0.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-4">
+                                            <span class="mb-2 text-lg">
+                                                Total:
+                                            </span>
+                                            <span class="text-dark text-lg ms-2 font-weight-bold">₱
+                                                <a id="result" name="total_amount"></a></span>
+                                            <input type="hidden" value="result" name="total_amount">
+                                        </div>
+
                                     </div>
-                                    <div class="d-flex justify-content-between mt-4">
-                                        <span class="mb-2 text-lg">
-                                            Total:
-                                        </span>
-                                        <span class="text-dark text-lg ms-2 font-weight-bold">₱ {{ number_format($property->rent, 2, '.', ',') }}</span>
+                                    {{-- <button type="submit" href="{{ route('showTransaction', $property->id) }}"
+                                        class="btn bg-gradient-success btn-lg btn-rounded w-100 mt-4 mb-0">Request
+                                        now</button> --}}
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn bg-gradient-success btn-lg btn-rounded w-100 mt-4 mb-0" data-toggle="modal"
+                                        data-target="#confirmModal">
+                                        Request Transaction
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmModalLabel">Confirm Transaction
+                                                        Request</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to request this transaction?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn bg-gradient-secondary"
+                                                        data-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn bg-gradient-primary"
+                                                        id="confirmButton">Confirm</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                
                             </div>
-                            <a type="submit" href="{{ route('showTransaction',$property->id) }}" class="btn bg-gradient-success btn-lg btn-rounded w-100 mt-4 mb-0">Request now</a>
+                            </form>
                         </div>
+
                     </div>
-                    
+
                 </div>
-                
-            </div>
             @endforeach
         </div>
 
         @include('partials.footer')
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('days-counter');
+            const result = document.getElementById('result');
+            const days = document.getElementById('days');
+
+            input.value = '5';
+
+            const value = input.value;
+            const total = value * {{ $property->rent }};
+
+
+            result.innerText = `${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            days.innerText = `${value} days`;
+
+            input.addEventListener('input', (event) => {
+                const value = event.target.value;
+                const total = value * {{ $property->rent }};
+                result.innerText = `${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                days.innerText = `${value} days`;
+            });
+        });
+    </script>
 @endsection

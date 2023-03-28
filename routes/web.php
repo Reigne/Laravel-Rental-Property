@@ -154,16 +154,26 @@ Route::get('/property/{id}', [
 
 // Transaction ====================================================================
 
-Route::post('/review', [
-    'uses' => 'ReviewController@store',
-    'as' => 'review.store'
+Route::get('/transaction/property-{id}', [
+    'uses' => 'TransactionController@show',
+    'as' => 'showTransaction'
+]);
+
+Route::post('/transaction/check-out', [
+    'uses' => 'TransactionController@requestProperty',
+    'as' => 'transaction.requestProperty'
+]);
+
+Route::get('/transaction', [
+    'uses' => 'TransactionController@getTransaction',
+    'as' => 'getTransaction'
 ]);
 
 // Review ====================================================================
 
-Route::get('/transaction/property-{id}', [
-    'uses' => 'TransactionController@show',
-    'as' => 'showTransaction'
+Route::post('/review', [
+    'uses' => 'ReviewController@store',
+    'as' => 'review.store'
 ]);
 
 // Signin/logout ====================================================================

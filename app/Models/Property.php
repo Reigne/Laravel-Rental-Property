@@ -51,4 +51,11 @@ class Property extends Model
         return $this->hasOne('App\Models\Review', 'property_id');
     }
     
+    // public function orders() {
+    //     return $this->belongsToMany(Order::class,'orderline','orderinfo_id','property_id');
+    // }    
+
+    public function orders() {
+        return $this->belongsToMany('App\Models\Order', 'id');
+    }
 }

@@ -1,12 +1,14 @@
-@if ($message = Session::get('success'))
-<div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-        Hello, world! This is a toast message.
-      </div>
-      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+{{-- @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
     </div>
-  </div>
+@endif --}}
+
+@if ($message = Session::get('success'))
+<div class="alert alert-success alert-block">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>{{ $message }}</strong>
+</div>
 @endif
 
 @if ($message = Session::get('error'))

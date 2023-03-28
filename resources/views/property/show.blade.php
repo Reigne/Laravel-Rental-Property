@@ -1,6 +1,5 @@
 @extends('layouts.base')
 @section('body')
-
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         @include('partials.navbar')
         <hr class="horizontal dark mt-0">
@@ -137,40 +136,39 @@
                                     </div> --}}
                                 </div>
                                 @auth
-                                        @if (Auth::user()->role == 'tenant')
-                                            <div class="d-flex mt-4 mr-4">
-                                                <div class="flex-shrink-0">
-                                                    <img alt="Image placeholder" class="avatar rounded-circle me-3"
-                                                        src="{{ asset(Auth::user()->tenants->imagePath) }}">
-                                                </div>
-                                                <div class="flex-grow-1 my-auto">
-                                                    <form method="POST" action="{{ route('review.store') }}">
-                                                        @csrf
-                                                        {{-- <input type="hidden" name="property_id" value="{{ $property->id }}">
+                                    @if (Auth::user()->role == 'tenant')
+                                        <div class="d-flex mt-4 mr-4">
+                                            <div class="flex-shrink-0">
+                                                <img alt="Image placeholder" class="avatar rounded-circle me-3"
+                                                    src="{{ asset(Auth::user()->tenants->imagePath) }}">
+                                            </div>
+                                            <div class="flex-grow-1 my-auto">
+                                                <form method="POST" action="{{ route('review.store') }}">
+                                                    @csrf
+                                                    {{-- <input type="hidden" name="property_id" value="{{ $property->id }}">
                                                         <input name="comment" class="form-control" placeholder="Write your comment" rows="1"></input> --}}
-                                                        {{-- <div class="input-group-append">
+                                                    {{-- <div class="input-group-append">
                                                           <button class="btn bg-gradient-primary btn-sm" type="button">Submit</button>
                                                         </div> --}}
 
-                                                        <div class="d-flex">
-                                                            <input type="hidden" name="property_id" value="{{ $property->id }}">
-                                                            <textarea name="comment" class="form-control" placeholder="Write your comment" rows="1"></textarea>
-                                                            <button class="btn bg-gradient-primary mb-0 ms-2">
-                                                                <i class="ni ni-send"></i>
-                                                            </button>
-                                                        </div>
-                                                    </form>
+                                                    <div class="d-flex">
+                                                        <input type="hidden" name="property_id" value="{{ $property->id }}">
+                                                        <textarea name="comment" class="form-control" placeholder="Write your comment" rows="1"></textarea>
+                                                        <button class="btn bg-gradient-primary mb-0 ms-2">
+                                                            <i class="ni ni-send"></i>
+                                                        </button>
+                                                    </div>
+                                                </form>
 
-                                                </div>
                                             </div>
-                                        @else
-
-                                        @endif
-                                    @endauth
-                                </div>
+                                        </div>
+                                    @else
+                                    @endif
+                                @endauth
                             </div>
                         </div>
-                    
+                    </div>
+
 
                     <div class="col-lg-4 col-md-6">
                         <div class="card mb-4 position-sticky top-2">
@@ -267,6 +265,20 @@
                                         </div>
                                     </div>
                                     <hr class="horizontal dark my-4">
+                                    <h6 class="heading-small text-muted mb-4">Select</h6>
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="rent-days" class="form-control-label">Number of days</label>
+                                                    <input class="form-control" type="number" value="5"
+                                                        id="days-counter" step="5" min="5"
+                                                        max="30">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="horizontal dark my-4">
                                     <!-- Description -->
                                     <h6 class="heading-small text-muted mb-4">Total ammount</h6>
                                     <div>
@@ -275,16 +287,16 @@
                                             <p class="ms-auto"> ₱ 0.00</p>
                                         </li>
                                         <li class="d-flex">
-                                            <p class="mb-0">Price:</p>
-                                            <p class="ms-auto"> ₱ {{ number_format($property->rent, 2, '.', ',') }}</p>
+                                            <p class="mb-0">Price day:</p>
+                                            <p class="ms-auto"> ₱ {{ number_format($property->rent, 2, '.', ',') }} x&nbsp; <div id="days"></div></p>
                                         </li>
                                         <li class="d-flex">
                                             {{-- <p class="mb-0">Price:</p> --}}
-                                            <p class="ms-auto"> <strong> Total</strong>: ₱
-                                                {{ number_format($property->rent, 2, '.', ',') }}</p>
+                                            <p class="ms-auto"> <strong> Total</strong>: ₱&nbsp;<div id="result"></div>
+                                            </p>
                                         </li>
                                     </div>
-
+                                    
                                     <hr class="horizontal dark">
                                     <div class="text-center">
                                         <a type="submit" href="{{ route('showTransaction', $property->id) }}"
@@ -298,9 +310,30 @@
                 @endforeach
             </div>
         </div>
-
         @include('partials.footer')
     </main>
 
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('days-counter');
+            const result = document.getElementById('result');
+            const days = document.getElementById('days');
+
+            input.value = '5';
+
+            const value = input.value;
+            const total = value * {{ $property->rent }};
+            
+
+            result.innerText = `Total: ${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            days.innerText = `${value} days`;
+
+            input.addEventListener('input', (event) => {
+                const value = event.target.value;
+                const total = value * {{ $property->rent }};
+                result.innerText = `${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                days.innerText = `${value} days`;
+            });
+        });
+    </script>
 @endsection
