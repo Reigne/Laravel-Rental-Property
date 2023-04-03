@@ -28,7 +28,7 @@ Route::get('/base', function () {
 // home ====================================================================
 Route::get('/', [
     'uses' => 'PropertyController@getDashboard',
-    'as' => 'getDashboard'
+    'as' => 'getHome'
 ]);
 
 // Tenant ====================================================================
@@ -152,22 +152,27 @@ Route::get('/property/{id}', [
     'as' => 'showProperty'
 ]);
 
-// Transaction ====================================================================
+    // Transaction ====================================================================
 
-Route::get('/transaction/property-{id}', [
-    'uses' => 'TransactionController@show',
-    'as' => 'showTransaction'
-]);
+    Route::get('/transaction/property-{id}', [
+        'uses' => 'TransactionController@show',
+        'as' => 'showTransaction'
+    ]);
 
-Route::post('/transaction/check-out', [
-    'uses' => 'TransactionController@requestProperty',
-    'as' => 'transaction.requestProperty'
-]);
+    Route::post('/transaction/check-out', [
+        'uses' => 'TransactionController@requestProperty',
+        'as' => 'transaction.requestProperty'
+    ]);
 
-Route::get('/transaction', [
-    'uses' => 'TransactionController@getTransaction',
-    'as' => 'getTransaction'
-]);
+    Route::get('/transaction', [
+        'uses' => 'TransactionController@getTransaction',
+        'as' => 'getTransaction'
+    ]);
+
+    Route::post('/transaction/edit-status/{id}', [
+        'uses' => 'TransactionController@editStatus',
+        'as' => 'transaction.editStatus'
+    ]);
 
 // Review ====================================================================
 
@@ -205,4 +210,26 @@ Route::get('/search', [
     'uses' => 'PropertyController@search',
     'as' => 'getDataProperties']);
 
-    Route::get('/search','PropertyController@search_property')->name('search_property');
+Route::get('/search','PropertyController@search_property')->name('search_property');
+
+Route::post('/landlord/verified/{id}', [
+    'uses' => 'LandlordController@upgraded',
+    'as' => 'landlord.verified'
+]);
+
+
+//vefication
+Route::post('/landlord/verification', [
+    'uses' => 'LandlordController@verification',
+    'as' => 'landlord.verification'
+]);
+
+Route::get('/admin/index-verification', [
+    'uses' => 'AdminController@indexVerification',
+    'as' => 'admin.indexVerification'
+]);
+
+Route::post('/admin/landlord-status/{id}', [
+    'uses' => 'AdminController@editStatus',
+    'as' => 'admin.editStatus'
+]);

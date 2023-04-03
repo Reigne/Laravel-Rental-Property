@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('payment_method');
+            $table->decimal('total_amount', 10, 2);
             $table->text('status')->default('Pending');
             $table->timestamps();
         });
@@ -30,7 +31,6 @@ return new class extends Migration
             $table->foreign('orderinfo_id')->references('id')->on('orderinfo');
             $table->integer('property_id')->unsigned();
             $table->foreign('property_id')->references('id')->on('properties');
-            $table->decimal('total_amount', 10, 2);
         });
     }
 

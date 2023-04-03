@@ -11,6 +11,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Auth;
 
 class LandlordsDataTable extends DataTable
 {
@@ -24,19 +25,19 @@ class LandlordsDataTable extends DataTable
     {
         $landlords = Landlord::withTrashed()->with(['users','properties']);
         // $landlords = Landlord::withTrashed()->with(['users','properties'])->orderBy('id','DESC');
-        
+
         return datatables()
             ->eloquent($landlords)
             ->addColumn('status', function ($landlords) {
                 if ($landlords->deleted_at)
                     return '<span class="badge rounded-pill bg-secondary" style="color:white"> Deactivated </span>';
                 else
-                    return '<span class="badge rounded-pill bg-info" style="color:white"> Available </span>';
+                    return '<span class="badge rounded-pill bg-info" style="color:white"> Active </span>';
             })
             ->addColumn('Action', function ($row) {
                 if ($row->deleted_at)
                     return '<a href="' . route('landlord.restore', $row->id) . '" class="btn bg-gradient-info">Restore</a>';
-                    
+
                 else
                     return
                     '<form action="' . route('landlord.destroy', $row->id) . '" method="POST">' . csrf_field() . '
@@ -48,10 +49,22 @@ class LandlordsDataTable extends DataTable
                     <button class="btn bg-gradient-danger" type="submit">Deactivate</button>
                     </form>';
             })
+            ->addColumn('Verify', function ($row) {
+                if (Auth::user()->role == 'admin') {
+                    if ($row->is_upgraded == 1)
+                        return '<button href="" class="btn bg-gradient-info"  disabled>Verified</button>';
+                    else
+                        return
+                            '<form action="' . route('landlord.verified', $row->id) . '" method="POST">' . csrf_field() . '
+                    <input name="_method" type="hidden" >
+                    <button  class="btn bg-gradient-success" type="submit">Verified</button>
+                    </form>';
+                }
+            })
             ->addColumn('properties', function (Landlord $landlords) {
                 return $landlords->properties->map(function($property) {
                 return "<li>".$property->area. "</li>";
-                })->implode('<br>'); 
+                })->implode('<br>');
             })
             ->addColumn('image', function ($landlords) {
                 return '<img src="' . asset($landlords->imagePath) . '" width="80"height="80" class="rounded" >';
@@ -112,6 +125,7 @@ class LandlordsDataTable extends DataTable
             Column::make('status'),
             Column::make('image'),
             Column::make('created_at'),
+            Column::make('Verify'),
             Column::computed('Action')
                 ->exportable(false)
                 ->printable(false)

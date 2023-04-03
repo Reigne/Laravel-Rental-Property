@@ -5,38 +5,51 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 
-// use Session;
-
 class LoginController extends Controller
-{
+{   
+    //login users
     public function postSignin(Request $request)
-    {
+    {   
+        //validate email and password
         $this->validate($request, [
             'email' => 'email| required',
             'password' => 'required| min:8'
         ]);
 
+        //check if email and password is correct
         if (auth()->attempt(array('email' => $request->email, 'password' => $request->password))) {
+
+            //$name for only notification
             $name = auth()->user()->name;
+
+            //if when user is tenant
             if (auth()->user()->role === 'tenant') {
                 return redirect()->route('tenant.profile')->with('success', 'Welcome, ' . $name. '');
-            } else if (auth()->user()->role === 'landlord') {
-                // return redirect()->route('getEmployees');
-                return redirect()->route('getLandlords')->with('success', 'Welcome, ' . $name. '');
-            } else {
-                return redirect()->route('getDashboard');
-                // dd($request->password);
-                // return redirect()->route('shop.index');
+            } 
+            
+            //elseif when user is landlord
+            else if (auth()->user()->role === 'landlord') {
+                return redirect()->route('landlord.profile')->with('success', 'Welcome, ' . $name. '');
+            } 
+            
+            //else is for user admin
+            else {
+                return redirect()->route('getHome');
             }
-        } else {
+
+        } 
+        
+        //return else when failed to entered correct email or password
+        else {
             return redirect()->back()->with('error', 'Email-Address or Password Are Wrong.');
         }
+
     }
+    
+    //logout users
     public function logout()
-    {
+    {   
         Auth::logout();
-        // Session::forget('cart');
-        // return redirect()->route('user.signin');
         return redirect()->back();
     }
 }

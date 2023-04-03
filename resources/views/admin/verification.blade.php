@@ -17,17 +17,17 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col-sm-auto col-4">
                         <div class="avatar avatar-xl position-relative">
-                            <img src="{{ Auth::user()->landlords->imagePath }}" alt="bruce"
+                            <img src="{{ Auth::user()->admins->imagePath }}" alt="bruce"
                                 class="w-100 border-radius-lg shadow-sm">
                         </div>
                     </div>
                     <div class="col-sm-auto col-8 my-auto">
                         <div class="h-100">
                             <h5 class="mb-1 font-weight-bolder">
-                                {{ Auth::user()->name }}
+                                {{ Auth::user()->name }} (#{{ Auth::user()->admins->id }})
                             </h5>
                             <p class="mb-0 font-weight-bold text-sm">
-                                Transaction for properties
+                                Landlord Verification
                             </p>
                         </div>
                     </div>
@@ -50,71 +50,54 @@
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                ID</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Tenant
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                ID
                                             </th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Property
-                                                Choice</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Total
-                                                Days</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Start
-                                                Date</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                End
-                                                Date</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Payment
-                                                Method</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Total
-                                                Price</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Status</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Date Requested</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Update
-                                                Status</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Landlord
+                                            </th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Admin
+                                            </th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Contact No.
+                                            </th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Reference Number
+                                            </th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Status
+                                            </th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Date Requested
+                                            </th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Update Status
+                                            </th>
                                             {{-- <th class="text-secondary opacity-7"></th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($orderinfo as $transaction)
+                                        @foreach ($verifications as $verification)
                                             <tr>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $transaction->id }}</p>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $verification->id }}</p>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
                                                         <div>
-                                                            <img src="{{ asset($transaction->imagePath) }}"
+                                                            <img src="{{ asset($verification->imagePath) }}"
                                                                 class="avatar avatar-sm me-3">
                                                         </div>
                                                         <div class="d-flex flex-column justify-content-center">
-                                                            <h6 class="mb-0 text-xs">{{ $transaction->first_name }},
-                                                                {{ $transaction->last_name }}</h6>
-                                                            <p class="text-xs text-secondary mb-0">{{ $transaction->email }}
+                                                            <h6 class="mb-0 text-xs">{{ $verification->first_name }},
+                                                                {{ $verification->last_name }} (#{{ $verification->landlord_id }})</h6>
+                                                            <p class="text-xs text-secondary mb-0">{{ $verification->email }}
                                                             </p>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <div class="d-flex px-2 py-1">
                                                         <div>
                                                             <img src="{{ asset($transaction->property_image) }}"
@@ -128,50 +111,39 @@
                                                                 {{ $transaction->address }}</p>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $transaction->total_days }}
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $verification->admin_id }}
                                                     </p>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $transaction->start_date }}
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $verification->contact_no }}
                                                     </p>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $transaction->end_date }}
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        {{ $transaction->payment_method }}
-                                                      </p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0"> ₱
-                                                        {{ number_format($transaction->total_amount, 2, '.', ',') }}</a>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $verification->reference_number }}
                                                     </p>
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
-                                                    @if ($transaction->status == 'Pending')
-                                                        <span class="badge badge-sm badge-primary">{{ $transaction->status }}</span>
-                                                    @elseif($transaction->status == 'Accepted')
+                                                    @if ($verification->status == 'Pending')
+                                                        <span class="badge badge-sm badge-primary">{{ $verification->status }}</span>
+                                                    @elseif($verification->status == 'Accepted')
                                                         <span
-                                                            class="badge badge-sm badge-success">{{ $transaction->status }}</span>
-                                                    @elseif($transaction->status == 'Canceled')
+                                                            class="badge badge-sm badge-success">{{ $verification->status }}</span>
+                                                    @elseif($verification->status == 'Denied')
                                                         <span
-                                                            class="badge badge-sm badge-danger">{{ $transaction->status }}</span>
+                                                            class="badge badge-sm badge-danger">{{ $verification->status }}</span>
                                                     @endif
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">
                                                         {{-- {{ $transaction->created_at->format('m/d/Y - h:i A') }} --}}
-                                                        {{ date('m/d/Y - h:i A', strtotime($transaction->created_at)) }}
-
+                                                        {{ date('m/d/Y - h:i A', strtotime($verification->created_at)) }}
                                                     </span>
                                                 </td>
                                                 <td class="">
                                                     <form
-                                                        action="{{ action('TransactionController@editStatus', $transaction->id) }}"
+                                                        action="{{ action('AdminController@editStatus', $verification->id) }}"
                                                         method="post" role="form">
                                                         @csrf
 
@@ -185,7 +157,7 @@
                                                                 <li>
                                                                     <button type="button" class="dropdown-item"
                                                                         data-bs-toggle="modal"
-                                                                        data-bs-target="#acceptModal{{ $transaction->id }}">
+                                                                        data-bs-target="#acceptModal{{ $verification->id }}">
                                                                         <i class="fa-solid fa-circle-check"
                                                                             style="color: #00b815;"></i>
                                                                         Accept
@@ -194,16 +166,16 @@
                                                                 <li>
                                                                     <button type="button" class="dropdown-item"
                                                                         data-bs-toggle="modal"
-                                                                        data-bs-target="#cancelModal{{ $transaction->id }}">
+                                                                        data-bs-target="#cancelModal{{ $verification->id }}">
                                                                         <i class="fa-solid fa-ban"
-                                                                            style="color: #dc2e2e;"></i> Cancel
+                                                                            style="color: #dc2e2e;"></i> Denied
                                                                     </button>
                                                                 </li>
                                                             </ul>
                                                         </div>
 
                                                         <!-- Accept confirmation modal -->
-                                                        <div class="modal fade" id="acceptModal{{ $transaction->id }}"
+                                                        <div class="modal fade" id="acceptModal{{ $verification->id }}"
                                                             tabindex="-1" aria-labelledby="acceptModalLabel"
                                                             aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
@@ -217,7 +189,7 @@
                                                                             aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Are you sure you want to accept this request order?
+                                                                        Are you sure you want to accept this request?
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button"
@@ -232,7 +204,7 @@
                                                         </div>
 
                                                         <!-- Cancel confirmation modal -->
-                                                        <div class="modal fade" id="cancelModal{{ $transaction->id }}"
+                                                        <div class="modal fade" id="cancelModal{{ $verification->id }}"
                                                             tabindex="-1" aria-labelledby="cancelModalLabel"
                                                             aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
@@ -246,7 +218,7 @@
                                                                             aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Are you sure you want to cancel this request order?
+                                                                        Are you sure you want to denied this request?
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button"
@@ -262,14 +234,13 @@
                                                     </form>
                                                 </td>
                                             </tr>
-                                        @endforeach
-                                            
+                                        @endforeach   
                                     </tbody>
                                 </table>
 
                             </div>
                             <div class="ml-3">
-                                {{ $orderinfo->links() }}
+                                {{ $verifications->links() }}
                             </div>
                         </div>
                     </div>
@@ -278,5 +249,5 @@
             </div>
     </main>
 
-    @include('partials.footer')
+    {{-- @include('partials.footer') --}}
 @endsection

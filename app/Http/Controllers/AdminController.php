@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Landlord;
+use App\Models\Verification;
 use Illuminate\Http\Request;
-
+use DB;
+use Auth;
 class AdminController extends Controller
 {
     /**
@@ -81,5 +84,40 @@ class AdminController extends Controller
     public function destroy(Admin $admin)
     {
         //
+    }
+
+    public function indexVerification(){
+        $verifications =  DB::table('verifications')
+        ->select('verifications.*', 'landlords.first_name', 'landlords.last_name', 'landlords.id as landlord_id', 'landlords.imagePath', 'users.email')
+        ->join('landlords', 'landlords.id', '=', 'verifications.landlord_id')
+        // ->join('admins','admins.id','=','verifications.admin_id')
+        ->join('users','users.id','=','landlords.user_id')
+        ->orderBy('id')
+        // ->get();
+        ->paginate(5);
+
+        // dd($verifications);
+        return view('admin.verification', compact('verifications'));
+    }
+
+    public function editStatus(Request $request, $id){
+
+        $verifications = Verification::findOrFail($id);
+        $landlord = Landlord::find($verifications->landlord_id);
+        
+        if($request->status == 'Accepted'){
+            $verifications->admin_id = Auth::user()->admins->id;
+            $verifications->status = $request->status; 
+            $landlord->is_upgraded = 1; 
+            $verifications->update();
+            $landlord->update();
+        } 
+        elseif($request->status == 'Denied'){
+            $verifications->admin_id = Auth::user()->admins->id;
+            $verifications->status = $request->status;
+            $verifications->update();
+        }
+
+        return redirect()->back()->with('success', 'Status updated successfully');
     }
 }

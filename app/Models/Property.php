@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Property extends Model
 {
-    use HasFactory, softDeletes;
+    use HasFactory, SoftDeletes;
     public $table = 'properties';
     public $timestamps = true;
     protected $guarded = ['id', 'imagePath'];
@@ -51,11 +51,11 @@ class Property extends Model
         return $this->hasOne('App\Models\Review', 'property_id');
     }
     
-    // public function orders() {
-    //     return $this->belongsToMany(Order::class,'orderline','orderinfo_id','property_id');
-    // }    
-
     public function orders() {
-        return $this->belongsToMany('App\Models\Order', 'id');
-    }
+        return $this->belongsToMany(Order::class,'orderline','orderinfo_id','property_id');
+    }    
+
+    // public function orders( ) {
+    //     return $this->belongsToMany('App\Models\Order', 'id');
+    // }
 }

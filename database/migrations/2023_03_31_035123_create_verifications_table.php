@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('verifications', function (Blueprint $table) {
             $table->increments('id');
-            // $table->string('jazz_transection_id');
-            // $table->string('advisor_id_fk');
+            $table->string('contact_no');
+            $table->string('reference_number');
             $table->integer('landlord_id')->unsigned();
             $table->foreign('landlord_id')->references('id')->on('landlords')->onDelete('cascade');
             $table->integer('admin_id')->unsigned()->nullable();
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
-            $table->string('price');
-            $table->string('status');
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('verifications');
     }
 };

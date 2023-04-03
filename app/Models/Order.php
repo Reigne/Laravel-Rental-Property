@@ -11,12 +11,14 @@ class Order extends Model
     protected $table = 'orderinfo';
  	protected $primaryKey = 'id';
     public $timestamps = true;
+    
     protected $fillable = [
         'tenant_id', 
         'total_days', 
         'start_date', 
         'end_date', 
         'payment_method', 
+        'total_amount', 
         'status'
     ];
 
@@ -25,7 +27,7 @@ class Order extends Model
     }
 
     public function properties() {
-    	return $this->belongsToMany(Property::class,'orderline','orderinfo_id','property_id')->withPivot('total_amount');
+    	return $this->belongsToMany(Property::class,'orderline','orderinfo_id','property_id');
  	}
 
 }

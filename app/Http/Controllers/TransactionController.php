@@ -16,15 +16,19 @@ use Storage;
 use File;
 use Auth;
 use DB;
+use Carbon\Carbon;
 
 class TransactionController extends Controller
-{
+{   
+
+    //show the page of transaction process
     public function show($id){
         $property = Property::with('landlords')->where('id', $id)->get();
 
         return view('property.transaction', compact('property'));
     }
 
+    //tenant request to landlord to rent the property
     public function requestProperty(Request $request){
         if(Auth::check()) {
             $id = $request->property_id;
@@ -35,10 +39,10 @@ class TransactionController extends Controller
                 $order->tenant_id = Auth::user()->tenants->id;
                 $order->total_days = $request->total_days;
                 $order->payment_method = $request->paymentRadio;
+                $order->total_amount = $order->total_days * $property->rent;
                 $order->save();
-                $totals = $order->total_days * $property->rent;
-                
-                $order->properties()->attach($property->id, ['total_amount' => $totals]);
+
+                $order->properties()->attach($property->id);
             } catch (\Exception $e) {
                 dd($e);
                 DB::rollback();
@@ -53,15 +57,43 @@ class TransactionController extends Controller
         }
     }
 
-    public function getTransaction(OrdersDataTable $dataTable) {
-        // $orderinfo = Order::join('orderline', 'orderline.orderinfo_id', '=', 'orderinfo.id')
-        // ->join('tenants','tenants.id','=','orderinfo.tenant_id')
-        // ->join('properties','properties.id','=','orderline.property_id')
-        // ->select('orderinfo.*', 'properties.id as property_id', 'tenants.last_name')
-        // ->get();
-        $orderinfo = Order::with(['properties', 'tenants'])->get();
-        dd($orderinfo);
+    //get the index of transaction
+    public function getTransaction() {
 
-        return $dataTable->render('transaction.index');
+        $AuthId = Auth::user()->landlords->id;
+        $orderinfo = DB::table('orderinfo')
+        ->select('orderinfo.*', 'properties.id as property_id', 'properties.imagePath as property_image', 'properties.address', 'properties.city', 'properties.state', 'tenants.last_name', 'tenants.first_name', 'users.email', 'tenants.imagePath')
+        ->join('orderline', 'orderline.orderinfo_id', '=', 'orderinfo.id')
+        ->join('tenants','tenants.id','=','orderinfo.tenant_id')
+        ->join('properties','properties.id','=','orderline.property_id')
+        ->join('users', 'users.id', '=' ,'tenants.user_id')
+        ->join('landlords', 'landlords.id', '=', 'properties.landlord_id')
+        ->where('landlords.id', '=', $AuthId)
+        ->orderBy('id')
+        ->paginate(10);
+
+        return view('transaction.index', compact('orderinfo'));
+    }
+
+    //edit the status of orderinfo that requested by tenant
+    //landlord will accept or canceled the request
+    public function editStatus(Request $request, $id){
+
+        $orderinfo = Order::findOrFail($id);
+        
+        //if landlord accept the request
+        if($request->status == 'Accepted'){
+            $orderinfo->start_date = Carbon::now();
+            $orderinfo->end_date =  Carbon::now()->addDays($orderinfo->total_day);
+            $orderinfo->status = $request->status; 
+            $orderinfo->update();
+        } 
+        //if landlord canceled the request
+        elseif($request->status == 'Canceled'){
+            $orderinfo->status = $request->status; 
+            $orderinfo->update();
+        }
+
+        return redirect()->back()->with('success', 'Status updated successfully');
     }
 }

@@ -2,23 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
-use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-    //Tenant
-    public function tenet_conversation() {
-        return view('tenant.conversation');
-    }
-
-    //Landlord
-    public  function advisor_conversation() {
-        return view('Advisor.advisorcoversation');
-    }
-
     private $shown = false;
     private $total_messages = 0;
     private $user_data = array();
@@ -246,7 +237,7 @@ class MessageController extends Controller
         $user = Auth::user();
         if($user->id==$id)
         {
-            // dd($user);
+        
            //Check Message in Message Table
             $u = $user;
             $msgdate = array();
@@ -259,7 +250,6 @@ class MessageController extends Controller
             if(count((array)$user_col_1_con)>0)
             {
                 foreach($user_col_1_con as $con)
-                // dd($user_col_1_con);
                 {
                     $total_messages = 0;
                     foreach($con->message as $mess) {
@@ -271,7 +261,6 @@ class MessageController extends Controller
                     $msgtimes[$i] = date('h:i', strtotime($sender_timedate)) . ' '. date('a', strtotime($sender_timedate));
                     $msgdate[$i] = date('j',strtotime($sender_timedate)) . ' '. date('F', strtotime($sender_timedate));
                     $msgids[$i] = $con->user_2;
-                    
                     $unseen[$i] = $total_messages;
                     $i++;
                 }
@@ -296,8 +285,56 @@ class MessageController extends Controller
                 }
 
             }
-            // dd($msgids);
-            return view('tenant.conversation')->with('msgdate',$msgdate)->with('msgtimes',$msgtimes)->with('msgids',$msgids)->with('unseen',$unseen)->with('total_message',$this->total_messages)
+//            if (count($u->user_1_conversation)>0)
+//            {
+//                $con = $u->user_1_conversation;
+//                foreach($con as $c)
+//                {
+//                    foreach($c->message as $mess)
+//                    {
+//                        if($mess->is_user_1_seen==0)
+//                        {
+//                            $total_messages++;
+//                            $user_data[$i] = $mess->message_text;
+//                            $d = $mess->message_send_at;
+//                            $ids[$i]=$mess->conversation->user_2_reference->id;
+//                            $time[$i] = date('h:i', strtotime($d)) . ' '. date('a', strtotime($d));
+//                            $i++;
+//                        }
+//                    }
+//                }
+//            }
+//            else
+//            {
+//                $con = $u->user_2_conversation;
+//                foreach($con as $c)
+//                {
+//                    foreach($c->message as $mess)
+//                    {
+//                        if($mess->is_user_2_seen==0)
+//                        {
+//                            $total_messages++;
+//                            $user_data[$i] = $mess->message_text;
+//                            $d = $mess->message_send_at;
+//                            $ids[$i]=$mess->conversation->user_1_reference->id;
+//                            $time[$i] = date('h:i', strtotime($d)) . ' '. date('a', strtotime($d));
+//                            $i++;
+//                        }
+//                    }
+//                }
+//
+//            }
+
+
+            // $this->check_notification($user);
+
+            //Check Message in Message Table
+            // $u = $user;
+
+
+            // $this->check_messages($u);
+
+            return view('tenant.tenet_conversation')->with('msgdate',$msgdate)->with('msgtimes',$msgtimes)->with('msgids',$msgids)->with('unseen',$unseen)->with('total_message',$this->total_messages)
                 ->with('data',$this->user_data)->with('time',$this->time)->with('ids',$this->ids)->with('user',$user);
         }
         else
@@ -333,14 +370,8 @@ class MessageController extends Controller
 
         // $this->check_messages($u);
 
-        return view('Tenet.tenetinbox')
-        ->with('id',$id)
-        ->with('shown',$this->shown)
-        ->with('total_message',$this->total_messages)
-        ->with('data',$this->user_data)
-        ->with('time',$this->time)
-        ->with('ids',$this->ids)
-        ->with('user',$user);
+        return view('tenant.tenetinbox')->with('id',$id)->with('shown',$this->shown)->with('total_message',$this->total_messages)
+            ->with('data',$this->user_data)->with('time',$this->time)->with('ids',$this->ids)->with('user',$user);
     }
 
     public function check_notification($user)
@@ -359,4 +390,5 @@ class MessageController extends Controller
     {
        
     }
+
 }

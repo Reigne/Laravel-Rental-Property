@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Landlord;
 use App\Models\User;
 use App\Models\Property;
+use App\Models\Verification;
 use Illuminate\Http\Request;
 use App\DataTables\LandlordsDataTable;
 use View;
@@ -269,5 +270,31 @@ class LandlordController extends Controller
         $users = User::with('tenants')->where('id', $landlord->user_id)->get();
         // dd($landlord);
         return view('property.show', compact('landlord', 'users'));
+    }
+
+    public function upgraded(Request $request, $id)
+    {
+       $upgrade = Landlord::withTrashed()->find($id);
+       $upgrade->is_upgraded = 1;
+       $upgrade->update();
+
+       return Redirect::route('getLandlords')->with('success','Landlord has been Verified!');
+    }
+
+
+    //for verification account
+    public function verification(Request $request){
+        $request->validate([
+            'contact_no' => 'required',
+            'reference_number' => 'required',
+        ]);
+
+        $verification = new Verification;
+        $verification->contact_no = $request->contact_no;
+        $verification->reference_number = $request->reference_number;
+        $verification->landlord_id = Auth::user()->landlords->id;
+        $verification->save();
+
+        return redirect()->back()->with('success', 'Verification sent, please wait for the admin to check the form.');
     }
 }

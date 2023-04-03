@@ -17,10 +17,10 @@ return new class extends Migration
             $table->increments('id');
             // $table->integer('user_1')->unsigned()->nullable();
             $table->integer('user_1')->unsigned();
-            $table->foreign('user_1')->references('id')->on('tenants')->onDelete('cascade');
+            $table->foreign('user_1')->references('id')->on('users')->onDelete('cascade');
             // $table->integer('user_2')->unsigned()->nullable();
             $table->integer('user_2')->unsigned();
-            $table->foreign('user_2')->references('id')->on('landlords')->onDelete('cascade');
+            $table->foreign('user_2')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\PropertiesDataTable;
 use App\Models\Landlord;
 use App\Models\Property;
-use App\Models\User;
 use App\Models\Review;
-use Illuminate\Http\Request;
-
-use App\DataTables\PropertiesDataTable;
-use View;
-use Validator;
-use Redirect;
-use Storage;
-use File;
+use App\Models\User;
 use Auth;
 use DB;
+use File;
+use Illuminate\Http\Request;
+use Redirect;
+use Storage;
+use Validator;
+use View;
 
 class PropertyController extends Controller
 {
@@ -24,141 +23,112 @@ class PropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function search(Request $request)
-    // {
 
-    //     $search = $request->get('search');
-    //     //Select pets table
-    //     $propertyy = DB::table('properties')
-    //         ->leftJoin('landlords','landlords.id','=','properties.landlord_id')
-    //         ->select('properties.id','properties.area','properties.garage','properties.bathroom','properties.bedroom','properties.rent','properties.city','properties.state','properties.description','properties.imagePath')
-    //         ->whereBetween('rent', [$request->amount-3000, $request->rent+3000])
-    //         ->orWhere('city','LIKE', '%' . $request->city . '%')
-    //         ->orWhere('state','LIKE', '%' . $search . '%')
-    //         ->get();
-    //         dd($propertyy);
-    //     // return View::make('history.index',compact('transacts'));
-    //     return view('homepage', ['properties' => $propertyy]);
-    // }
-    
     public function search_property(Request $req)
     {
-       // $post = \App\AdvisorPost::Where('state','=',$req->state)->Where('city','=',$req->c_name)->whereBetween('rent', [$req->rent-3000, $req->rent+3000])->get();
 
-        if($req->rent != null && $req->city != null && $req->state !=null)
-        {   
-            $properties = Property::Where('rent','<=',$req->rent)
-            ->where([
+        //if search rent, city and state is not null
+        if ($req->rent != null && $req->city != null && $req->state != null) {
+            $properties = Property::Where('rent', '<=', $req->rent)
+                ->where([
+                    ['is_taken', '=', 0],
+                    ['is_approved', '=', 1],
+                ])
+                ->Where('city', '=', $req->city)
+                ->whereBetween('rent', [$req->rent - 3000, $req->rent + 3000])
+                ->get();
+        } 
+
+        //if search rent is not null
+        elseif ($req->rent != null && $req->city == null && $req->state == null) {
+            $properties = Property::where([
                 ['is_taken', '=', 0],
                 ['is_approved', '=', 1],
-            ])
-            ->Where('city','=',$req->city)
-            ->whereBetween('rent', [$req->rent-3000, $req->rent+3000])
-            ->get();
-            // dd($post);
+            ])->whereBetween('rent', [$req->rent - 3000, $req->rent + 3000])->get();
+        } 
+        
+        //if search city is not null
+        elseif ($req->rent == null && $req->city != null && $req->state == null) {
+            $properties = Property::where([
+                ['is_taken', '=', 0],
+                ['is_approved', '=', 1],
+            ])->where('city', '=', $req->city)->get();
+        } 
+        
+        //if search state is not null
+        elseif ($req->rent == null && $req->city == null && $req->state != null) {
+            $properties = Property::where([
+                ['is_taken', '=', 0],
+                ['is_approved', '=', 1],
+            ])->where('state', '=', $req->state)->get();
+        } 
+        
+        //if search rent and city is not null
+        elseif ($req->rent != null && $req->city != null && $req->state == null) {
+            $properties = Property::where([
+                ['is_taken', '=', 0],
+                ['is_approved', '=', 1],
+            ])->Where('city', '=', $req->city)->whereBetween('rent', [$req->rent - 3000, $req->rent + 3000])->get();
+        } 
+        
+        //if search rent and state is not null
+        elseif ($req->rent != null && $req->city == null && $req->state != null) {
+            $properties = Property::where([
+                ['is_taken', '=', 0],
+                ['is_approved', '=', 1],
+            ])->Where('state', '=', $req->state)->whereBetween('rent', [$req->rent - 3000, $req->rent + 3000])->get();
+        } 
+        
+        //if search city and state is not null
+        elseif ($req->rent == null && $req->city != null && $req->state != null) {
+            $properties = Property::where([
+                ['is_taken', '=', 0],
+                ['is_approved', '=', 1],
+            ])->Where('city', '=', $req->city)->Where('state', '=', $req->state)->get();
+        } 
+
+        //else when no input but they click search
+        else {
+            $properties = Property::where([
+                ['is_taken', '=', 0],
+                ['is_approved', '=', 1],
+            ])->get();
         }
-            elseif($req->rent != null && $req->city==null && $req->state==null)
-            {
-                $properties = Property::where([
-                    ['is_taken', '=', 0],
-                    ['is_approved', '=', 1],
-                ])
-                ->whereBetween('rent', [$req->rent-3000, $req->rent+3000])->get();
-            }
 
-            elseif($req->rent == null && $req->city!=null && $req->state==null)
-            {
-                $properties = Property::where([
-                    ['is_taken', '=', 0],
-                    ['is_approved', '=', 1],
-                ])
-                ->where('city', '=' , $req->city)->get();
-            
-            }
-
-            elseif($req->rent == null && $req->city==null && $req->state!=null)
-            {
-                $properties = Property::where([
-                    ['is_taken', '=', 0],
-                    ['is_approved', '=', 1],
-                ])
-                ->where('state', '=' , $req->state)->get();
-            }
-
-            elseif($req->rent != null && $req->city!=null && $req->state==null)
-            {
-                $properties = Property::where([
-                    ['is_taken', '=', 0],
-                    ['is_approved', '=', 1],
-                ])
-                ->Where('city','=',$req->city)->whereBetween('rent', [$req->rent-3000, $req->rent+3000])->get();
-            }
-
-            elseif($req->rent != null && $req->city==null && $req->state!=null)
-            {
-                $properties = Property::where([
-                    ['is_taken', '=', 0],
-                    ['is_approved', '=', 1],
-                ])
-                ->Where('state','=',$req->state)->whereBetween('rent', [$req->rent-3000, $req->rent+3000])->get();
-            }
-
-            elseif($req->rent == null && $req->city!=null && $req->state!=null)
-            {
-                $properties = Property::where([
-                    ['is_taken', '=', 0],
-                    ['is_approved', '=', 1],
-                ])
-                ->Where('city','=',$req->city)->Where('state','=',$req->state)->get();
-            }
-
-            $states = DB::table('properties')
+        //$states is for dropwdown in search
+        $states = DB::table('properties')
             ->select('properties.state')
             ->groupBy('properties.state')
+            ->whereNull('properties.deleted_at')
             ->get();
-            
-            return view('homepage', compact('properties', 'states'));
 
-        }
-        
+        return view('homepage', compact('properties', 'states'));
+
+    }
+
+    //get the datatable of properties
     public function getProperties(PropertiesDataTable $dataTable)
     {
         return $dataTable->render('property.index');
     }
 
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    //create property by landlord
     public function store(Request $request)
-    {
+    {   
+        //check if landlord are upgraded or verified
         $user = Auth::user()->landlords->is_upgraded;
-        // dd($user);
-        if ($user == 1) {
 
+        if ($user == 1) {
+            
+            //validate all
             $validator = Validator::make($request->all(), Property::$rules);
 
+            //if the validator failed then redirect with error
             if ($validator->fails()) {
                 return redirect()->back()->withInput()->withErrors($validator);
             }
 
+            //if the validator passes then process data to store
             if ($validator->passes()) {
                 $path = Storage::putFileAs('images/property', $request->file('imagePath'), $request->file('imagePath')->getClientOriginalName());
 
@@ -188,44 +158,30 @@ class PropertyController extends Controller
                 }
 
             }
-        } else {
+        } 
+        
+        //else if landlord not verified or upgraded
+        else {
             return redirect()->back()->with('warning', 'Need to upgrade');
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Property  $property
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
-    {   
-        // dd($id);
+    {
         $property = Property::with('landlords')->where('id', $id)->get();
-        // $reviews = Review::with('users', 'properties', 'tenants')->where('property_id', $id)->get();
-        
-        $reviews = Review::join('users', 'users.id', '=', 'reviews.user_id')
-        ->join('properties','properties.id','=','reviews.property_id')
-        ->join('tenants','tenants.user_id','=','users.id')
-        ->select('tenants.imagePath', 'users.name', 'reviews.created_at', 'reviews.comment')
-        ->where('reviews.property_id', '=',$id)
-        ->get();
 
-        // dd($reviews);  
+        $reviews = Review::join('users', 'users.id', '=', 'reviews.user_id')
+            ->join('properties', 'properties.id', '=', 'reviews.property_id')
+            ->join('tenants', 'tenants.user_id', '=', 'users.id')
+            ->select('tenants.imagePath', 'users.name', 'reviews.created_at', 'reviews.comment')
+            ->where('reviews.property_id', '=', $id)
+            ->paginate(5);
 
         return view('property.show', compact('property', 'reviews'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Property  $property
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        // dd($id);
         $property = Property::find($id);
 
         $landlord = Landlord::with('properties')->where('id', $property->landlord_id)->get();
@@ -233,21 +189,14 @@ class PropertyController extends Controller
         return view('property.edit', compact('property', 'landlord'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Property  $property
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $props = Property::find($id);
-        
+
         if ($file = $request->hasFile('imagePath')) {
             $path = Storage::putFileAs('images/property', $request->file('imagePath'), $request->file('imagePath')->getClientOriginalName());
             $request->merge(["imagePath" => $request->file('imagePath')->getClientOriginalName()]);
-            
+
             $props->area = $request->area;
             $props->garage = $request->garage;
             $props->bathroom = $request->garage;
@@ -281,12 +230,6 @@ class PropertyController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Property  $property
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $property = Property::findOrFail($id);
@@ -299,8 +242,7 @@ class PropertyController extends Controller
     {
         $property = Property::findOrFail($id);
         $property->delete();
-        // dd($customer);
-
+        
         return Redirect::route('getProperties')->with('warning', 'Property has been Deactivated!');
     }
 
@@ -311,53 +253,47 @@ class PropertyController extends Controller
         return Redirect::route('getProperties')->with('success', 'Property has been Restored!');
     }
 
-
     //// Dashboard
     public function getDashboard()
     {
         $properties = Property::withTrashed()
-        ->where([
-            ['is_taken', '=', 0],
-            ['is_approved', '=', 1],
-        ])
-        ->get();
-        
-        // $dropdowns = Property::withTrashed()
-        // ->groupBy('state')
-        // ->get();
-        
+            ->where([
+                ['is_taken', '=', 0],
+                ['is_approved', '=', 1],
+            ])->get();
+
         $states = DB::table('properties')
-        ->select('properties.state')
-        ->groupBy('properties.state')
-        ->get();
+            ->select('properties.state')
+            ->groupBy('properties.state')
+            ->get();
 
         return view('homepage', compact('properties', 'states'));
     }
 
     public function approval(Request $request, $id)
     {
-       $property = Property::withTrashed()->find($id);
-       $property->is_approved = 1;
-       $property->update();
+        $property = Property::withTrashed()->find($id);
+        $property->is_approved = 1;
+        $property->update();
 
-       return redirect()->back()->with('success', 'Request post has been approved');
+        return redirect()->back()->with('success', 'Request post has been approved');
     }
 
     public function taken(Request $request, $id)
     {
-       $property = Property::withTrashed()->find($id);
-       $property->is_taken = 1;
-       $property->update();
+        $property = Property::withTrashed()->find($id);
+        $property->is_taken = 1;
+        $property->update();
 
-       return redirect()->back()->with('success', 'Your property is already taken');
+        return redirect()->back()->with('success', 'Your property is already taken');
     }
 
     public function available(Request $request, $id)
     {
-       $property = Property::withTrashed()->find($id);
-       $property->is_taken = 0;
-       $property->update();
+        $property = Property::withTrashed()->find($id);
+        $property->is_taken = 0;
+        $property->update();
 
-       return redirect()->back()->with('success', 'Your property is now available');
+        return redirect()->back()->with('success', 'Your property is now available');
     }
 }

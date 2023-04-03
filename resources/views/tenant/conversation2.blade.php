@@ -36,12 +36,16 @@
         <div id="sidebar-nav" style="background-color: black;">
             <div class="col-md-12" style="margin-top:30px; padding-bottom:30px;">
                 <div class="profileimg">
-                    {{-- <a href="#" ><img  title="Profile Image" style="    width: 120px; height:100px; margin-bottom: 20px; margin-left:22px;" src="{{asset('profile')}}/{{Illuminate\Support\Facades\Auth::user()->profile_img}}" alt=""></a> --}}
-                    @if (Illuminate\Support\Facades\Auth::user()->role == 'tenant')
+                    <a href="#"><img title="Profile Image"
+                            style="    width: 120px; height:100px; margin-bottom: 20px; margin-left:22px;"
+                            src="{{ asset('profile') }}/{{ Illuminate\Support\Facades\Auth::user()->profile_img }}"
+                            alt=""></a>
+                    @if (Illuminate\Support\Facades\Auth::user()->role_id_fk == 2)
                         <span
-                            style="color:white; margin-left:24px">{{ Illuminate\Support\Facades\Auth::user()->tenants->first_name }}</span>
-                        <span style="color:red">{{ Illuminate\Support\Facades\Auth::user()->tenants->last_name }}</span>
-                    @elseif(Illuminate\Support\Facades\Auth::user()->role == 'landlord')
+                            style="color:white; margin-left:24px">{{ Illuminate\Support\Facades\Auth::user()->tenetrelation->first_name }}</span>
+                        <span
+                            style="color:red">{{ Illuminate\Support\Facades\Auth::user()->tenetrelation->last_name }}</span>
+                    @elseif(Illuminate\Support\Facades\Auth::user()->role_id_fk == 3)
                         <span
                             style="color:white; margin-left:24px">{{ Illuminate\Support\Facades\Auth::user()->advisorrelation->first_name }}</span>
                         <span
@@ -50,19 +54,20 @@
                 </div>
             </div>
             <ul>
-                @if (Illuminate\Support\Facades\Auth::user()->role == 'tenant')
-                    <li><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                    <li><a href=""><i class="fa fa-user"></i> Profile</a></li>
+                @if (Illuminate\Support\Facades\Auth::user()->role_id_fk == 2)
+                    <li><a href="{{ route('tenet_dashboard_view') }}"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li><a href="{{ route('tenet_profile') }}"><i class="fa fa-user"></i> Profile</a></li>
                     <li class="active"><a href="{{ route('con', [Illuminate\Support\Facades\Auth::id()]) }})}}"><i
                                 class="fa fa-comments"></i> Conversation</a></li>
-                    <li><a href=""><i class="fa fa-sign-out"></i> Logout</a></li>
-                @elseif(Illuminate\Support\Facades\Auth::user()->role == 'landlord')
-                    <li><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                    <li><a href=""><i class="fa fa-folder-open"></i> My Post</a></li>
-                    <li><a href=""><i class="fa fa-user"></i> Profile</a></li>
+                    <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                @elseif(Illuminate\Support\Facades\Auth::user()->role_id_fk == 3)
+                    <li><a href="{{ route('advisor_dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                    <li><a href="{{ route('advisor_post') }}"><i class="fa fa-folder-open"></i> My Post</a></li>
+                    <li><a href="{{ route('advisor_profile') }}"><i class="fa fa-user"></i> Profile</a></li>
                     <li class="active"><a href="{{ route('con', [Illuminate\Support\Facades\Auth::id()]) }}"><i
                                 class="fa fa-comments"></i> Conversation</a></li>
-                    <li><a href=""><i class="fa fa-sign-out"></i> Logout</a></li>
+                    <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out"></i> Logout</a></li>
                 @endif
 
             </ul>
@@ -76,10 +81,9 @@
                 </div>
                 <div class="nav">
                     <ul>
-                        @if (Illuminate\Support\Facades\Auth::user()->role == 'tenant')
+                        @if (Illuminate\Support\Facades\Auth::user()->role_id_fk == 2)
                             <li class="nav-mail">
-                                @php
-                                    
+                                @php               
                                     $u = Illuminate\Support\Facades\Auth::user();
                                     $shown = false;
                                     $total_messages = 0;
@@ -128,10 +132,11 @@
                                 <a href="#">
                                     <div title="Your Post" class="font-icon"><i class="fa fa-calendar"></i><span
                                             style="float: left; margin-right: 5px; margin-top: 6px;"
-                                            class="badge badge-light"></span></div>
+                                            class="badge badge-light">{{ \App\AdvisorPost::all()->count() }}</span>
+                                    </div>
                                 </a>
                             </li>
-                        @elseif(Illuminate\Support\Facades\Auth::user()->role == 'landlord')
+                        @elseif(Illuminate\Support\Facades\Auth::user()->role_id_fk == 3)
                             <li class="nav-settings">
                                 <a href="#">
                                     <div title="Notification" class="font-icon"><i class="fa fa-tasks"></i><span
@@ -208,7 +213,7 @@
                             <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"
                                     alt="sunil"> </div>
                             <div class="chat_ib">
-                                <h5>{{ \App\Models\User::find($msgids[$i])->name }}<span
+                                <h5>{{ \App\Models\User::find($msgids[$i])->user_name }}<span
                                         class="chat_date">{{ $msgtimes[$i] . ' ' . $msgdate[$i] }}</span></h5>
                                 <p>You have @if ($unseen[$i] != 0)
                                         <span style="color: red"> {{ $unseen[$i] }} </span>

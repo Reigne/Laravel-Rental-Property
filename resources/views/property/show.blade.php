@@ -110,31 +110,11 @@
                                             </div>
                                         </div>
                                     @endforeach
-
-                                    {{-- <div class="d-flex mt-3">
-                                        <div class="flex-shrink-0">
-                                            <img alt="Image placeholder" class="avatar rounded-circle"
-                                                src="../../../assets/img/team-5.jpg">
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h6 class="h5 mt-0">Jessica Stones</h6>
-                                            <p class="text-sm">Society has put up so many boundaries, so many limitations on
-                                                what’s right and wrong that it’s almost impossible to get a pure thought
-                                                out.
-                                                It’s like a little kid, a little boy.</p>
-                                            <div class="d-flex">
-                                                <div>
-                                                    <i class="ni ni-like-2 me-1 cursor-pointer"></i>
-                                                </div>
-                                                <span class="text-sm me-2">10 likes</span>
-                                                <div>
-                                                    <i class="ni ni-curved-next me-1 cursor-pointer"></i>
-                                                </div>
-                                                <span class="text-sm me-2">1 share</span>
-                                            </div>
-                                        </div>
-                                    </div> --}}
+                                    <div class="d-flex mt-4">
+                                        {{ $reviews->links() }}
+                                    </div>
                                 </div>
+                                
                                 @auth
                                     @if (Auth::user()->role == 'tenant')
                                         <div class="d-flex mt-4 mr-4">

@@ -61,11 +61,11 @@ class User extends Authenticatable
 
     public function user_1_conversation()
     {
-        return $this->hasMany(Conversation::class,'user_1');
+        return $this->hasMany(Conversation::class,'user_1', 'id');
     }
 
     public function user_2_conversation()
     {
-        return $this->hasMany(Conversation::class,'user_2');
+        return $this->hasMany(Conversation::class,'user_2', 'id');
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.base')
 @section('body')
-@include('landlord.edit-modal')
+    @include('landlord.edit-modal')
 
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -14,29 +14,37 @@
                 @include('layouts.flash-messages')
             @endif
         </div>
-        
+
         <div class="container-fluid">
-            <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('https://images.unsplash.com/photo-1499631507243-7290571550ed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'); background-position-y: 50%;">
-              {{-- <span class="mask bg-gradient-primary opacity-6"></span> --}}
+            <div class="page-header min-height-300 border-radius-xl mt-4"
+                style="background-image: url('https://images.unsplash.com/photo-1499631507243-7290571550ed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'); background-position-y: 50%;">
+                {{-- <span class="mask bg-gradient-primary opacity-6"></span> --}}
             </div>
             <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
-              <div class="row gx-4">
-                <div class="col-auto">
-                  <div class="avatar avatar-xl position-relative">
-                    <img src="{{ asset(Auth::user()->landlords->imagePath) }}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
-                  </div>
-                </div>
-                <div class="col-auto my-auto">
-                  <div class="h-100">
-                    <h5 class="mb-1">
-                      {{ Auth::user()->name }}
-                    </h5>
-                    <p class="mb-0 font-weight-bold text-sm">
-                      {{ Auth::user()->role }}
-                    </p>
-                  </div>
-                </div>
-                {{-- <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                <div class="row gx-4">
+                    <div class="col-auto">
+                        <div class="avatar avatar-xl position-relative">
+                            <img src="{{ asset(Auth::user()->landlords->imagePath) }}" alt="profile_image"
+                                class="w-100 border-radius-lg shadow-sm">
+                        </div>
+                    </div>
+                    <div class="col-auto my-auto">
+                        <div class="h-100">
+                            <h5 class="mb-1">
+                                {{ Auth::user()->name }}
+                            </h5>
+                            <p class="mb-0 font-weight-bold text-sm">
+                                @if (Auth::user()->landlords->is_upgraded)
+                                    <i class="fa-solid fa-circle-check" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        title="Verified User" style="color: #00bf16;"></i>
+                                    {{ Auth::user()->role }}
+                                @else
+                                    {{ Auth::user()->role }}
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                    {{-- <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
                   <div class="nav-wrapper position-relative end-0">
                     <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
                       <li class="nav-item">
@@ -101,89 +109,133 @@
                     </ul>
                   </div>
                 </div> --}}
-              </div>
-            </div>
-          </div>
-          <div class="container-fluid py-4">
-            <div class="row">
-              <div class="col-12 col-xl-4">
-                <div class="card h-100">
-                  <div class="card-header pb-0 p-3">
-                    <h6 class="mb-0">Platform Settings</h6>
-                  </div>
-                  <div class="card-body p-3">
-                    <h6 class="text-uppercase text-body text-xs font-weight-bolder">Account</h6>
-                    <ul class="list-group">
-                      <li class="list-group-item border-0 px-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked>
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault">Email me when someone follows me</label>
-                        </div>
-                      </li>
-                      <li class="list-group-item border-0 px-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1">
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault1">Email me when someone answers on my post</label>
-                        </div>
-                      </li>
-                      <li class="list-group-item border-0 px-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked>
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Email me when someone mentions me</label>
-                        </div>
-                      </li>
-                    </ul>
-                    <h6 class="text-uppercase text-body text-xs font-weight-bolder mt-4">Application</h6>
-                    <ul class="list-group">
-                      <li class="list-group-item border-0 px-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault3">
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault3">New launches and projects</label>
-                        </div>
-                      </li>
-                      <li class="list-group-item border-0 px-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault4" checked>
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault4">Monthly product updates</label>
-                        </div>
-                      </li>
-                      <li class="list-group-item border-0 px-0 pb-0">
-                        <div class="form-check form-switch ps-0">
-                          <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault5">
-                          <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault5">Subscribe to newsletter</label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
                 </div>
-              </div>
-              <div class="col-12 col-xl-4">
-                <div class="card h-100">
-                  <div class="card-header pb-0 p-3">
-                    <div class="row">
-                      <div class="col-md-8 d-flex align-items-center">
-                        <h6 class="mb-0">Profile Information</h6>
-                      </div>
-                      <div class="col-md-4 text-end">
-                        <a href="javascript:;" data-bs-toggle='modal' data-bs-target='#editLandlordModal'>
-                          <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
-                        </a>
-                      </div>
+            </div>
+        </div>
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12 col-xl-4">
+                    <div class="card h-100">
+                        <div class="card-header pb-0 p-3">
+                            <h6 class="mb-0">Landlord Account
+                                @if (Auth::user()->landlords->is_upgraded)
+                                  <span class="badge badge-success ms-auto float-end">Verified</span>
+                                @else
+                                  <span class="badge badge-secondary ms-auto float-end">Not Verified</span>
+                                @endif
+                            </h6>
+                        </div>
+
+                        <div class="card-body p-3">
+                            <p class="text-sm">
+                              Before you can post a property on our rental property website, you need to be verified first. To start the verification process, you must pay the verification fee through GCash by sending the payment...
+                                <a href="#" data-bs-toggle="modal"
+                                    data-bs-target="#moreInfoModal" class="text-primary text-sm icon-move-right my-auto">See
+                                    more
+                                    <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
+                                </a>
+
+                                <!-- Modal -->
+                            <div class="modal fade" id="moreInfoModal" tabindex="-1" aria-labelledby="moreInfoModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="moreInfoModalLabel">More Information</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Before you can post a property on our rental property website, you need to be verified first. To start the verification process, you must pay the verification fee through GCash by sending the payment to this number: <strong>09219201772</strong>. Once the payment is confirmed, you can fill out the verification form on our website with your contact number and the reference number of your GCash transaction.</p>
+                                            <p>We require this verification process to ensure that all listings on our website are legitimate and trustworthy. Once you are verified, you can start posting your properties and reach a wider audience. Thank you for your cooperation in keeping our community safe and secure.</p>
+                                            <p>Please note that $10 fee for account verification.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </p>
+                            <div class="d-flex">
+                                <p class="my-auto">Verification</p>
+                                <p class="text-secondary text-sm ms-auto my-auto me-3"></p>
+                                <button class="btn btn-sm btn-outline-dark mb-0" type="button" data-bs-toggle="modal"
+                                data-bs-target="#verification-modal">Form</button>
+
+                                {{-- verificaiton modal --}}
+                                <form role="form text-left" method="POST" action="{{ route('landlord.verification') }}"
+                                enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <div class="modal fade" id="verification-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalMessageTitle" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Verification Account</h5>
+                                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">×</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <form>
+                                          <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Contact No:</label>
+                                            <input type="text" class="form-control" id="contact_no" name="contact_no">
+                                          </div>
+                                          <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Reference Number:</label>
+                                            <input type="text" class="form-control" id="reference_number" name="reference_number">
+                                          </div>
+                                        </form>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn bg-gradient-primary">Submit</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="card-body p-3">
-                    <p class="text-sm">
-                      Click the icon to edit your personal information.
-                    </p>
-                    <hr class="horizontal gray-light my-1">
-                    <ul class="list-group">
-                      <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">First Name:</strong> &nbsp; {{ Auth::user()->landlords->first_name }}</li>
-                      <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Last Name:</strong> &nbsp; {{ Auth::user()->landlords->last_name }}</li>
-                      <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Phone:</strong> &nbsp; {{ Auth::user()->landlords->phone }}</li>
-                      <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; {{ Auth::user()->email }}</li>
-                      <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Address:</strong> &nbsp; {{ Auth::user()->landlords->address }}</li>
-                      <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Date Created:</strong> &nbsp; {{ Auth::user()->landlords->created_at }}</li>
-                      {{-- <li class="list-group-item border-0 ps-0 pb-0">
+                </div>
+                <div class="col-12 col-xl-4">
+                    <div class="card h-100">
+                        <div class="card-header pb-0 p-3">
+                            <div class="row">
+                                <div class="col-md-8 d-flex align-items-center">
+                                    <h6 class="mb-0">Profile Information</h6>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <a href="javascript:;" data-bs-toggle='modal' data-bs-target='#editLandlordModal'>
+                                        <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip"
+                                            data-bs-placement="top" title="Edit Profile"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-3">
+                            <p class="text-sm">
+                                Click the icon to edit your personal information.
+                            </p>
+                            <hr class="horizontal gray-light my-1">
+                            <ul class="list-group">
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">First
+                                        Name:</strong> &nbsp; {{ Auth::user()->landlords->first_name }}</li>
+                                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Last
+                                        Name:</strong> &nbsp; {{ Auth::user()->landlords->last_name }}</li>
+                                <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                        class="text-dark">Phone:</strong> &nbsp; {{ Auth::user()->landlords->phone }}</li>
+                                <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                        class="text-dark">Email:</strong> &nbsp; {{ Auth::user()->email }}</li>
+                                <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                        class="text-dark">Address:</strong> &nbsp; {{ Auth::user()->landlords->address }}
+                                </li>
+                                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Date
+                                        Created:</strong> &nbsp; {{ Auth::user()->landlords->created_at }}</li>
+                                {{-- <li class="list-group-item border-0 ps-0 pb-0">
                         <strong class="text-dark text-sm">Social:</strong> &nbsp;
                         <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
                           <i class="fab fa-facebook fa-lg"></i>
@@ -195,132 +247,147 @@
                           <i class="fab fa-instagram fa-lg"></i>
                         </a>
                       </li> --}}
-                    </ul>
-                  </div>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-12 col-xl-4">
-                <div class="card h-100">
-                  <div class="card-header pb-0 p-3">
-                    <h6 class="mb-0">Conversations</h6>
-                  </div>
-                  <div class="card-body p-3">
-                    <ul class="list-group">
-                      <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
-                        <div class="avatar me-3">
-                          <img src="../assets/img/kal-visuals-square.jpg" alt="kal" class="border-radius-lg shadow">
+                <div class="col-12 col-xl-4">
+                    <div class="card h-100">
+                        <div class="card-header pb-0 p-3">
+                            <h6 class="mb-0">Conversations</h6>
                         </div>
-                        <div class="d-flex align-items-start flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Sophie B.</h6>
-                          <p class="mb-0 text-xs">Hi! I need more information..</p>
+                        <div class="card-body p-3">
+                            <ul class="list-group">
+                                <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                                    <div class="avatar me-3">
+                                        <img src="../assets/img/kal-visuals-square.jpg" alt="kal"
+                                            class="border-radius-lg shadow">
+                                    </div>
+                                    <div class="d-flex align-items-start flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">Sophie B.</h6>
+                                        <p class="mb-0 text-xs">Hi! I need more information..</p>
+                                    </div>
+                                    <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                                </li>
+                                <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                                    <div class="avatar me-3">
+                                        <img src="../assets/img/marie.jpg" alt="kal"
+                                            class="border-radius-lg shadow">
+                                    </div>
+                                    <div class="d-flex align-items-start flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">Anne Marie</h6>
+                                        <p class="mb-0 text-xs">Awesome work, can you..</p>
+                                    </div>
+                                    <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                                </li>
+                                <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                                    <div class="avatar me-3">
+                                        <img src="../assets/img/ivana-square.jpg" alt="kal"
+                                            class="border-radius-lg shadow">
+                                    </div>
+                                    <div class="d-flex align-items-start flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">Ivanna</h6>
+                                        <p class="mb-0 text-xs">About files I can..</p>
+                                    </div>
+                                    <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                                </li>
+                                <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                                    <div class="avatar me-3">
+                                        <img src="../assets/img/team-4.jpg" alt="kal"
+                                            class="border-radius-lg shadow">
+                                    </div>
+                                    <div class="d-flex align-items-start flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">Peterson</h6>
+                                        <p class="mb-0 text-xs">Have a great afternoon..</p>
+                                    </div>
+                                    <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                                </li>
+                                <li class="list-group-item border-0 d-flex align-items-center px-0">
+                                    <div class="avatar me-3">
+                                        <img src="../assets/img/team-3.jpg" alt="kal"
+                                            class="border-radius-lg shadow">
+                                    </div>
+                                    <div class="d-flex align-items-start flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">Nick Daniel</h6>
+                                        <p class="mb-0 text-xs">Hi! I need more information..</p>
+                                    </div>
+                                    <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                                </li>
+                            </ul>
                         </div>
-                        <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
-                      </li>
-                      <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
-                        <div class="avatar me-3">
-                          <img src="../assets/img/marie.jpg" alt="kal" class="border-radius-lg shadow">
-                        </div>
-                        <div class="d-flex align-items-start flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Anne Marie</h6>
-                          <p class="mb-0 text-xs">Awesome work, can you..</p>
-                        </div>
-                        <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
-                      </li>
-                      <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
-                        <div class="avatar me-3">
-                          <img src="../assets/img/ivana-square.jpg" alt="kal" class="border-radius-lg shadow">
-                        </div>
-                        <div class="d-flex align-items-start flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Ivanna</h6>
-                          <p class="mb-0 text-xs">About files I can..</p>
-                        </div>
-                        <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
-                      </li>
-                      <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
-                        <div class="avatar me-3">
-                          <img src="../assets/img/team-4.jpg" alt="kal" class="border-radius-lg shadow">
-                        </div>
-                        <div class="d-flex align-items-start flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Peterson</h6>
-                          <p class="mb-0 text-xs">Have a great afternoon..</p>
-                        </div>
-                        <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
-                      </li>
-                      <li class="list-group-item border-0 d-flex align-items-center px-0">
-                        <div class="avatar me-3">
-                          <img src="../assets/img/team-3.jpg" alt="kal" class="border-radius-lg shadow">
-                        </div>
-                        <div class="d-flex align-items-start flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Nick Daniel</h6>
-                          <p class="mb-0 text-xs">Hi! I need more information..</p>
-                        </div>
-                        <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
-                      </li>
-                    </ul>
-                  </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-12 mt-4">
-                <div class="card mb-4">
-                  <div class="card-header pb-0 p-3">
-                    <h6 class="mb-1">My Properties</h6>
-                    <!-- <p class="text-sm">Your list of properties</p> -->
-                  </div>
-                  <div class="card-body p-3">
-                    <div class="row">
-                      @foreach($landlord->properties as $landlords)
-                      <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 py-2">
-                        <div class="card card-blog card-plain">
-                          <div class="position-relative">
-                            <a class="d-block shadow-xl border-radius-xl">
-                              <img src="{{ asset($landlords->imagePath) }}" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl"> 
-                              <!-- <img src="../assets/img/home-decor-2.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl"> -->
-                            </a>
-                          </div>
-                          <div class="card-body px-1 pb-0">
-                            <p class="text-gradient text-dark mb-2 text-sm">
-                              {{ $landlords->garage }} Garage,
-                            
-                             
-                              {{ $landlords->bedroom }} Bedroom,
-                            
-                             
-                              {{ $landlords->bathroom }} Bathroom
-                           
-                            </p>
-                            <a href="javascript:;">
-                              <h5>
-                                {{ $landlords->city }}, {{ $landlords->state }}
-                              </h5>
-                            </a>
-                            <a class="mb-4 text-sm">
-                              {{ $landlords->address }}
-                            </a>
-                            <h6>₱{{ number_format($landlords->rent, 2, '.', ',') }} </h6>
-                            
-                            <div class="d-flex align-items-center justify-content-between">
-                              {{-- <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button> --}}
-                              <a href="{{ route('editProperty',$landlords->id) }}" class="btn btn-outline-primary btn-sm mb-0">View Property</a>
-                              <div class="avatar-group mt-2">
-                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                                  <img alt="Image placeholder" src="../assets/img/team-1.jpg">
-                                </a>
-                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                                  <img alt="Image placeholder" src="../assets/img/team-2.jpg">
-                                </a>
-                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                                  <img alt="Image placeholder" src="../assets/img/team-3.jpg">
-                                </a>
-                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                                  <img alt="Image placeholder" src="../assets/img/team-4.jpg">
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                            </div>
+                <div class="col-12 mt-4">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0 p-3">
+                            <h6 class="mb-1">My Properties</h6>
+                            <!-- <p class="text-sm">Your list of properties</p> -->
                         </div>
-                      @endforeach
-                      {{-- <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                @foreach ($landlord->properties as $landlords)
+                                    <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 py-2">
+                                        <div class="card card-blog card-plain">
+                                            <div class="position-relative">
+                                                <a class="d-block shadow-xl border-radius-xl">
+                                                    <img src="{{ asset($landlords->imagePath) }}" alt="img-blur-shadow"
+                                                        class="img-fluid shadow border-radius-xl">
+                                                    <!-- <img src="../assets/img/home-decor-2.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl"> -->
+                                                </a>
+                                            </div>
+                                            <div class="card-body px-1 pb-0">
+                                                <p class="text-gradient text-dark mb-2 text-sm">
+                                                    {{ $landlords->garage }} Garage,
+
+
+                                                    {{ $landlords->bedroom }} Bedroom,
+
+
+                                                    {{ $landlords->bathroom }} Bathroom
+
+                                                </p>
+                                                <a href="javascript:;">
+                                                    <h5>
+                                                        {{ $landlords->city }}, {{ $landlords->state }}
+                                                    </h5>
+                                                </a>
+                                                <a class="mb-4 text-sm">
+                                                    {{ $landlords->address }}
+                                                </a>
+                                                <h6>₱{{ number_format($landlords->rent, 2, '.', ',') }} </h6>
+
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    {{-- <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button> --}}
+                                                    <a href="{{ route('editProperty', $landlords->id) }}"
+                                                        class="btn btn-outline-primary btn-sm mb-0">View Property</a>
+                                                    <div class="avatar-group mt-2">
+                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
+                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            title="Elena Morison">
+                                                            <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                                                        </a>
+                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
+                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            title="Ryan Milly">
+                                                            <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                                                        </a>
+                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
+                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            title="Nick Daniel">
+                                                            <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                                                        </a>
+                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
+                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            title="Peterson">
+                                                            <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                {{-- <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                         <div class="card card-blog card-plain">
                           <div class="position-relative">
                             <a class="d-block shadow-xl border-radius-xl">
@@ -394,27 +461,24 @@
                           </div>
                         </div>
                       </div> --}}
-                      <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                        <div class="card h-100 card-plain border">
-                          <div class="card-body d-flex flex-column justify-content-center text-center">
-                            <a href="javascript:;" data-bs-toggle='modal' data-bs-target='#myPModal'>
-                              <i class="fa fa-plus text-secondary mb-3"></i>
-                              <h5 class=" text-secondary"> New property </h5>
-                            </a>
-                          </div>
+                                <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                                    <div class="card h-100 card-plain border">
+                                        <div class="card-body d-flex flex-column justify-content-center text-center">
+                                            <a href="javascript:;" data-bs-toggle='modal' data-bs-target='#myPModal'>
+                                                <i class="fa fa-plus text-secondary mb-3"></i>
+                                                <h5 class=" text-secondary"> New property </h5>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </div>  
             </div>
-            @include('partials.footer')
-          </div>
+        </div>
+        @include('partials.footer')
+        </div>
 
     </main>
-
-    
-
 @endsection

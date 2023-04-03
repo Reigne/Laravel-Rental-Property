@@ -424,9 +424,10 @@
                 </div>
               </div>
             </footer>
-          </div>s
-
-    </main>
+          </div>
+        </div>
+    
+        </main>
 
 
 @endsection
