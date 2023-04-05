@@ -97,14 +97,12 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right px-2 py-3 ms-n4"
                                     aria-labelledby="dropdownMenuButton">
-                                    <li><a data-bs-toggle='modal'
-                                        data-bs-target='#myLModal' class="dropdown-item">
+                                    <li><a data-bs-toggle='modal' data-bs-target='#myLModal' class="dropdown-item">
                                             <i class="fa-solid fa-building-user" style="color: #8591a4;"></i>
                                             <span class="d-sm-inline d-none"> &nbsp; As Landlord</span></a>
                                     </li>
-                                    <li><a data-bs-toggle='modal'
-                                        data-bs-target='#myTModal' class="dropdown-item">
-                                            <i class="fa-solid fa-circle-user" style="color: #8591a4;" ></i>
+                                    <li><a data-bs-toggle='modal' data-bs-target='#myTModal' class="dropdown-item">
+                                            <i class="fa-solid fa-circle-user" style="color: #8591a4;"></i>
                                             <span class="d-sm-inline d-none"> &nbsp; As Tenant</span></a>
                                     </li>
                                 </ul>
@@ -159,8 +157,8 @@
                                 <a class="cursor-pointer" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     <span class="d-sm-inline d-none">
-                                            <img src="{{ asset(Auth::user()->tenants->imagePath) }}" alt="avatar"
-                                                class="rounded-circle img-fluid" style="width: 25px;">
+                                        <img src="{{ asset(Auth::user()->tenants->imagePath) }}" alt="avatar"
+                                            class="rounded-circle img-fluid" style="width: 25px;">
                                     </span> &nbsp; {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right px-2 py-3 ms-n4"
@@ -169,13 +167,13 @@
                                             <i class="fa-solid fa-building-user" style="color: #8591a4;"></i>
                                             <span class="d-sm-inline d-none"> &nbsp; Profile</span></a>
                                     </li>
-                                    <li><a href="{{ route('con',[Illuminate\Support\Facades\Auth::id()]) }}" class="dropdown-item">
-                                        <i class="fa-solid fa-person-running"></i>
-                                        <span class="d-sm-inline d-none"> &nbsp; Inbox</span></a>
+                                    <li><a href="{{ route('con', Auth::user()->id) }}" class="dropdown-item">
+                                            <i class="fa fa-comments"></i>
+                                            <span class="d-sm-inline d-none"> &nbsp; Conversation</span></a>
                                     </li>
                                     <li><a href="{{ route('user.logout') }}" class="dropdown-item">
-                                        <i class="fa-solid fa-person-running"></i>
-                                        <span class="d-sm-inline d-none"> &nbsp; Logout</span></a>
+                                            <i class="fa-solid fa-person-running"></i>
+                                            <span class="d-sm-inline d-none"> &nbsp; Logout</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -258,10 +256,12 @@
                                                 @else
                                                     <a href="" class="dropdown-item">
                                         @endif
-                                        <a href="{{ route('con', Auth::user()->id) }}"><i class="fa fa-comments"></i>
-                                            Conversation</a>
                                         <i class="fa-solid fa-circle-user"></i>
                                         <span class="d-sm-inline d-none"> &nbsp; Profile</span></a>
+                                    </li>
+                                    <li><a href="{{ route('con', Auth::user()->id) }}" class="dropdown-item">
+                                            <i class="fa fa-comments"></i>
+                                            <span class="d-sm-inline d-none"> &nbsp; Conversation</span></a>
                                     </li>
                                     <li><a href="{{ route('user.logout') }}" class="dropdown-item">
                                             <i class="fa-solid fa-person-running"></i>
