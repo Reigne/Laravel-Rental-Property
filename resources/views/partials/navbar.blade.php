@@ -169,6 +169,10 @@
                                             <i class="fa-solid fa-building-user" style="color: #8591a4;"></i>
                                             <span class="d-sm-inline d-none"> &nbsp; Profile</span></a>
                                     </li>
+                                    <li><a href="{{ route('con',[Illuminate\Support\Facades\Auth::id()]) }}" class="dropdown-item">
+                                        <i class="fa-solid fa-person-running"></i>
+                                        <span class="d-sm-inline d-none"> &nbsp; Inbox</span></a>
+                                    </li>
                                     <li><a href="{{ route('user.logout') }}" class="dropdown-item">
                                         <i class="fa-solid fa-person-running"></i>
                                         <span class="d-sm-inline d-none"> &nbsp; Logout</span></a>

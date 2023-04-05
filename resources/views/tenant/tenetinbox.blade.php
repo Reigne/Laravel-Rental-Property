@@ -293,7 +293,7 @@ br
       </div>
       <div class="nav">
         <ul >
-        @if(Illuminate\Support\Facades\Auth::user()->role_id_fk == 2)
+        @if(Illuminate\Support\Facades\Auth::user()->role == 'tenant')
           <li class="nav-mail">
           @php
 
@@ -338,10 +338,10 @@ if (count($u->user_1_conversation) > 0) {
         @endphp
             <a href="{{route('con',[Illuminate\Support\Facades\Auth::id()])}}"><div title="Masseges" class="font-icon"><i class="fa fa-envelope-o"></i><span style="float: left; margin-right: 5px; margin-top: 5px;" class="badge badge-light">{{$total_messages}}</span></div></a>
           </li>
-          <li class="nav-calendar">
+          {{-- <li class="nav-calendar">
             <a href="#"><div title="Your Post" class="font-icon"><i class="fa fa-calendar"></i><span style="float: left; margin-right: 5px; margin-top: 6px;" class="badge badge-light">{{\App\AdvisorPost::all()->count()}}</span></div></a>
-          </li>
-          @elseif(Illuminate\Support\Facades\Auth::user()->role_id_fk == 3)
+          </li> --}}
+          @elseif(Illuminate\Support\Facades\Auth::user()->role == 'landlord')
           <li class="nav-settings">
             <a href="#"><div title="Notification" class="font-icon"><i class="fa fa-tasks"></i><span style="float: left; margin-right: 5px; margin-top: 3px;" class="badge badge-light"></span></div></a>
           </li>
@@ -390,9 +390,9 @@ if (count($u->user_1_conversation) > 0) {
             <a href="{{route('con',[Illuminate\Support\Facades\Auth::id()])}}"><div title="Masseges" class="font-icon"><i class="fa fa-envelope-o"></i><span style="float: left; margin-right: 5px; margin-top: 5px;" class="badge badge-light">{{$total_messages}}</span></div></a>
           </li>
 
-          <li class="nav-calendar">
+          {{-- <li class="nav-calendar">
             <a href="#"><div title="Your Post" class="font-icon"><i class="fa fa-calendar"></i><span style="float: left; margin-right: 5px; margin-top: 6px;" class="badge badge-light">{{\Illuminate\Support\Facades\Auth::user()->advisorrelation->post->count()}}</span></div></a>
-          </li>
+          </li> --}}
           @endif
         </ul>
       </div>
@@ -523,26 +523,16 @@ function retrieveUnSeenChatMessages()
                     {
                         for(var i =0;i<data[0].length;i++)
                         {
-                          if (username == data[1][i]) {
-                                    $('#chat-window').append(
-                                        '<div class="Area"> <div class="R"><a href="https://twitter.com/MariamMassadeh"><img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSxU35znsBhAWQd5BouLIVtH1P4WNa0JZ_XXpyViHOIARbM2igbNgC6_kp5"/><div class="tooltip">Mariam Massadeh - 23 Years<br/>Computer Engineer<br/>Jordan</div></a></div><div class="text L textL">' +
-                                        data[0][i] + '<span style="float:right;">' + data[2][i] + '    |    ' +
-                                        data[3][i] + '</span></div></div>');
-                                        
-                                        '<div class="row justify-content-end text-right mb-4"><div class="col-auto"><div class="card bg-gray-200">div class="card-body py-2 px-3"><p class="mb-0">' +
-                                        data[0][i] + '</p><div class="d-flex align-items-center justify-content-end text-opacity-6"><i class="ni ni-check-bold text-sm me-1"></i><small>' + data[2][i] +
-                                        '    |    ' + data[3][i] + '</small></div></div></div></div></div></div>';
+                            if(username == data[1][i])
+                            {
+                              $('#chat-window').append('<div class="Area"> <div class="R"><a href="https://twitter.com/MariamMassadeh"><img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSxU35znsBhAWQd5BouLIVtH1P4WNa0JZ_XXpyViHOIARbM2igbNgC6_kp5"/><div class="tooltip">Mariam Massadeh - 23 Years<br/>Computer Engineer<br/>Jordan</div></a></div><div class="text L textL">'+data[0][i]+'<span style="float:right;">'+data[2][i]+'    |    '+data[3][i]+'</span></div></div>');
+                           
+                            }
+                            else
+                            {
+                              $('#chat-window').append('<div class="Area"><div class="L"><a href="https://twitter.com/SamiMassadeh"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrEyVlaWx0_FK_sz86j-CnUC_pfEqw_Xq_xZUm5CMIyEI_-X2hRUpx1BHL"/><div class="tooltip">Sami Massadeh - 28 Years<br/>Doctor <br/>Jordan</div></a></div><div class="text R textR">'+data[0][i]+'  <span style="float:right;">'+data[2][i]+'    |    '+data[3][i]+'</span></div></div>');
 
-                                } else {
-                                    $('#chat-window').append(
-                                        '<div class="Area"><div class="L"><a href="https://twitter.com/SamiMassadeh"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrEyVlaWx0_FK_sz86j-CnUC_pfEqw_Xq_xZUm5CMIyEI_-X2hRUpx1BHL"/><div class="tooltip">Sami Massadeh - 28 Years<br/>Doctor <br/>Jordan</div></a></div><div class="text R textR">' +
-                                        data[0][i] + '  <span style="float:right;">' + data[2][i] +
-                                        '    |    ' + data[3][i] + '</span></div></div>');
-                                    $('#chat-window').append(
-                                        '<div class="row justify-content-start mb-4"><div class="col-auto"><div class="card">div class="card-body py-2 px-3"><p class="mb-1">' +
-                                        data[0][i] + '</p><div class="d-flex align-items-center text-sm opacity-6"><i class="ni ni-check-bold text-sm me-1"></i><small>' + data[2][i] + ' | ' + data[3][i] + '</small></div></div></div></div></div></div>';
-
-                                }
+                            }
 
                         }
                     }

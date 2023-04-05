@@ -45,11 +45,23 @@ class LoginController extends Controller
         }
 
     }
+
+    public function getSignin(){
+        return view('users.signinform');
+    }
+
+    public function getTsignup(){
+        return view('users.signuptenant');
+    }
+
+    public function getLsignup(){
+        return view('users.signuplandlord');
+    }
     
     //logout users
     public function logout()
     {   
         Auth::logout();
-        return redirect()->back();
+        return redirect()->route('getHome');
     }
 }

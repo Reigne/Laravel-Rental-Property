@@ -233,7 +233,7 @@ class MessageController extends Controller
 
     public function inbox($id)
     {
-        
+        // dd($id);
         $user = Auth::user();
         if($user->id==$id)
         {
@@ -285,55 +285,8 @@ class MessageController extends Controller
                 }
 
             }
-//            if (count($u->user_1_conversation)>0)
-//            {
-//                $con = $u->user_1_conversation;
-//                foreach($con as $c)
-//                {
-//                    foreach($c->message as $mess)
-//                    {
-//                        if($mess->is_user_1_seen==0)
-//                        {
-//                            $total_messages++;
-//                            $user_data[$i] = $mess->message_text;
-//                            $d = $mess->message_send_at;
-//                            $ids[$i]=$mess->conversation->user_2_reference->id;
-//                            $time[$i] = date('h:i', strtotime($d)) . ' '. date('a', strtotime($d));
-//                            $i++;
-//                        }
-//                    }
-//                }
-//            }
-//            else
-//            {
-//                $con = $u->user_2_conversation;
-//                foreach($con as $c)
-//                {
-//                    foreach($c->message as $mess)
-//                    {
-//                        if($mess->is_user_2_seen==0)
-//                        {
-//                            $total_messages++;
-//                            $user_data[$i] = $mess->message_text;
-//                            $d = $mess->message_send_at;
-//                            $ids[$i]=$mess->conversation->user_1_reference->id;
-//                            $time[$i] = date('h:i', strtotime($d)) . ' '. date('a', strtotime($d));
-//                            $i++;
-//                        }
-//                    }
-//                }
-//
-//            }
 
-
-            // $this->check_notification($user);
-
-            //Check Message in Message Table
-            // $u = $user;
-
-
-            // $this->check_messages($u);
-
+            // dd($this->ids)
             return view('tenant.tenet_conversation')->with('msgdate',$msgdate)->with('msgtimes',$msgtimes)->with('msgids',$msgids)->with('unseen',$unseen)->with('total_message',$this->total_messages)
                 ->with('data',$this->user_data)->with('time',$this->time)->with('ids',$this->ids)->with('user',$user);
         }
@@ -388,7 +341,7 @@ class MessageController extends Controller
 
     public function check_messages($u)
     {
-       
+
     }
 
 }

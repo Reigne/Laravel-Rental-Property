@@ -154,7 +154,7 @@ class PropertyController extends Controller
                     $props->save();
                     $file->move($destinationPath, $fileName);
 
-                    return redirect()->back();
+                    return redirect()->back()->with('success', 'Property has been successfully created.');;
                 }
 
             }
@@ -166,10 +166,13 @@ class PropertyController extends Controller
         }
     }
 
+    //show property
     public function show($id)
-    {
+    {   
+        //get property information
         $property = Property::with('landlords')->where('id', $id)->get();
 
+        //get all reviews in specific property
         $reviews = Review::join('users', 'users.id', '=', 'reviews.user_id')
             ->join('properties', 'properties.id', '=', 'reviews.property_id')
             ->join('tenants', 'tenants.user_id', '=', 'users.id')
@@ -180,8 +183,10 @@ class PropertyController extends Controller
         return view('property.show', compact('property', 'reviews'));
     }
 
+
+    //get views edit of property by landlord
     public function edit($id)
-    {
+    {   
         $property = Property::find($id);
 
         $landlord = Landlord::with('properties')->where('id', $property->landlord_id)->get();
@@ -189,10 +194,13 @@ class PropertyController extends Controller
         return view('property.edit', compact('property', 'landlord'));
     }
 
+    //update property by landlord
     public function update(Request $request, $id)
-    {
+    {   
+        //find the property first
         $props = Property::find($id);
 
+        //check if has a image file then update
         if ($file = $request->hasFile('imagePath')) {
             $path = Storage::putFileAs('images/property', $request->file('imagePath'), $request->file('imagePath')->getClientOriginalName());
             $request->merge(["imagePath" => $request->file('imagePath')->getClientOriginalName()]);
@@ -215,7 +223,10 @@ class PropertyController extends Controller
             $file->move($destinationPath, $fileName);
 
             return redirect()->back()->with('success', 'Property is successfully updated!');
-        } else {
+        } 
+        
+        //else if no image file then update
+        else {
             $props->area = $request->area;
             $props->garage = $request->garage;
             $props->bathroom = $request->garage;
@@ -226,10 +237,12 @@ class PropertyController extends Controller
             $props->address = $request->address;
             $props->description = $request->description;
             $props->update();
+
             return redirect()->back()->with('success', 'Property is successfully updated!');
         }
     }
 
+    //force delete the property
     public function destroy($id)
     {
         $property = Property::findOrFail($id);
@@ -238,6 +251,7 @@ class PropertyController extends Controller
         return Redirect::route('getProperties')->with('danger', 'Property has been Deleted!');
     }
 
+    //softdelete property
     public function deactivate($id)
     {
         $property = Property::findOrFail($id);
@@ -246,6 +260,7 @@ class PropertyController extends Controller
         return Redirect::route('getProperties')->with('warning', 'Property has been Deactivated!');
     }
 
+    //restore property
     public function restore($id)
     {
         $property = Property::withTrashed()->find($id);
@@ -253,8 +268,8 @@ class PropertyController extends Controller
         return Redirect::route('getProperties')->with('success', 'Property has been Restored!');
     }
 
-    //// Dashboard
-    public function getDashboard()
+    //get list of property for home
+    public function getHome()
     {
         $properties = Property::withTrashed()
             ->where([
@@ -270,6 +285,7 @@ class PropertyController extends Controller
         return view('homepage', compact('properties', 'states'));
     }
 
+    //Approval for property by admin
     public function approval(Request $request, $id)
     {
         $property = Property::withTrashed()->find($id);
@@ -279,6 +295,7 @@ class PropertyController extends Controller
         return redirect()->back()->with('success', 'Request post has been approved');
     }
 
+    //taken property by landlord
     public function taken(Request $request, $id)
     {
         $property = Property::withTrashed()->find($id);
@@ -288,6 +305,7 @@ class PropertyController extends Controller
         return redirect()->back()->with('success', 'Your property is already taken');
     }
 
+    //make property available by landlord
     public function available(Request $request, $id)
     {
         $property = Property::withTrashed()->find($id);

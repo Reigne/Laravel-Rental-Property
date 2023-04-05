@@ -8,6 +8,7 @@ use App\Models\Verification;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+
 class AdminController extends Controller
 {
     /**

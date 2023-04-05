@@ -14,8 +14,9 @@
   <hr class="horizontal dark mt-0">
   <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
     <ul class="navbar-nav">
+      @if(Auth::user()->role == 'admin')
       <li class="nav-item">
-        <a class="nav-link  active" href="{{ url('/') }}">
+        <a class="nav-link active" href="{{ route('dashboard.index') }}">
           <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
               <title>shop </title>
@@ -34,9 +35,8 @@
           <span class="nav-link-text ms-1">Dashboard</span>
         </a>
       </li>
-      @if(Auth::user()->role == 'admin')
       <li class="nav-item">
-        <a class="nav-link  " href="{{ route('getTenants') }}">
+        <a class="nav-link " href="{{ route('getTenants') }}">
           <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
               <path class="color-background"  d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
@@ -80,7 +80,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link  "  href="{{ route('con', Auth::user()->id) }}">
+        <a class="nav-link"  href="{{ route('con',[Illuminate\Support\Facades\Auth::id()]) }}">
           <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path class="color-background" d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
           </div>
