@@ -170,7 +170,13 @@ class PropertyController extends Controller
     public function show($id)
     {   
         //get property information
-        $property = Property::with('landlords')->where('id', $id)->get();
+        // $property = Property::with('landlords')->where('id', $id)->get();
+        $property = Property::join('landlords', 'landlords.id', '=', 'properties.landlord_id')
+        ->join('users', 'users.id', '=', 'landlords.user_id')
+        ->select('properties.*', 'users.id as user_id', 'landlords.first_name', 'landlords.last_name')
+        ->where('properties.id', '=', $id)
+        ->get();
+        // dd($property);
 
         //get all reviews in specific property
         $reviews = Review::join('users', 'users.id', '=', 'reviews.user_id')

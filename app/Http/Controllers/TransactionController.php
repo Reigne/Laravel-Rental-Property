@@ -84,7 +84,7 @@ class TransactionController extends Controller
         //if landlord accept the request
         if($request->status == 'Accepted'){
             $orderinfo->start_date = Carbon::now();
-            $orderinfo->end_date =  Carbon::now()->addDays($orderinfo->total_day);
+            $orderinfo->end_date =  Carbon::now()->addDays($orderinfo->total_days);
             $orderinfo->status = $request->status; 
             $orderinfo->update();
         } 

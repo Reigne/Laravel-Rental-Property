@@ -113,6 +113,7 @@
                             onfocus="focused(this)" onfocusout="defocused(this)">
                     </div>
                     <div class="card-body p-2">
+                        @if (Illuminate\Support\Facades\Auth::user()->role == 'tenant')
                         @for ($i = 0; $i < count($msgids); $i++)
                             <a href="{{ route('inbox', [urlencode($msgids[$i])]) }}" class="d-block p-2">
                                 <div class="d-flex p-2">
@@ -136,6 +137,31 @@
                                 </div>
                             </a>
                         @endfor
+                        @elseif (Illuminate\Support\Facades\Auth::user()->role == 'landlord')
+                        @for ($i = 0; $i < count($msgids); $i++)
+                            <a href="{{ route('inbox', [urlencode($msgids[$i])]) }}" class="d-block p-2">
+                                <div class="d-flex p-2">
+                                    <img alt="Image"
+                                        src="{{ asset(\App\Models\User::find($msgids[$i])->tenants->imagePath) }}"
+                                        class="avatar shadow">
+                                    <div class="ms-3">
+                                        <h6 class="mb-0">{{ \App\Models\User::find($msgids[$i])->name }}</h6>
+                                        <p class="text-muted text-xs mb-2">{{ \App\Models\User::find($msgids[$i])->email }}
+                                        </p>
+                                        <p class="text-muted text-xs mb-2">
+                                            <small>{{ $msgtimes[$i] . ' ' . $msgdate[$i] }}</small></p>
+                                        <span class="text-muted text-sm col-11 p-0 text-truncate d-block">
+                                            @if ($unseen[$i] != 0)
+                                                <span style="color: red"> {{ $unseen[$i] }} </span>
+                                            @else
+                                                {{ $unseen[$i] }}
+                                            @endif Unseen Message</p>
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        @endfor
+                        @endif
                     </div>
                 </div>
             </div>

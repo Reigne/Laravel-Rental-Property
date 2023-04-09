@@ -62,7 +62,7 @@ class PropertiesDataTable extends DataTable
                 } 
             })
             ->addColumn('Deactivate', function ($row) {
-                if (Auth::user()->role == 'landlord') {
+                if (Auth::user()->role == 'landlord' or Auth::user()->role == 'admin') {
                     if ($row->deleted_at)
                         return '<a href="' . route('property.restore', $row->id) . '" class="btn bg-gradient-info">Restore</a>';
                     else
@@ -74,7 +74,7 @@ class PropertiesDataTable extends DataTable
                 }
             })
             ->addColumn('Delete', function ($row) {
-                if (Auth::user()->role == 'landlord') {
+                if (Auth::user()->role == 'landlord' or Auth::user()->role == 'admin') {
                     if ($row->deleted_at)
                         return '<button href="" class="btn bg-gradient-secondary" disabled>Delete</button>';
                     else
@@ -113,6 +113,26 @@ class PropertiesDataTable extends DataTable
             ->addColumn('created_at', function ($row) {
                 return $row->created_at->format('m/d/Y - h:m A');
             })
+
+//             ->addColumn('Description', function ($row) {
+//     return '<button class="btn bg-gradient-primary" data-toggle="modal" data-target="#myModal' . $row->id . '">View</button>
+//             <div class="modal fade" id="myModal' . $row->id . '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+//               <div class="modal-dialog" role="document">
+//                 <div class="modal-content">
+//                   <div class="modal-header">
+//                     <h5 class="modal-title" id="myModalLabel">Description</h5>
+//                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+//                       <span aria-hidden="true">&times;</span>
+//                     </button>
+//                   </div>
+//                   <div class="modal-body">
+//                     <p>' . $row->description . '</p>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>';
+// })
+
             ->escapeColumns([]);
     }
 

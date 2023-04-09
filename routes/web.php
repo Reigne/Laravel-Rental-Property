@@ -46,7 +46,7 @@ Route::get('/search','PropertyController@search_property')->name('search_propert
                 ]);
 
             Route::get('signin', [
-                    'uses' => 'LoginController@getSignin',
+                    'uses' => 'LoginController@getSignin',  
                     'as' => 'user.signins',
                 ]);
 

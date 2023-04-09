@@ -47,14 +47,14 @@
                                 <label>Bathroom</label>
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" id="bathroom" name="bathroom"
-                                    placeholder="63+ 9219201772" aria-label="Bathroom" value="{{old('bathroom')}}">
+                                    placeholder="Bathroom" aria-label="Bathroom" value="{{old('bathroom')}}">
                             </div>
                                 </div>
                                 <div class="col">
                                 <label>Bedroom</label>
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" id="bedroom" name="bedroom"
-                                    placeholder="#1-B New Lower Example..." aria-label="Bedroom" value="{{old('bedroom')}}">
+                                    placeholder="Bedroom" aria-label="Bedroom" value="{{old('bedroom')}}">
                             </div>
                                 </div>
                             </div>
