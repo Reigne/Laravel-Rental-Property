@@ -24,11 +24,7 @@ Route::get('/property/{id}', [
     'as' => 'showProperty'
 ]);
 
-// Dashboard (charts)====================================================================
-Route::get('/dashboard', [
-    'uses' => 'DashboardController@demographicChart',
-    'as' => 'dashboard.index'
-]);
+
 
 // serach for properties
 Route::get('/search','PropertyController@search_property')->name('search_property');
@@ -81,7 +77,12 @@ Route::get('/search','PropertyController@search_property')->name('search_propert
 
         //Route group for landlord and admin
     Route::group(['middleware' => 'role:admin'], function() {
-
+        
+            // Dashboard (charts)====================================================================
+            Route::get('/dashboard', [
+                'uses' => 'DashboardController@demographicChart',
+                'as' => 'dashboard.index'
+            ]);
         //Route auth for landlord datatable
             Route::resource('landlord', 'LandlordController');
 
