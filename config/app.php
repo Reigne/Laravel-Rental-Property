@@ -186,6 +186,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Askedio\Laravel5ProfanityFilter\Providers\ProfanityFilterServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
         
         /*
          * Package Service Providers...
@@ -259,6 +260,9 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+
     ],
 
 ];

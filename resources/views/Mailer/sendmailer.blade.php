@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Your reservation is now confirmed</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    {{-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --}}
   <style>
     @media screen {
       img {
@@ -23,9 +23,9 @@
         color: inherit;
         text-decoration: none;
       }
-      .all-font-roboto {
+      /* .all-font-roboto {
         font-family: Roboto, -apple-system, "Segoe UI", sans-serif !important;
-      }
+      } */
       .all-font-sans {
         font-family: -apple-system, "Segoe UI", sans-serif !important;
       }
@@ -78,6 +78,7 @@
 </head>
 @foreach ($orders as $data) 
     @if ($data->Status == "Accepted")
+    <input type="text" value="{{ $data->id }}" name="orderid" style="display:none" readonly>
 <body style="box-sizing: border-box; margin: 0; padding: 0; width: 40%; word-break: break-word; -webkit-font-smoothing: antialiased; background-color: #f5dbce;">
   <div style="display: none; line-height: 0; font-size: 0;">Hey Mr/Ms.{{$data->lname}},{{$data->fname}}, thanks for renting with us - your reservation is now confirmed ✔</div>
   <table class="wrapper all-font-sans" width="100%" height="100%" cellpadding="0" cellspacing="0" role="presentation">
@@ -99,6 +100,11 @@
                   <td width="80%">
                     <h1 class="sm-text-lg all-font-roboto" style="font-weight: 700; line-height: 100%; margin: 0; margin-bottom: 4px; font-size: 24px;">Tenant Receipt</h1>
                     <p class="sm-text-xs" style="margin: 0; color: #a0aec0; font-size: 14px;">Your reservation is now confirmed</p>
+                  </td>
+                  <td style="text-align: right;" width="20%" align="right">
+                    <a href="{{ route('receipt',$data->id) }}" target="_blank" style="text-decoration: none;">
+                        <p><strong>Download PDF</strong></p>
+                    </a>
                   </td>
                 </tr>
               </table>
@@ -161,6 +167,7 @@
                   <td style="font-weight: 600; padding-top: 32px; color: #000000; font-size: 20px;" width="50%">Total</td>
                   <td style="font-weight: 600; padding-top: 32px; text-align: right; color: #68d391; font-size: 20px;" width="50%" align="right">${{$data->Total}}</td>
                 </tr>
+
               </table>
             </td>
           </tr>
