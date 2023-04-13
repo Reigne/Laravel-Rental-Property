@@ -258,18 +258,20 @@
                         </div>
                         <div class="card-body p-3">
                             <ul class="list-group">
+                                @foreach($messages as $message)
                                 <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                                     <div class="avatar me-3">
-                                        <img src="../assets/img/kal-visuals-square.jpg" alt="kal"
+                                        <img src="{{ asset($message->imagePath) }}" alt="kal"
                                             class="border-radius-lg shadow">
                                     </div>
                                     <div class="d-flex align-items-start flex-column justify-content-center">
-                                        <h6 class="mb-0 text-sm">Sophie B.</h6>
-                                        <p class="mb-0 text-xs">Hi! I need more information..</p>
+                                        <h6 class="mb-0 text-sm">{{ $message->first_name }} {{ $message->last_name }}</h6>
+                                        <p class="mb-0 text-xs">{{ $message->message_text }}</p>
                                     </div>
-                                    <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                                    <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="{{ route('inbox', $message->message_sender_user) }}">Reply</a>
                                 </li>
-                                <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                                @endforeach
+                                {{-- <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2  ">
                                     <div class="avatar me-3">
                                         <img src="../assets/img/marie.jpg" alt="kal"
                                             class="border-radius-lg shadow">
@@ -312,7 +314,7 @@
                                         <p class="mb-0 text-xs">Hi! I need more information..</p>
                                     </div>
                                     <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </div>
@@ -323,7 +325,7 @@
                             <h6 class="mb-1">My Properties</h6>
                             <!-- <p class="text-sm">Your list of properties</p> --> 
                         </div>
-                        <div class="card-body p-3">
+                        <div v class="card-body p-3">
                             <div class="row">
                                 @foreach ($landlord->properties as $landlords)
                                     <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 py-2">
@@ -337,6 +339,8 @@
                                             </div>
                                             <div class="card-body px-1 pb-0">
                                                 <p class="text-gradient text-dark mb-2 text-sm">
+                                                    {{ $landlords->area }} sqr,
+
                                                     {{ $landlords->garage }} Garage,
 
 
@@ -360,7 +364,7 @@
                                                     {{-- <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button> --}}
                                                     <a href="{{ route('editProperty', $landlords->id) }}"
                                                         class="btn btn-outline-primary btn-sm mb-0">View Property</a>
-                                                    <div class="avatar-group mt-2">
+                                                    {{-- <div class="avatar-group mt-2">
                                                         <a href="javascript:;" class="avatar avatar-xs rounded-circle"
                                                             data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                             title="Elena Morison">
@@ -381,7 +385,7 @@
                                                             title="Peterson">
                                                             <img alt="Image placeholder" src="../assets/img/team-4.jpg">
                                                         </a>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                         </div>

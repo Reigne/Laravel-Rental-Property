@@ -15,6 +15,7 @@ use Storage;
 use File;
 use Auth;
 use Hash;
+use DB;
 
 class LandlordController extends Controller
 {
@@ -259,9 +260,23 @@ class LandlordController extends Controller
     {   
         $id = Auth::user()->landlords->id;
         $landlord = Landlord::with('properties')->find($id);
-        $users = User::with('tenants')->where('id', $landlord->user_id)->get();
-        // dd($landlord);
-        return view('landlord.profile', compact('landlord', 'users'));
+        $users = User::with('landlords')->where('id', $landlord->user_id)->get();
+        // dd($users);
+
+        $messages = DB::table('conversations')
+        ->select('messages.*', 'tenants.first_name', 'tenants.last_name', 'tenants.imagePath')
+        ->join('messages', 'messages.conversation_id', '=', 'conversations.id')
+        // ->join('users', 'users.id', '=', 'conversations.user_1')
+        ->join('users', 'users.id', '=', 'conversations.user_2')
+        ->join('tenants', 'tenants.user_id', '=', 'conversations.user_1')
+        // ->join('landlords', 'landlords.user_id', '=', 'users.id')
+        ->where('users.id', '=', Auth::user()->id)
+        ->groupBy('messages.conversation_id')
+        ->orderBy('messages.message_send_at', 'DESC')
+        ->get();
+        // dd($messages);
+
+        return view('landlord.profile', compact('landlord', 'users', 'messages'));
     }
 
     public function myProperties(){
