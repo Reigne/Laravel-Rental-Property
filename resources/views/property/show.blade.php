@@ -32,9 +32,13 @@
                                     </div>
                                 </div>
                                 <div class="text-end ms-auto">
+                                    @if(Auth::user()->role == 'tenant')
                                     <a type="submit" class="btn bg-gradient-primary mb-0" href="{{ route('inbox', $property->user_id) }}">
                                         <i class="fa-solid fa-comment"></i> Chat
                                     </a>
+                                    @else
+                                    
+                                    @endif
                                 </div>
                             </div>
                             <div class="card-body">
