@@ -101,61 +101,56 @@ class DashboardController extends Controller
             ],
         ]);
 
-        // Get the total profit for "Accepted" and "Pending" statuses grouped by month
+        // SINGLE CHART
+
         $profitChartData = DB::table('orderinfo')
-            ->whereIn('status', ['Accepted', 'Pending'])
-            ->selectRaw('status, DATE_FORMAT(created_at, "%M, %Y") as month, SUM(total_amount) as total_profit')
-            ->groupBy('status', 'month')
-            // ->orderByRaw('MONTH(created_at) ASC')
-            ->get()
-            ->toArray();
+        ->where('status', '=', 'Accepted')
+        ->selectRaw('DATE_FORMAT(created_at, "%M, %Y") as month, SUM(total_amount) as total_profit')
+        ->groupBy('month')
+        ->orderByRaw('MONTH(created_at) ASC')
+        ->get()
+        ->toArray();
 
-// Create a new line chart instance
-        $profitChart = new ProfitChart;
+    // Create a new line chart instance
+    $profitChart = new ProfitChart;
 
-// Set the chart labels to the dates extracted from the profitChartData array
-        $profitChart->labels(array_unique(array_column($profitChartData, 'month')));
+    // Set the chart labels to the dates extracted from the profitChartData array
+    $profitChart->labels(array_column($profitChartData, 'month'));
 
-// Loop through each status and add a dataset to the chart representing the total profit values
-        $statuses = array_unique(array_column($profitChartData, 'status'));
-        foreach ($statuses as $status) {
-            $statusData = array_filter($profitChartData, function ($data) use ($status) {
-                return $data->status == $status;
-            });
-            $profitChart->dataset($status . ' Profit in month', 'line', array_column($statusData, 'total_profit'))
-                ->backgroundColor(['#252f40', '#8392ab'])
-                ->color(['#17c1e8', '#8392ab'])
-                ->lineTension(0.35);
-        }
+    // Add a dataset to the chart representing the total profit values
+    $profitChart->dataset('Total Profit in month', 'line', array_column($profitChartData, 'total_profit'))
+        ->backgroundColor('#7158e2')
+        ->color('#7158e2')
+        ->lineTension(0.3);
 
-// Set chart options
-        $profitChart->options([
-            'responsive' => true,
-            'tooltips' => [
-                'enabled' => true,
-            ],
-            'title' => [
+    // Set chart options
+    $profitChart->options([
+        'responsive' => true,
+        'tooltips' => [
+            'enabled'=> true,
+        ],
+        'title' => [
+            'display'=> true,
+            'text' => 'Total Profit Chart',
+        ],
+        'scales' => [
+            'yAxes'=> [[
+                'display'=>true,
+                'ticks'=> [
+                    'beginAtZero'=> true,
+                ],
+                'gridLines'=> [
+                    'display'=> true,
+                ],
+            ]],
+            'xAxes'=> [[
                 'display' => true,
-                'text' => 'Total Profit Chart',
-            ],
-            'scales' => [
-                'yAxes' => [[
-                    'display' => true,
-                    'ticks' => [
-                        'beginAtZero' => true,
-                    ],
-                    'gridLines' => [
-                        'display' => true,
-                    ],
-                ]],
-                'xAxes' => [[
-                    'display' => true,
-                    'gridLines' => [
-                        'display' => false,
-                    ],
-                ]],
-            ],
-        ]);
+                'gridLines' => [
+                    'display' => false,
+                ],
+            ]],
+        ],
+    ]);
 
 
         //payment chart
