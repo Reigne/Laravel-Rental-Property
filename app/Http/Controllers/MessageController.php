@@ -198,6 +198,7 @@ class MessageController extends Controller
     {
         // dd($id);
         $user = Auth::user();
+
         if ($user->id == $id) {
 
             //Check Message in Message Table
@@ -248,7 +249,8 @@ class MessageController extends Controller
             return view('tenant.tenet_conversation')->with('msgdate', $msgdate)->with('msgtimes', $msgtimes)->with('msgids', $msgids)->with('unseen', $unseen)->with('total_message', $this->total_messages)
                 ->with('data', $this->user_data)->with('time', $this->time)->with('ids', $this->ids)->with('user', $user);
         } else {
-            return redirect()->route('check_user_role');
+            // return redirect()->route('check_user_role');
+            return redirect()->back();
         }
     }
 
@@ -266,67 +268,71 @@ class MessageController extends Controller
 
     public function messagebox($id)
     {
+        if (Auth::check()) {
 
-        $user = User::find($id);
-        
-        $usera = Auth::user();
-        if ($usera->id == Auth::user()->id) {
+            $user = User::find($id);
 
-            //Check Message in Message Table
-            $u = $usera;
-            $msgdate = array();
-            $msgtimes = array();
-            $msgids = array();
-            $unseen = array();
-            $i = 0;
-            $user_col_1_con = $u->user_1_conversation;
-            $user_col_2_con = $u->user_2_conversation;
-            if (count((array) $user_col_1_con) > 0) {
-                foreach ($user_col_1_con as $con) {
-                    $total_messages = 0;
-                    foreach ($con->message as $mess) {
-                        if ($mess->is_user_1_seen == 0) {
-                            $total_messages++;
+            $usera = Auth::user();
+            if ($usera->id == Auth::user()->id) {
+
+                //Check Message in Message Table
+                $u = $usera;
+                $msgdate = array();
+                $msgtimes = array();
+                $msgids = array();
+                $unseen = array();
+                $i = 0;
+                $user_col_1_con = $u->user_1_conversation;
+                $user_col_2_con = $u->user_2_conversation;
+                if (count((array) $user_col_1_con) > 0) {
+                    foreach ($user_col_1_con as $con) {
+                        $total_messages = 0;
+                        foreach ($con->message as $mess) {
+                            if ($mess->is_user_1_seen == 0) {
+                                $total_messages++;
+                            }
                         }
+                        $sender_timedate = $con->message()->orderby('id', 'desc')->first()->message_send_at;
+                        $msgtimes[$i] = date('h:i', strtotime($sender_timedate)) . ' ' . date('a', strtotime($sender_timedate));
+                        $msgdate[$i] = date('j', strtotime($sender_timedate)) . ' ' . date('F', strtotime($sender_timedate));
+                        $msgids[$i] = $con->user_2;
+                        $unseen[$i] = $total_messages;
+                        $i++;
                     }
-                    $sender_timedate = $con->message()->orderby('id', 'desc')->first()->message_send_at;
-                    $msgtimes[$i] = date('h:i', strtotime($sender_timedate)) . ' ' . date('a', strtotime($sender_timedate));
-                    $msgdate[$i] = date('j', strtotime($sender_timedate)) . ' ' . date('F', strtotime($sender_timedate));
-                    $msgids[$i] = $con->user_2;
-                    $unseen[$i] = $total_messages;
-                    $i++;
-                }
 
-            }
-            if (count((array) $user_col_2_con) > 0) {
-                foreach ($user_col_2_con as $con) {
-                    $total_messages = 0;
-                    foreach ($con->message as $mess) {
-                        if ($mess->is_user_2_seen == 0) {
-                            $total_messages++;
+                }
+                if (count((array) $user_col_2_con) > 0) {
+                    foreach ($user_col_2_con as $con) {
+                        $total_messages = 0;
+                        foreach ($con->message as $mess) {
+                            if ($mess->is_user_2_seen == 0) {
+                                $total_messages++;
+                            }
                         }
+                        $sender_timedate = $con->message()->orderby('id', 'desc')->first()->message_send_at;
+                        $msgtimes[$i] = date('h:i', strtotime($sender_timedate)) . ' ' . date('a', strtotime($sender_timedate));
+                        $msgdate[$i] = date('j', strtotime($sender_timedate)) . ' ' . date('F', strtotime($sender_timedate));
+                        $msgids[$i] = $con->user_1;
+                        $unseen[$i] = $total_messages;
+                        $i++;
                     }
-                    $sender_timedate = $con->message()->orderby('id', 'desc')->first()->message_send_at;
-                    $msgtimes[$i] = date('h:i', strtotime($sender_timedate)) . ' ' . date('a', strtotime($sender_timedate));
-                    $msgdate[$i] = date('j', strtotime($sender_timedate)) . ' ' . date('F', strtotime($sender_timedate));
-                    $msgids[$i] = $con->user_1;
-                    $unseen[$i] = $total_messages;
-                    $i++;
-                }
 
+                }
             }
+            $users = User::with('landlords', 'tenants')->find($id);
+            // dd($users);
+            // $this->check_notification($user);
+
+            // //Check Message in Message Table
+            // $u = $user;
+
+            // $this->check_messages($u);
+
+            return view('tenant.tenetinbox')->with('msgdate', $msgdate)->with('msgtimes', $msgtimes)->with('msgids', $msgids)->with('unseen', $unseen)->with('id', $id)->with('shown', $this->shown)->with('total_message', $this->total_messages)->with('data', $this->user_data)->with('time', $this->time)->with('ids', $this->ids)->with('user', $user)->with('users', $users);
+
+        } else {
+            return redirect()->route('user.signin')->with('warning', 'Please Signin first.');
         }
-        $users = User::with('landlords', 'tenants')->find($id);
-        // dd($users);
-        // $this->check_notification($user);
-
-        // //Check Message in Message Table
-        // $u = $user;
-
-        // $this->check_messages($u);
-
-        return view('tenant.tenetinbox')->with('msgdate', $msgdate)->with('msgtimes', $msgtimes)->with('msgids', $msgids)->with('unseen', $unseen)->with('id', $id)->with('shown', $this->shown)->with('total_message', $this->total_messages)->with('data', $this->user_data)->with('time', $this->time)->with('ids', $this->ids)->with('user', $user)->with('users', $users);
-
         // return view('tenant.tenet_conversation')->with('msgdate', $msgdate)->with('msgtimes', $msgtimes)->with('msgids', $msgids)->with('unseen', $unseen)->with('total_message', $this->total_messages)
         //     ->with('data', $this->user_data)->with('time', $this->time)->with('ids', $this->ids)->with('user', $user);
     }
