@@ -321,7 +321,7 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0 p-3">
                             <h6 class="mb-1">My Properties</h6>
-                            <!-- <p class="text-sm">Your list of properties</p> -->
+                            <!-- <p class="text-sm">Your list of properties</p> --> 
                         </div>
                         <div class="card-body p-3">
                             <div class="row">

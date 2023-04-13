@@ -29,8 +29,8 @@
                                                 <b class="text-danger">Notes:</b> This process may take a few days, so it is
                                                 important to be patient and follow up with the landlord if necessary. If your
                                                 payments directly through the online rental platform, making the rental process
-                                                more convenient and accessible for both tenants and landlords alike.
-                                            </p>    application is accepted, you may be able to sign a lease agreement and make rent
+                                                more convenient and accessible for both tenants and landlords alike. if application is accepted, you may be able to sign a lease agreement and make rent.
+                                            </p>    
                                             
                                             </p>
                                         </div>

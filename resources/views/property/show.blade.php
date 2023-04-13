@@ -43,7 +43,7 @@
                                 <img alt="Image placeholder" src="{{ asset($property->imagePath) }}"
                                     class="img-fluid border-radius-lg shadow-lg">
                                 <div class="row align-items-center px-2 mt-4 mb-2">
-                                    <div class="col-sm-6">
+                                    {{-- <div class="col-sm-6">
                                         <div class="d-flex">
                                             <div class="d-flex align-items-center">
                                                 <i class="ni ni-like-2 me-1 cursor-pointer"></i>
@@ -80,8 +80,8 @@
                                             </div>
                                             <small class="ps-2 font-weight-bold">and 30+ more</small>
                                         </div>
-                                    </div>
-                                    <hr class="horizontal dark my-3">
+                                    </div> --}}
+                                    <hr class="horizontal dark">
                                 </div>
 
                                 <div class="mb-1 max-height-vh-50 overflow-auto overflow-x-hidden">
