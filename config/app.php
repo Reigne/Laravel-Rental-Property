@@ -185,6 +185,7 @@ return [
         Yajra\DataTables\ButtonsServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
+        Askedio\Laravel5ProfanityFilter\Providers\ProfanityFilterServiceProvider::class,
         
         /*
          * Package Service Providers...
