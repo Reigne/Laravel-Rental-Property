@@ -99,13 +99,14 @@ class TransactionController extends Controller
             $orderinfo->status = $request->status;
             $orderinfo->update();
             $orders = DB::table('orderinfo')
-                ->select('orderinfo.*', 'orderinfo.status as Status', 'properties.id as property_id', 'properties.imagePath as property_image', 'properties.address as Address', 'properties.city as City', 'properties.state', 'tenants.last_name as lname', 'tenants.first_name as fname', 'users.email as EmailAddress', 'tenants.imagePath')
+                ->select('orderinfo.*', 'orderinfo.total_days as TotalDays', 'orderinfo.start_date as CheckIn', 'orderinfo.end_date as CheckOut', 'orderinfo.total_amount as Total', 'orderinfo.status as Status', 'properties.rent as Rent', 'properties.id as property_id', 'properties.imagePath as property_image', 'properties.address as Address', 'properties.area as Area', 'properties.city as City', 'properties.state as State', 'tenants.last_name as lname', 'tenants.first_name as fname', 'users.email as EmailAddress', 'tenants.imagePath')
                 ->join('orderline', 'orderline.orderinfo_id', '=', 'orderinfo.id')
                 ->join('tenants', 'tenants.id', '=', 'orderinfo.tenant_id')
                 ->join('properties', 'properties.id', '=', 'orderline.property_id')
                 ->join('users', 'users.id', '=', 'tenants.user_id')
                 ->where('orderinfo.id', '=', $id)
                 ->get();
+                
             Mail::to($orders[0]->EmailAddress)->send(new ExampleMail($orders));
         }
         //if landlord canceled the request
@@ -123,6 +124,6 @@ class TransactionController extends Controller
             Mail::to($orders[0]->EmailAddress)->send(new ExampleMail($orders));
         }
 
-        return redirect()->back()->with('success', 'Check your email');
+        return redirect()->back()->with('success', 'Transaction receipt sent to tenant email!');
     }
 }
