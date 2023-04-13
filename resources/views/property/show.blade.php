@@ -24,7 +24,7 @@
                                             alt="profile-image">
                                     </a>
                                     <div class="mx-3">
-                                        <a href="javascript:;"
+                                        <a href=""
                                             class="text-dark font-weight-600 text-sm">{{ $property->landlords->first_name }}
                                             {{ $property->landlords->last_name }}</a>
                                         <small
