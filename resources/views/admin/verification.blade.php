@@ -17,7 +17,7 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col-sm-auto col-4">
                         <div class="avatar avatar-xl position-relative">
-                            <img src="{{ Auth::user()->admins->imagePath }}" alt="bruce"
+                            <img src="{{ asset(Auth::user()->admins->imagePath) }}" alt="bruce"
                                 class="w-100 border-radius-lg shadow-sm">
                         </div>
                     </div>
