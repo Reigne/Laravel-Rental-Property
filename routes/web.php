@@ -148,6 +148,7 @@ Route::group(['middleware' => 'role:landlord'], function () {
 
     //Only landlord can access this route lists below:
     Route::resource('property', 'PropertyController')->only(['update']);
+    Route::resource('landlord', 'LandlordController')->only(['update']);
 
     Route::get('/my-properties', [
         'uses' => 'LandlordController@myProperties',
@@ -222,7 +223,7 @@ Route::group(['middleware' => 'role:tenant'], function () {
 Route::group(['middleware' => 'role:admin,landlord'], function () {
 
     //Only landlord and admin can access this route lists below:
-
+    
     Route::get('/property', [
         'uses' => 'PropertyController@getProperties',
         'as' => 'getProperties',

@@ -42,7 +42,7 @@ class Property extends Model
         'city' => 'required',
         'state' => 'required',
         'address' => 'required',
-        'description' => 'required|profanity',
+        'description' => 'required',
         'imagePath' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
     ];
 

@@ -131,7 +131,7 @@ class LandlordController extends Controller
      */
     public function update(Request $request, $id)
     {   
-
+        // dd($id);
         // $this->validate($request, ['old_password' => 'required']);
 
         // if (!Hash::check($request->old_password, Auth::user()->password)) {
