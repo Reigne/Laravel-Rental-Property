@@ -134,6 +134,7 @@
                                                         <span
                                                             class="badge badge-sm badge-danger">{{ $verification->status }}</span>
                                                     @endif
+                                                    
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">

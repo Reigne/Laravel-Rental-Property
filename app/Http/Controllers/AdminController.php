@@ -113,6 +113,7 @@ class AdminController extends Controller
             $verifications->update();
             $landlord->update();
         } 
+        
         elseif($request->status == 'Canceled'){
             $verifications->admin_id = Auth::user()->admins->id;
             $verifications->status = $request->status;
