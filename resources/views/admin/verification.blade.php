@@ -130,7 +130,7 @@
                                                     @elseif($verification->status == 'Accepted')
                                                         <span
                                                             class="badge badge-sm badge-success">{{ $verification->status }}</span>
-                                                    @elseif($verification->status == 'Denied')
+                                                    @elseif($verification->status == 'Canceled')
                                                         <span
                                                             class="badge badge-sm badge-danger">{{ $verification->status }}</span>
                                                     @endif
@@ -168,7 +168,7 @@
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#cancelModal{{ $verification->id }}">
                                                                         <i class="fa-solid fa-ban"
-                                                                            style="color: #dc2e2e;"></i> Denied
+                                                                            style="color: #dc2e2e;"></i> Canceled
                                                                     </button>
                                                                 </li>
                                                             </ul>

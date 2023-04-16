@@ -113,10 +113,12 @@ class AdminController extends Controller
             $verifications->update();
             $landlord->update();
         } 
-        elseif($request->status == 'Denied'){
+        elseif($request->status == 'Canceled'){
             $verifications->admin_id = Auth::user()->admins->id;
             $verifications->status = $request->status;
+            $landlord->is_upgraded = 0; 
             $verifications->update();
+            $landlord->update();
         }
 
         return redirect()->back()->with('success', 'Status updated successfully');
