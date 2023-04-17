@@ -177,6 +177,8 @@ class LandlordController extends Controller
             'imagePath' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+
+        
         if (Hash::check($request->old_password, Auth::user()->password)) {
             $landlord = Landlord::find($id);
             $landlord->first_name = $request->first_name;

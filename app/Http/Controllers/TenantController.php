@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Models\Review;
 use App\DataTables\TenantsDataTable;
 use View;
 use Validator;
@@ -205,8 +206,12 @@ class TenantController extends Controller
     public function destroy($id)
     {
         $tenant = Tenant::findOrFail($id);
+        $reviews = Review::where('user_id', $tenant->user_id);
+        $reviews->forceDelete();
+
         User::where('id',$tenant->user_id)->forceDelete();
         $tenant->forceDelete();
+
 
         return Redirect::route('getTenants')->with('danger','Tenant has been Deleted!');
     }

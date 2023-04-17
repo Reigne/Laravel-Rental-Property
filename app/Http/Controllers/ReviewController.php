@@ -23,7 +23,7 @@ class ReviewController extends Controller
 
             //validate the comment
             $this->validate($request, [
-                'comment' => 'required'
+                'comment' => 'required|profanity'
             ]);
             
             //if tenant already have comment then it will only update the comment

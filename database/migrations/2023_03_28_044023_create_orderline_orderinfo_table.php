@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orderinfo', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('tenant_id')->unsigned();
-            $table->foreign('tenant_id')->references('id')->on('tenants');  
+            $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');  
             $table->integer('total_days');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
@@ -28,9 +28,9 @@ return new class extends Migration
 
         Schema::create('orderline', function (Blueprint $table) {
             $table->integer('orderinfo_id')->unsigned();
-            $table->foreign('orderinfo_id')->references('id')->on('orderinfo');
+            $table->foreign('orderinfo_id')->references('id')->on('orderinfo')->onDelete('cascade');
             $table->integer('property_id')->unsigned();
-            $table->foreign('property_id')->references('id')->on('properties');
+            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
         });
     }
 
